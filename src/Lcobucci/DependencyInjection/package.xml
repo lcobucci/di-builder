@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package packagerversion="1.9.4" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0
+    http://pear.php.net/dtd/tasks-1.0.xsd
+    http://pear.php.net/dtd/package-2.0
+    http://pear.php.net/dtd/package-2.0.xsd">
+ <name>DIBuilder</name>
+ <channel>lcobucci.github.com</channel>
+ <summary>A symfony2 container builder to make easier the creation of containers from files</summary>
+ <description>This project is a dependency injection container builder that helps to create containers from files (XML, YAML, ...)</description>
+ <lead>
+  <name>Luís Otávio Cobucci Oblonczyk</name>
+  <user>lcobucci</user>
+  <email>lcobucci@gmail.com</email>
+  <active>yes</active>
+ </lead>
+ <date>2013-04-15</date>
+ <time>02:11:50</time>
+ <version>
+  <release>1.0.0</release>
+  <api>1.0.0</api>
+ </version>
+ <stability>
+  <release>stable</release>
+  <api>stable</api>
+ </stability>
+ <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD Style</license>
+ <notes>
+Project created
+ </notes>
+ <contents>
+  <dir baseinstalldir="Lcobucci/DependencyInjection" name="/">
+   <file baseinstalldir="Lcobucci/DependencyInjection" md5sum="198ea98e40bdab50bab8379e7964034b" name="ContainerBuilder.php" role="php" />
+   <file baseinstalldir="Lcobucci/DependencyInjection" md5sum="a7308b01b49b25ac25af20281498e8b6" name="XmlContainerBuilder.php" role="php" />
+  </dir>
+ </contents>
+ <dependencies>
+  <required>
+   <php>
+    <min>5.3</min>
+   </php>
+   <pearinstaller>
+    <min>1.5.6</min>
+   </pearinstaller>
+   <package>
+    <name>Config</name>
+    <channel>pear.symfony.com</channel>
+    <min>2.2.1</min>
+   </package>
+   <package>
+    <name>DependencyInjection</name>
+    <channel>pear.symfony.com</channel>
+    <min>2.2.1</min>
+   </package>
+  </required>
+ </dependencies>
+ <phprelease />
+ <changelog>
+  <release>
+   <version>
+    <release>1.0.0</release>
+    <api>1.0.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2013-04-15</date>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD Style</license>
+   <notes>
+Project created
+   </notes>
+  </release>
+ </changelog>
+</package>
