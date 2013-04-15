@@ -1,0 +1,31 @@
+{
+	"name" : "lcobucci/di-builder",
+	"description" : "Dependency Injection Builder for PHP 5.3+ applications",
+	"type" : "library",
+	"authors" : [{
+			"name" : "Luís Otávio Cobucci Oblonczyk",
+			"email" : "lcobucci@gmail.com"
+		}
+	],
+	"keywords" : [
+		"dependency-injection"
+	],
+	"homepage" : "https://github.com/lcobucci/di-builder",
+	"license" : [
+		"BSD-3-Clause"
+	],
+	"require" : {
+		"symfony/config" : ">=2.2.0@stable",
+		"php" : ">=5.3",
+		"symfony/dependency-injection" : ">=2.2.0@stable"
+	},
+	"require-dev" : {
+		"mikey179/vfsStream" : ">=1.2.0@stable"
+	},
+	"autoload" : {
+		"psr-0" : {
+			"Lcobucci\\DependencyInjection" : "src/"
+		}
+	},
+	"minimum-stability" : "alpha"
+}
