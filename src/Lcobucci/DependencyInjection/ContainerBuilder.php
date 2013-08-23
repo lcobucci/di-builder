@@ -37,7 +37,8 @@ interface ContainerBuilder
      *
      * @param string $file
      * @param array $path
+     * @param array $defaultParameters
      * @return \Symfony\Component\DependencyInjection\ContainerBuilder
      */
-    public function getContainer($file, array $path = array());
+    public function getContainer($file, array $path = array(), array $defaultParameters = array());
 }

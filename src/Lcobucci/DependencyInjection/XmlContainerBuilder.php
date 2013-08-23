@@ -73,14 +73,22 @@ class XmlContainerBuilder implements ContainerBuilder
      *
      * @param string $file
      * @param array $path
+     * @param array $defaultParameters
      * @return \Symfony\Component\DependencyInjection\ContainerBuilder
      */
-    public function getContainer($file, array $path = array())
-    {
+    public function getContainer(
+        $file,
+        array $path = array(),
+        array $defaultParameters = array()
+    ) {
         $dumpClass = $this->createDumpClassName($file);
 
         if ($this->hasToCreateDumpClass($file, $dumpClass)) {
             $container = new SymfonyBuilder();
+
+            foreach ($defaultParameters as $param => $value) {
+                $container->setParameter($param, $value);
+            }
 
             $this->getLoader($container, $path)->load($file);
             $this->createDump($container, $dumpClass);
