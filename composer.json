@@ -15,17 +15,17 @@
 		"BSD-3-Clause"
 	],
 	"require" : {
-		"symfony/config" : ">=2.2.0@stable",
 		"php" : ">=5.3",
-		"symfony/dependency-injection" : ">=2.2.0@stable"
+		"symfony/config" : "~2.4",
+		"symfony/dependency-injection" : "~2.4"
 	},
 	"require-dev" : {
-		"mikey179/vfsStream" : ">=1.2.0@stable"
+		"phpunit/phpunit": "~4.1",
+		"mikey179/vfsStream" : "~1.2"
 	},
 	"autoload" : {
 		"psr-0" : {
 			"Lcobucci\\DependencyInjection" : "src/"
 		}
-	},
-	"minimum-stability" : "alpha"
+	}
 }
