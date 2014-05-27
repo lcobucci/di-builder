@@ -1,23 +1,22 @@
 <?php
 namespace Lcobucci\DependencyInjection;
 
-use org\bovigo\vfs\vfsStreamDirectory;
 use org\bovigo\vfs\vfsStream;
 use Symfony\Component\Config\ConfigCache;
 
 class XmlContainerBuilderTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var vfsStreamDirectory
-     */
-    private $root;
-
-    /**
      * @var ConfigCache|\PHPUnit_Framework_MockObject_MockObject
      */
     private $cache;
 
-    public function setUp()
+    /**
+     * @var ContainerConfig|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private $config;
+
+    protected function setUp()
     {
         $config = <<<'XML'
 <?xml version="1.0" encoding="UTF-8"?>
@@ -33,15 +32,37 @@ class XmlContainerBuilderTest extends \PHPUnit_Framework_TestCase
 </container>
 XML;
 
-        $this->root = vfsStream::setup('tmp', 0777, ['services.xml' => $config]);
-        $this->cache = $this->getMock('Symfony\Component\Config\ConfigCache', [], [], '', false);
+        vfsStream::setup('tmp', 0777, array('services.xml' => $config));
+
+        $this->cache = $this->getMock('Symfony\Component\Config\ConfigCache', array(), array(), '', false);
+        $this->config = $this->getMock('Lcobucci\DependencyInjection\ContainerConfig', array(), array(), '', false);
+
+        $this->config->expects($this->any())
+                     ->method('getCache')
+                     ->willReturn($this->cache);
+
+        $this->config->expects($this->any())
+                     ->method('getFile')
+                     ->willReturn(vfsStream::url('tmp/services.xml'));
+
+        $this->config->expects($this->any())
+                     ->method('getPaths')
+                     ->willReturn(array());
     }
 
     /**
      * @test
      */
-    public function dumpMustBeCreatedWhenItDoesNotExists()
+    public function getContainerMustCreateWhenItDoesNotExists()
     {
+        $this->config->expects($this->any())
+                     ->method('getDefaultParameters')
+                     ->willReturn(array());
+
+        $this->config->expects($this->any())
+                     ->method('getClassName')
+                     ->willReturn('ProjectCache');
+
         $data = '';
 
         $this->cache->expects($this->once())
@@ -60,8 +81,8 @@ XML;
                     	$data = $content;
                     });
 
-        $builder = new XmlContainerBuilder(vfsStream::url('tmp/services.xml'), $this->cache);
-        $container = $builder->getContainer();
+        $builder = new XmlContainerBuilder();
+        $container = $builder->getContainer($this->config);
 
         $this->assertInstanceOf('ProjectCache', $container);
 
@@ -70,11 +91,19 @@ XML;
 
     /**
      * @test
-     * @depends dumpMustBeCreatedWhenItDoesNotExists
+     * @depends getContainerMustCreateWhenItDoesNotExists
      */
-    public function dumpShoudlNotBeUpdatedWhenConfigFileHasNotBeenChanged($content)
+    public function getContainerMustNotUpdateWhenConfigFileHasNotBeenChanged($content)
     {
         file_put_contents(vfsStream::url('tmp/ProjectCache.php'), $content);
+
+        $this->config->expects($this->any())
+                     ->method('getDefaultParameters')
+                     ->willReturn(array());
+
+        $this->config->expects($this->any())
+                     ->method('getClassName')
+                     ->willReturn('ProjectCache');
 
         $this->cache->expects($this->once())
                     ->method('isFresh')
@@ -87,16 +116,24 @@ XML;
         $this->cache->expects($this->never())
                     ->method('write');
 
-        $builder = new XmlContainerBuilder(vfsStream::url('tmp/services.xml'), $this->cache);
+        $builder = new XmlContainerBuilder();
 
-        $this->assertInstanceOf('ProjectCache', $builder->getContainer());
+        $this->assertInstanceOf('ProjectCache', $builder->getContainer($this->config));
     }
 
     /**
      * @test
      */
-    public function builderShouldBeAbleToReceiveDefaultParameters()
+    public function getContainerShouldBeAbleToReceiveDefaultParameters()
     {
+        $this->config->expects($this->any())
+                     ->method('getDefaultParameters')
+                     ->willReturn(array('app.basedir' => 'testing'));
+
+        $this->config->expects($this->any())
+                     ->method('getClassName')
+                     ->willReturn('ProjectCacheB');
+
         $this->cache->expects($this->once())
                     ->method('isFresh')
                     ->willReturn(false);
@@ -111,9 +148,48 @@ XML;
                     	file_put_contents(vfsStream::url('tmp/ProjectCacheB.php'), $content);
                     });
 
-        $builder = new XmlContainerBuilder(vfsStream::url('tmp/services.xml'), $this->cache);
-        $container = $builder->getContainer(array('app.basedir' => 'testing'));
+        $builder = new XmlContainerBuilder();
+        $container = $builder->getContainer($this->config);
 
         $this->assertEquals('testing', $container->getParameter('app.basedir'));
+    }
+
+    /**
+     * @test
+     * @depends getContainerShouldBeAbleToReceiveDefaultParameters
+     */
+    public function getContainerShouldBeAbleToReceiveABaseClass()
+    {
+        $this->config->expects($this->any())
+                     ->method('getDefaultParameters')
+                     ->willReturn(array());
+
+        $this->config->expects($this->any())
+                     ->method('getBaseClass')
+                     ->willReturn('ProjectCacheB');
+
+        $this->config->expects($this->any())
+                     ->method('getClassName')
+                     ->willReturn('ProjectCacheC');
+
+        $this->cache->expects($this->once())
+                    ->method('isFresh')
+                    ->willReturn(false);
+
+        $this->cache->expects($this->any())
+                    ->method('__toString')
+                    ->willReturn(vfsStream::url('tmp/ProjectCacheC.php'));
+
+        $this->cache->expects($this->once())
+                    ->method('write')
+                    ->willReturnCallback(function ($content, array $metadata = null) {
+                    	file_put_contents(vfsStream::url('tmp/ProjectCacheC.php'), $content);
+                    });
+
+        $builder = new XmlContainerBuilder();
+        $container = $builder->getContainer($this->config);
+
+        $this->assertInstanceOf('ProjectCacheB', $container);
+        $this->assertInstanceOf('ProjectCacheC', $container);
     }
 }

@@ -4,116 +4,62 @@ namespace Lcobucci\DependencyInjection;
 use Symfony\Component\DependencyInjection\ContainerBuilder as SymfonyBuilder;
 use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
 use Symfony\Component\DependencyInjection\Loader\FileLoader;
-use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\DependencyInjection\Container;
 
 abstract class ContainerBuilder
 {
     /**
-     * Container base class (when you don't want to use the symfony's default class)
-     *
-     * @var string
-     */
-    protected $file;
-
-    /**
-     * @var ConfigCache
-     */
-    protected $cache;
-
-    /**
-     * @param string $file
-     * @param string $cacheDir
-     *
-     * @return ConfigCache
-     */
-    public static function createCache($file, $cacheDir = null, $debug = false)
-    {
-        $cacheDir === null ? sys_get_temp_dir() : rtrim($cacheDir, '/');
-        $cacheFile = 'Project' . md5($file) . 'ServiceContainer.php';
-
-        return new ConfigCache($cacheDir . DIRECTORY_SEPARATOR . $cacheFile, $debug);
-    }
-
-    /**
-     * Creates a new object
-     *
-     * @param string $file
-     * @param ConfigCache $cache
-     */
-    public function __construct($file, ConfigCache $cache)
-    {
-        $this->file = $file;
-        $this->cache = $cache;
-    }
-
-    /**
      * Create a dump file (if needed) and load the container
      *
-     * @param array $defaultParameters
-     * @param string $baseClass
+     * @param ContainerConfig $config
      *
      * @return SymfonyBuilder
      */
-    public function getContainer(
-        array $defaultParameters = array(),
-        $baseClass = null
-    ) {
-        $dumpClass = $this->createDumpClassName();
-
-        if (!$this->cache->isFresh()) {
+    public function getContainer(ContainerConfig $config)
+    {
+        if (!$config->getCache()->isFresh()) {
             $container = new SymfonyBuilder();
-            $container->getParameterBag()->add($defaultParameters);
+            $container->getParameterBag()->add($config->getDefaultParameters());
 
-            $this->getLoader($container, array())->load($this->file);
-            $this->createDump($container, $dumpClass, $baseClass);
+            $loader = $this->getLoader($container, $config->getPaths());
+            $loader->load($config->getFile());
+
+            $this->createDump($container, $config);
         }
 
-        return $this->loadFromDump($dumpClass);
-    }
-
-    /**
-     * Retrieve the dump class name
-     *
-     * @param string $file
-     *
-     * @return string
-     */
-    protected function createDumpClassName()
-    {
-        return substr(basename((string) $this->cache), 0, -4);
+        return $this->loadFromDump($config);
     }
 
     /**
      * Creates the dump file
      *
      * @param SymfonyBuilder $container
-     * @param string $className
-     * @param string $baseClass
+     * @param ContainerConfig $data
      */
-    protected function createDump(SymfonyBuilder $container, $className, $baseClass)
+    protected function createDump(SymfonyBuilder $container, ContainerConfig $config)
     {
-        $config = array('class' => $className);
+        $data = array('class' => $config->getClassName());
 
-        if ($baseClass !== null) {
-            $config['base_class'] = $baseClass;
+        if ($baseClass = $config->getBaseClass()) {
+            $data['base_class'] = $baseClass;
         }
 
         $dumper = new PhpDumper($container);
-        $this->cache->write($dumper->dump($config), $container->getResources());
+
+        $config->getCache()->write($dumper->dump($data), $container->getResources());
     }
 
     /**
      * Load the class from dump file
      *
-     * @param string $className
+     * @param ContainerConfig $config
      *
      * @return Container
      */
-    protected function loadFromDump($className)
+    protected function loadFromDump(ContainerConfig $config)
     {
-        require_once (string) $this->cache;
-        $className = '\\' . $className;
+        require_once (string) $config->getCache();
+        $className = '\\' . $config->getClassName();
 
         return new $className();
     }
