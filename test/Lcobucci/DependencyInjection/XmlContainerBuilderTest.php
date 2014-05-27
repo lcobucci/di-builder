@@ -2,8 +2,8 @@
 namespace Lcobucci\DependencyInjection;
 
 use org\bovigo\vfs\vfsStreamDirectory;
-use org\bovigo\vfs\vfsStreamFile;
 use org\bovigo\vfs\vfsStream;
+use Symfony\Component\Config\ConfigCache;
 
 class XmlContainerBuilderTest extends \PHPUnit_Framework_TestCase
 {
@@ -13,42 +13,28 @@ class XmlContainerBuilderTest extends \PHPUnit_Framework_TestCase
     private $root;
 
     /**
-     * @var vfsStreamFile
+     * @var ConfigCache|\PHPUnit_Framework_MockObject_MockObject
      */
-    private $file;
+    private $cache;
 
     public function setUp()
     {
-        $this->root = vfsStream::setup('tmp', 0777);
-        $this->file = vfsStream::newFile('services.xml', 0755)->at($this->root);
-        $this->file->setContent(
-            '<?xml version="1.0" encoding="UTF-8"?>
-             <container xmlns="http://symfony.com/schema/dic/services"
-                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                 xsi:schemaLocation="http://symfony.com/schema/dic/services services-1.0.xsd">
-                 <parameters>
-                    <parameter key="test">test</parameter>
-                </parameters>
-                 <services>
-                    <service id="test" class="stdClass" />
-                </services>
-        	 </container>'
-        );
+        $config = <<<'XML'
+<?xml version="1.0" encoding="UTF-8"?>
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services services-1.0.xsd">
+    <parameters>
+        <parameter key="test">test</parameter>
+    </parameters>
+    <services>
+        <service id="test" class="stdClass" />
+    </services>
+</container>
+XML;
 
-        vfsStream::newFile('services2.xml', 0755)->at($this->root)
-                                                ->setContent(
-            '<?xml version="1.0" encoding="UTF-8"?>
-             <container xmlns="http://symfony.com/schema/dic/services"
-                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                 xsi:schemaLocation="http://symfony.com/schema/dic/services services-1.0.xsd">
-                 <parameters>
-                    <parameter key="test">test</parameter>
-                </parameters>
-                 <services>
-                    <service id="test" class="stdClass" />
-                </services>
-        	 </container>'
-        );
+        $this->root = vfsStream::setup('tmp', 0777, ['services.xml' => $config]);
+        $this->cache = $this->getMock('Symfony\Component\Config\ConfigCache', [], [], '', false);
     }
 
     /**
@@ -56,15 +42,54 @@ class XmlContainerBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function dumpMustBeCreatedWhenItDoesNotExists()
     {
-        $fileName = 'Project' . md5(vfsStream::url('tmp/services.xml')) . 'ServiceContainer.php';
-        $this->assertFalse($this->root->hasChild($fileName));
+        $data = '';
 
-        $builder = new XmlContainerBuilder(null, vfsStream::url('tmp'));
-        $loader = $builder->getContainer(vfsStream::url('tmp/services.xml'));
+        $this->cache->expects($this->once())
+                    ->method('isFresh')
+                    ->willReturn(false);
 
-        $this->assertTrue($this->root->hasChild($fileName));
-        $this->assertInstanceOf('\Project7065aa73249af70316e8ccbd4bd3331fServiceContainer', $loader);
-        $this->assertEquals($this->getTestDumpContent(), $this->root->getChild($fileName)->getContent());
+        $this->cache->expects($this->any())
+                    ->method('__toString')
+                    ->willReturn(vfsStream::url('tmp/ProjectCache.php'));
+
+        $this->cache->expects($this->once())
+                    ->method('write')
+                    ->willReturnCallback(function ($content, array $metadata = null) use ($data) {
+                    	file_put_contents(vfsStream::url('tmp/ProjectCache.php'), $content);
+
+                    	$data = $content;
+                    });
+
+        $builder = new XmlContainerBuilder(vfsStream::url('tmp/services.xml'), $this->cache);
+        $container = $builder->getContainer();
+
+        $this->assertInstanceOf('ProjectCache', $container);
+
+        return $data;
+    }
+
+    /**
+     * @test
+     * @depends dumpMustBeCreatedWhenItDoesNotExists
+     */
+    public function dumpShoudlNotBeUpdatedWhenConfigFileHasNotBeenChanged($content)
+    {
+        file_put_contents(vfsStream::url('tmp/ProjectCache.php'), $content);
+
+        $this->cache->expects($this->once())
+                    ->method('isFresh')
+                    ->willReturn(true);
+
+        $this->cache->expects($this->any())
+                    ->method('__toString')
+                    ->willReturn(vfsStream::url('tmp/ProjectCache.php'));
+
+        $this->cache->expects($this->never())
+                    ->method('write');
+
+        $builder = new XmlContainerBuilder(vfsStream::url('tmp/services.xml'), $this->cache);
+
+        $this->assertInstanceOf('ProjectCache', $builder->getContainer());
     }
 
     /**
@@ -72,111 +97,23 @@ class XmlContainerBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function builderShouldBeAbleToReceiveDefaultParameters()
     {
-        $builder = new XmlContainerBuilder(null, vfsStream::url('tmp'));
-        $container = $builder->getContainer(
-            vfsStream::url('tmp/services2.xml'),
-            array(),
-            array('app.basedir' => 'testing')
-        );
+        $this->cache->expects($this->once())
+                    ->method('isFresh')
+                    ->willReturn(false);
+
+        $this->cache->expects($this->any())
+                    ->method('__toString')
+                    ->willReturn(vfsStream::url('tmp/ProjectCacheB.php'));
+
+        $this->cache->expects($this->once())
+                    ->method('write')
+                    ->willReturnCallback(function ($content, array $metadata = null) {
+                    	file_put_contents(vfsStream::url('tmp/ProjectCacheB.php'), $content);
+                    });
+
+        $builder = new XmlContainerBuilder(vfsStream::url('tmp/services.xml'), $this->cache);
+        $container = $builder->getContainer(array('app.basedir' => 'testing'));
 
         $this->assertEquals('testing', $container->getParameter('app.basedir'));
-    }
-
-    /**
-     * @test
-     */
-    public function dumpShoudlNotBeUpdatedWhenConfigFileHasNotBeenChanged()
-    {
-        $fileName = 'Project' . md5(vfsStream::url('tmp/services.xml')) . 'ServiceContainer.php';
-        $container = vfsStream::newFile($fileName, 0777)->at($this->root);
-        $container->setContent($this->getTestDumpContent());
-
-        $builder = new XmlContainerBuilder(null, vfsStream::url('tmp'));
-        $loader = $builder->getContainer(vfsStream::url('tmp/services.xml'));
-
-        $this->assertInstanceOf('\Project7065aa73249af70316e8ccbd4bd3331fServiceContainer', $loader);
-        $this->assertEquals($this->getTestDumpContent(), $container->getContent());
-    }
-
-    /**
-     * @test
-     */
-    public function dumpMustBeUpdatedWhenConfigFileHasBeenChanged()
-    {
-        $this->file->lastModified(time() + 200);
-
-        $fileName = 'Project' . md5(vfsStream::url('tmp/services.xml')) . 'ServiceContainer.php';
-        $time = time();
-        sleep(1);
-
-        $container = vfsStream::newFile($fileName, 0777)->at($this->root);
-        $container->lastModified($time)->setContent($this->getTestDumpContent());
-
-        $builder = new XmlContainerBuilder(null, vfsStream::url('tmp'));
-        $loader = $builder->getContainer(vfsStream::url('tmp/services.xml'));
-
-        $this->assertTrue($this->root->hasChild($fileName));
-        $this->assertInstanceOf('\Project7065aa73249af70316e8ccbd4bd3331fServiceContainer', $loader);
-        $this->assertNotEquals($time, $container->filemtime());
-    }
-
-    protected function getTestDumpContent()
-    {
-        return
-            '<?php
-
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\DependencyInjection\Container;
-use Symfony\Component\DependencyInjection\Exception\InactiveScopeException;
-use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
-use Symfony\Component\DependencyInjection\Exception\LogicException;
-use Symfony\Component\DependencyInjection\Exception\RuntimeException;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
-
-/**
- * Project7065aa73249af70316e8ccbd4bd3331fServiceContainer
- *
- * This class has been auto-generated
- * by the Symfony Dependency Injection Component.
- */
-class Project7065aa73249af70316e8ccbd4bd3331fServiceContainer extends Container
-{
-    /**
-     * Constructor.
-     */
-    public function __construct()
-    {
-        parent::__construct(new ParameterBag($this->getDefaultParameters()));
-        $this->methodMap = array(
-            \'test\' => \'getTestService\',
-        );
-    }
-
-    /**
-     * Gets the \'test\' service.
-     *
-     * This service is shared.
-     * This method always returns the same instance of the service.
-     *
-     * @return stdClass A stdClass instance.
-     */
-    protected function getTestService()
-    {
-        return $this->services[\'test\'] = new \stdClass();
-    }
-
-    /**
-     * Gets the default parameters.
-     *
-     * @return array An array of the default parameters
-     */
-    protected function getDefaultParameters()
-    {
-        return array(
-            \'test\' => \'test\',
-        );
-    }
-}
-';
     }
 }
