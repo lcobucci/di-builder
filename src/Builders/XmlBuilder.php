@@ -1,24 +1,20 @@
 <?php
-namespace Lcobucci\DependencyInjection;
+namespace Lcobucci\DependencyInjection\Builders;
 
+use Lcobucci\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ContainerBuilder as SymfonyBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\Config\FileLocator;
 
 /**
- * The dependency injection XML builder
+ * The dependency injection builder for XML files
  *
  * @author Luís Otávio Cobucci Oblonczyk <lcobucci@gmail.com>
  */
-class XmlContainerBuilder extends ContainerBuilder
+class XmlBuilder extends ContainerBuilder
 {
     /**
-     * Returns the file loader
-     *
-     * @param SymfonyBuilder $container
-     * @param array $path
-     *
-     * @return XmlFileLoader
+     * {@inheritdoc}
      */
     protected function getLoader(SymfonyBuilder $container, array $path)
     {
