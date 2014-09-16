@@ -9,7 +9,7 @@
     strict="true">
     <testsuites>
         <testsuite name="DI Builder Test Suite">
-            <directory>test/Lcobucci/DependencyInjection</directory>
+            <directory>test</directory>
         </testsuite>
     </testsuites>
 

@@ -24,8 +24,8 @@
 		"mikey179/vfsStream" : "~1.2"
 	},
 	"autoload" : {
-		"psr-0" : {
-			"Lcobucci\\DependencyInjection" : "src/"
+		"psr-4" : {
+			"Lcobucci\\DependencyInjection\\" : ["src", "test"]
 		}
 	}
 }
