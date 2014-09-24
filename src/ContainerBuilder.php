@@ -9,7 +9,7 @@ use Symfony\Component\DependencyInjection\Container;
 abstract class ContainerBuilder
 {
     /**
-     * Create a dump file (if needed) and load the container
+     * Creates a dump file (if needed) and load the container
      *
      * @param ContainerConfig $config
      *
@@ -18,16 +18,32 @@ abstract class ContainerBuilder
     public function getContainer(ContainerConfig $config)
     {
         if (!$config->getCache()->isFresh()) {
-            $container = new SymfonyBuilder();
-            $container->getParameterBag()->add($config->getDefaultParameters());
-
-            $loader = $this->getLoader($container, $config->getPaths());
-            $loader->load($config->getFile());
-
-            $this->createDump($container, $config);
+            $this->build($config);
         }
 
         return $this->loadFromDump($config);
+    }
+
+    /**
+     * @param ContainerConfig $config
+     */
+    private function build(ContainerConfig $config)
+    {
+        $container = $this->getBuilder();
+        $container->getParameterBag()->add($config->getDefaultParameters());
+
+        $loader = $this->getLoader($container, $config->getPaths());
+        $loader->load($config->getFile());
+
+        $this->createDump($container, $config);
+    }
+
+    /**
+     * @return SymfonyBuilder
+     */
+    protected function getBuilder()
+    {
+        return new SymfonyBuilder();
     }
 
     /**
@@ -36,7 +52,7 @@ abstract class ContainerBuilder
      * @param SymfonyBuilder $container
      * @param ContainerConfig $data
      */
-    protected function createDump(SymfonyBuilder $container, ContainerConfig $config)
+    private function createDump(SymfonyBuilder $container, ContainerConfig $config)
     {
         $data = array('class' => $config->getClassName());
 
@@ -44,9 +60,20 @@ abstract class ContainerBuilder
             $data['base_class'] = $baseClass;
         }
 
-        $dumper = new PhpDumper($container);
+        $config->getCache()->write(
+            $this->getDumper($container)->dump($data),
+            $container->getResources()
+        );
+    }
 
-        $config->getCache()->write($dumper->dump($data), $container->getResources());
+    /**
+     * @param SymfonyBuilder $container
+     *
+     * @return PhpDumper
+     */
+    protected function getDumper(SymfonyBuilder $container)
+    {
+        return new PhpDumper($container);
     }
 
     /**
@@ -56,7 +83,7 @@ abstract class ContainerBuilder
      *
      * @return Container
      */
-    protected function loadFromDump(ContainerConfig $config)
+    private function loadFromDump(ContainerConfig $config)
     {
         require_once (string) $config->getCache();
         $className = '\\' . $config->getClassName();
