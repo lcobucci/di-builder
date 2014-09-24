@@ -6,7 +6,7 @@ use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
 use Symfony\Component\DependencyInjection\Loader\FileLoader;
 use Symfony\Component\DependencyInjection\Container;
 
-abstract class ContainerBuilder
+abstract class Generator
 {
     /**
      * Creates a dump file (if needed) and load the container
@@ -95,9 +95,9 @@ abstract class ContainerBuilder
      * Returns the file loader
      *
      * @param SymfonyBuilder $container
-     * @param array $path
+     * @param array $paths
      *
      * @return FileLoader
      */
-    abstract protected function getLoader(SymfonyBuilder $container, array $path);
+    abstract protected function getLoader(SymfonyBuilder $container, array $paths);
 }

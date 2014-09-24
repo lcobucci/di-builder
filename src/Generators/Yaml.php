@@ -1,7 +1,7 @@
 <?php
-namespace Lcobucci\DependencyInjection\Builders;
+namespace Lcobucci\DependencyInjection\Generators;
 
-use Lcobucci\DependencyInjection\ContainerBuilder;
+use Lcobucci\DependencyInjection\Generator;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder as SymfonyBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
@@ -11,16 +11,16 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
  *
  * @author Luís Otávio Cobucci Oblonczyk <lcobucci@gmail.com>
  */
-class YamlBuilder extends ContainerBuilder
+class Yaml extends Generator
 {
     /**
      * {@inheritdoc}
      */
-    protected function getLoader(SymfonyBuilder $container, array $path)
+    protected function getLoader(SymfonyBuilder $container, array $paths)
     {
         return new YamlFileLoader(
             $container,
-            new FileLocator($path)
+            new FileLocator($paths)
         );
     }
 }

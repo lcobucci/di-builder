@@ -1,10 +1,10 @@
 <?php
-namespace Lcobucci\DependencyInjection\Builders;
+namespace Lcobucci\DependencyInjection\Generators;
 
 use org\bovigo\vfs\vfsStream;
 use Symfony\Component\Config\ConfigCache;
 
-class XmlBuilderTest extends \PHPUnit_Framework_TestCase
+class XmlTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var ConfigCache|\PHPUnit_Framework_MockObject_MockObject
@@ -81,8 +81,8 @@ XML;
                     	$data = $content;
                     });
 
-        $builder = new XmlBuilder();
-        $container = $builder->getContainer($this->config);
+        $generator = new Xml();
+        $container = $generator->getContainer($this->config);
 
         $this->assertInstanceOf('ProjectCache', $container);
 
@@ -116,9 +116,9 @@ XML;
         $this->cache->expects($this->never())
                     ->method('write');
 
-        $builder = new XmlBuilder();
+        $generator = new Xml();
 
-        $this->assertInstanceOf('ProjectCache', $builder->getContainer($this->config));
+        $this->assertInstanceOf('ProjectCache', $generator->getContainer($this->config));
     }
 
     /**
@@ -148,8 +148,8 @@ XML;
                     	file_put_contents(vfsStream::url('tmp/ProjectCacheB.php'), $content);
                     });
 
-        $builder = new XmlBuilder();
-        $container = $builder->getContainer($this->config);
+        $generator = new Xml();
+        $container = $generator->getContainer($this->config);
 
         $this->assertEquals('testing', $container->getParameter('app.basedir'));
     }
@@ -186,8 +186,8 @@ XML;
                     	file_put_contents(vfsStream::url('tmp/ProjectCacheC.php'), $content);
                     });
 
-        $builder = new XmlBuilder();
-        $container = $builder->getContainer($this->config);
+        $generator = new Xml();
+        $container = $generator->getContainer($this->config);
 
         $this->assertInstanceOf('ProjectCacheB', $container);
         $this->assertInstanceOf('ProjectCacheC', $container);

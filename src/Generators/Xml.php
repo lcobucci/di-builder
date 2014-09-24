@@ -1,7 +1,7 @@
 <?php
-namespace Lcobucci\DependencyInjection\Builders;
+namespace Lcobucci\DependencyInjection\Generators;
 
-use Lcobucci\DependencyInjection\ContainerBuilder;
+use Lcobucci\DependencyInjection\Generator;
 use Symfony\Component\DependencyInjection\ContainerBuilder as SymfonyBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\Config\FileLocator;
@@ -11,16 +11,16 @@ use Symfony\Component\Config\FileLocator;
  *
  * @author Luís Otávio Cobucci Oblonczyk <lcobucci@gmail.com>
  */
-class XmlBuilder extends ContainerBuilder
+class Xml extends Generator
 {
     /**
      * {@inheritdoc}
      */
-    protected function getLoader(SymfonyBuilder $container, array $path)
+    protected function getLoader(SymfonyBuilder $container, array $paths)
     {
         return new XmlFileLoader(
             $container,
-            new FileLocator($path)
+            new FileLocator($paths)
         );
     }
 }
