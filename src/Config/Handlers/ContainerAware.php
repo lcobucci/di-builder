@@ -2,6 +2,7 @@
 namespace Lcobucci\DependencyInjection\Config\Handlers;
 
 use Lcobucci\DependencyInjection\Config\Handler;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
@@ -45,18 +46,10 @@ class ContainerAware implements Handler
     {
         $class = $definition->getClass();
 
-        if (empty($class) || !is_subclass_of($class, $this->getInterfaceName())) {
+        if (empty($class) || !is_subclass_of($class, ContainerAwareInterface::class)) {
             return ;
         }
 
         $definition->addMethodCall('setContainer', [$container]);
-    }
-
-    /**
-     * @return string
-     */
-    protected function getInterfaceName()
-    {
-        return 'Symfony\Component\DependencyInjection\ContainerAwareInterface';
     }
 }
