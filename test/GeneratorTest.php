@@ -2,9 +2,10 @@
 namespace Lcobucci\DependencyInjection;
 
 use Lcobucci\DependencyInjection\Config\ContainerConfiguration;
+use org\bovigo\vfs\vfsStream;
 use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use org\bovigo\vfs\vfsStream;
+
 /**
  * @author Luís Otávio Cobucci Oblonczyk <lcobucci@gmail.com>
  */
