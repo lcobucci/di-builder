@@ -87,7 +87,7 @@ class EventListenerInjector implements Handler
         foreach ($builder->findTaggedServiceIds('event.listener') as $service => $listenerConfig) {
             $dispatcher->addMethodCall(
                 'addListener',
-                [$listenerConfig['event'], new Reference($service)], $listenerConfig['priority']
+                [$listenerConfig['event'], new Reference($service), $listenerConfig['priority']]
             );
         }
     }
