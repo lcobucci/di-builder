@@ -13,16 +13,16 @@ use Symfony\Component\DependencyInjection\ContainerBuilder as SymfonyBuilder;
 abstract class Generator
 {
     /**
-     * @var Dumper
+     * @var Compiler
      */
-    private $dumper;
+    private $compiler;
 
     /**
-     * @param Dumper $dumper
+     * @param Compiler $compiler
      */
-    public function __construct(Dumper $dumper = null)
+    public function __construct(Compiler $compiler = null)
     {
-        $this->dumper = $dumper ?: new Dumper();
+        $this->compiler = $compiler ?: new Compiler();
     }
 
     /**
@@ -37,7 +37,7 @@ abstract class Generator
         ContainerConfiguration $config,
         ConfigCache $dump
     ) {
-        $this->dumper->dump($config, $dump, $this);
+        $this->compiler->compile($config, $dump, $this);
 
         return $this->loadContainer($config, $dump);
     }

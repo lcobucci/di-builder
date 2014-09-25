@@ -10,14 +10,14 @@ use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
 /**
  * @author Luís Otávio Cobucci Oblonczyk <lcobucci@gmail.com>
  */
-class Dumper
+class Compiler
 {
     /**
      * @param ContainerConfiguration $config
      * @param ConfigCache $dump
      * @param Generator $generator
      */
-    public function dump(
+    public function compile(
         ContainerConfiguration $config,
         ConfigCache $dump,
         Generator $generator
