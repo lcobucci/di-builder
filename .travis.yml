@@ -15,7 +15,8 @@ script:
   - ./vendor/bin/phpcs --ignore=vendor --standard=PSR2 .
 
 after_script:
-  - CODECLIMATE_REPO_TOKEN=470187e06580af81bb32c1c9134ee6ce91ae085b948a624af05faf0abb76bab0 ./vendor/bin/test-reporter
+  - CODECLIMATE_REPO_TOKEN=470187e06580af81bb32c1c9134ee6ce91ae085b948a624af05faf0abb76bab0 ./vendor/bin/test-reporter --stdout > codeclimate.json
+  - curl -X POST -d @codeclimate.json -H 'Content-Type: application/json' -H 'User-Agent: Code Climate (PHP Test Reporter v0.1.1)' https://codeclimate.com/test_reports
 
 matrix:
   allow_failures:
