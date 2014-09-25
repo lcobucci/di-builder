@@ -1,103 +1,68 @@
 <?php
 namespace Lcobucci\DependencyInjection;
 
+use Lcobucci\DependencyInjection\Config\ContainerConfiguration;
+use Symfony\Component\Config\ConfigCache;
+use Symfony\Component\Config\Loader\LoaderInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder as SymfonyBuilder;
-use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
-use Symfony\Component\DependencyInjection\Loader\FileLoader;
-use Symfony\Component\DependencyInjection\Container;
 
+/**
+ * @author Luís Otávio Cobucci Oblonczyk <lcobucci@gmail.com>
+ */
 abstract class Generator
 {
     /**
-     * Creates a dump file (if needed) and load the container
-     *
-     * @param ContainerConfig $config
-     *
-     * @return SymfonyBuilder
+     * @var Dumper
      */
-    public function getContainer(ContainerConfig $config)
-    {
-        if (!$config->getCache()->isFresh()) {
-            $this->build($config);
-        }
+    private $dumper;
 
-        return $this->loadFromDump($config);
+    /**
+     * @param Dumper $dumper
+     */
+    public function __construct(Dumper $dumper = null)
+    {
+        $this->dumper = $dumper ?: new Dumper();
     }
 
     /**
-     * @param ContainerConfig $config
+     * Loads the container
+     *
+     * @param ContainerConfiguration $config
+     * @param ConfigCache $dump
+     *
+     * @return ContainerInterface
      */
-    private function build(ContainerConfig $config)
-    {
-        $container = $this->getBuilder();
-        $container->getParameterBag()->add($config->getDefaultParameters());
+    public function generate(
+        ContainerConfiguration $config,
+        ConfigCache $dump
+    ) {
+        $this->dumper->dump($config, $dump, $this);
 
-        $loader = $this->getLoader($container, $config->getPaths());
-        $loader->load($config->getFile());
-
-        $this->createDump($container, $config);
+        return $this->loadContainer($config, $dump);
     }
 
     /**
-     * @return SymfonyBuilder
-     */
-    protected function getBuilder()
-    {
-        return new SymfonyBuilder();
-    }
-
-    /**
-     * Creates the dump file
+     * @param ContainerConfiguration $config
+     * @param ConfigCache $dump
      *
-     * @param SymfonyBuilder $container
-     * @param ContainerConfig $data
+     * @return ContainerInterface
      */
-    private function createDump(SymfonyBuilder $container, ContainerConfig $config)
-    {
-        $data = array('class' => $config->getClassName());
-
-        if ($baseClass = $config->getBaseClass()) {
-            $data['base_class'] = $baseClass;
-        }
-
-        $config->getCache()->write(
-            $this->getDumper($container)->dump($data),
-            $container->getResources()
-        );
-    }
-
-    /**
-     * @param SymfonyBuilder $container
-     *
-     * @return PhpDumper
-     */
-    protected function getDumper(SymfonyBuilder $container)
-    {
-        return new PhpDumper($container);
-    }
-
-    /**
-     * Load the class from dump file
-     *
-     * @param ContainerConfig $config
-     *
-     * @return Container
-     */
-    private function loadFromDump(ContainerConfig $config)
-    {
-        require_once (string) $config->getCache();
+    private function loadContainer(
+        ContainerConfiguration $config,
+        ConfigCache $dump
+    ) {
+        require_once (string) $dump;
         $className = '\\' . $config->getClassName();
 
         return new $className();
     }
 
     /**
-     * Returns the file loader
-     *
      * @param SymfonyBuilder $container
      * @param array $paths
      *
-     * @return FileLoader
+     * @return LoaderInterface
      */
-    abstract protected function getLoader(SymfonyBuilder $container, array $paths);
+    abstract public function getLoader(SymfonyBuilder $container, array $paths);
 }

@@ -7,7 +7,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder as SymfonyBuilder;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 
 /**
- * The dependency injection builder for PHP files
+ * The dependency injection generator for PHP files
  *
  * @author Luís Otávio Cobucci Oblonczyk <lcobucci@gmail.com>
  */
@@ -16,7 +16,7 @@ class Php extends Generator
     /**
      * {@inheritdoc}
      */
-    protected function getLoader(SymfonyBuilder $container, array $paths)
+    public function getLoader(SymfonyBuilder $container, array $paths)
     {
         return new PhpFileLoader(
             $container,

@@ -7,7 +7,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder as SymfonyBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 /**
- * The dependency injection builder for YAML files
+ * The dependency injection generator for YAML files
  *
  * @author Luís Otávio Cobucci Oblonczyk <lcobucci@gmail.com>
  */
@@ -16,7 +16,7 @@ class Yaml extends Generator
     /**
      * {@inheritdoc}
      */
-    protected function getLoader(SymfonyBuilder $container, array $paths)
+    public function getLoader(SymfonyBuilder $container, array $paths)
     {
         return new YamlFileLoader(
             $container,

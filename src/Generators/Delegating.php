@@ -11,7 +11,7 @@ use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 /**
- * The dependency injection builder that allows XML, YAML and PHP files to be used as source
+ * The dependency injection generator that allows XML, YAML and PHP files
  *
  * @author Luís Otávio Cobucci Oblonczyk <lcobucci@gmail.com>
  */
@@ -20,7 +20,7 @@ class Delegating extends Generator
     /**
      * {@inheritdoc}
      */
-    protected function getLoader(SymfonyBuilder $container, array $paths)
+    public function getLoader(SymfonyBuilder $container, array $paths)
     {
         $locator = new FileLocator($paths);
 

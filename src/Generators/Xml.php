@@ -7,7 +7,7 @@ use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\Config\FileLocator;
 
 /**
- * The dependency injection builder for XML files
+ * The dependency injection generator for XML files
  *
  * @author Luís Otávio Cobucci Oblonczyk <lcobucci@gmail.com>
  */
@@ -16,7 +16,7 @@ class Xml extends Generator
     /**
      * {@inheritdoc}
      */
-    protected function getLoader(SymfonyBuilder $container, array $paths)
+    public function getLoader(SymfonyBuilder $container, array $paths)
     {
         return new XmlFileLoader(
             $container,
