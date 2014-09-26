@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit 
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
     colors="true" 
     backupGlobals="false" 
     backupStaticAttributes="false" 
@@ -8,7 +9,7 @@
     strict="true">
     <testsuites>
         <testsuite name="DI Builder Test Suite">
-            <directory>test/Lcobucci/DependencyInjection</directory>
+            <directory>test</directory>
         </testsuite>
     </testsuites>
 

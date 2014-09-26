@@ -1,31 +1,37 @@
 {
-	"name" : "lcobucci/di-builder",
-	"description" : "Dependency Injection Builder for PHP 5.3+ applications",
-	"type" : "library",
-	"authors" : [{
-			"name" : "Luís Otávio Cobucci Oblonczyk",
-			"email" : "lcobucci@gmail.com"
-		}
-	],
-	"keywords" : [
-		"dependency-injection"
-	],
-	"homepage" : "https://github.com/lcobucci/di-builder",
-	"license" : [
-		"BSD-3-Clause"
-	],
-	"require" : {
-		"php" : ">=5.3",
-		"symfony/config" : "~2.4",
-		"symfony/dependency-injection" : "~2.4"
-	},
-	"require-dev" : {
-		"phpunit/phpunit": "~4.1",
-		"mikey179/vfsStream" : "~1.2"
-	},
-	"autoload" : {
-		"psr-0" : {
-			"Lcobucci\\DependencyInjection" : "src/"
-		}
-	}
+    "name": "lcobucci/di-builder",
+    "description": "Dependency Injection Builder for PHP 5.3+ applications",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Luís Otávio Cobucci Oblonczyk",
+            "email": "lcobucci@gmail.com"
+        }
+    ],
+    "keywords": [
+        "dependency-injection"
+    ],
+    "homepage": "https://github.com/lcobucci/di-builder",
+    "license": [
+        "BSD-3-Clause"
+    ],
+    "require": {
+        "php": ">=5.5",
+        "symfony/config": "~2.4",
+        "symfony/dependency-injection": "~2.4"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~4.2",
+        "squizlabs/php_codesniffer": "*",
+        "codeclimate/php-test-reporter": "dev-master@dev",
+        "mikey179/vfsStream": "~1.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Lcobucci\\DependencyInjection\\": [
+                "src",
+                "test"
+            ]
+        }
+    }
 }
