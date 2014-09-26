@@ -130,17 +130,17 @@ class ContainerConfiguration
     /**
      * @return string
      */
-    public function getDumpFile()
+    public function getClassName()
     {
-        return $this->dumpDir . DIRECTORY_SEPARATOR . $this->getClassName() . '.php';
+        return 'Project' . md5(implode(';', array_merge($this->files, $this->paths))) . 'ServiceContainer';
     }
 
     /**
      * @return string
      */
-    public function getClassName()
+    public function getDumpFile()
     {
-        return 'Project' . md5(implode(';', $this->files)) . 'ServiceContainer';
+        return $this->dumpDir . DIRECTORY_SEPARATOR . $this->getClassName() . '.php';
     }
 
     /**
