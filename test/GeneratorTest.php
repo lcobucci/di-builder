@@ -101,7 +101,7 @@ class GeneratorTest extends \PHPUnit_Framework_TestCase
         $dump = $this->getMock(ConfigCache::class, [], [], '', false);
 
         $dump->expects($this->any())
-             ->method('__toString')
+             ->method('getPath')
              ->willReturn($file);
 
         return $dump;

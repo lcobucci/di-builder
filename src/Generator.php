@@ -52,7 +52,7 @@ abstract class Generator
         ContainerConfiguration $config,
         ConfigCache $dump
     ) {
-        require_once (string) $dump;
+        require_once $dump->getPath();
         $className = '\\' . $config->getClassName();
 
         return new $className();
