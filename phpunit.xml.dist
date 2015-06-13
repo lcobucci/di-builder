@@ -6,7 +6,12 @@
     backupStaticAttributes="false" 
     bootstrap="vendor/autoload.php"
     verbose="true"
-    strict="true">
+    beStrictAboutOutputDuringTests="true"
+    beStrictAboutTestSize="true"
+    beStrictAboutTestsThatDoNotTestAnything="true"
+    beStrictAboutTodoAnnotatedTests="true"
+    checkForUnintentionallyCoveredCode="true"
+    forceCoversAnnotation="false">
     <testsuites>
         <testsuite name="DI Builder Test Suite">
             <directory>test</directory>
