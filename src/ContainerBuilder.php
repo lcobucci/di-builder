@@ -58,7 +58,7 @@ abstract class ContainerBuilder
      */
     protected function loadFromDump(ContainerConfig $config)
     {
-        require_once (string) $config->getCache();
+        require_once $config->getCache()->getPath();
         $className = '\\' . $config->getClassName();
 
         return new $className();

@@ -70,7 +70,7 @@ XML;
                     ->willReturn(false);
 
         $this->cache->expects($this->any())
-                    ->method('__toString')
+                    ->method('getPath')
                     ->willReturn(vfsStream::url('tmp/ProjectCache.php'));
 
         $this->cache->expects($this->once())
@@ -110,7 +110,7 @@ XML;
                     ->willReturn(true);
 
         $this->cache->expects($this->any())
-                    ->method('__toString')
+                    ->method('getPath')
                     ->willReturn(vfsStream::url('tmp/ProjectCache.php'));
 
         $this->cache->expects($this->never())
@@ -139,7 +139,7 @@ XML;
                     ->willReturn(false);
 
         $this->cache->expects($this->any())
-                    ->method('__toString')
+                    ->method('getPath')
                     ->willReturn(vfsStream::url('tmp/ProjectCacheB.php'));
 
         $this->cache->expects($this->once())
@@ -177,7 +177,7 @@ XML;
                     ->willReturn(false);
 
         $this->cache->expects($this->any())
-                    ->method('__toString')
+                    ->method('getPath')
                     ->willReturn(vfsStream::url('tmp/ProjectCacheC.php'));
 
         $this->cache->expects($this->once())
