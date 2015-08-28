@@ -1,8 +1,9 @@
 <?php
 namespace Lcobucci\DependencyInjection;
 
-use Symfony\Component\Config\ConfigCache;
 use Lcobucci\DependencyInjection\Config\ContainerConfiguration;
+use Symfony\Bridge\ProxyManager\LazyProxy\PhpDumper\ProxyDumper;
+use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\DependencyInjection\ContainerBuilder as SymfonyBuilder;
 use Symfony\Component\DependencyInjection\Dumper\DumperInterface;
 use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
@@ -93,6 +94,12 @@ class Compiler
      */
     protected function getDumper(SymfonyBuilder $container)
     {
-        return new PhpDumper($container);
+        $dumper = new PhpDumper($container);
+
+        if (class_exists(ProxyDumper::class)) {
+            $dumper->setProxyDumper(new ProxyDumper());
+        }
+
+        return $dumper;
     }
 }
