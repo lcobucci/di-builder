@@ -1,10 +1,8 @@
 # di-builder
 
-master [![Build Status](https://secure.travis-ci.org/lcobucci/di-builder.png?branch=master)](http://travis-ci.org/#!/lcobucci/di-builder)
-develop [![Build Status](https://secure.travis-ci.org/lcobucci/di-builder.png?branch=develop)](http://travis-ci.org/#!/lcobucci/di-builder)
-
-[![Code Climate](https://codeclimate.com/github/lcobucci/di-builder/badges/gpa.svg)](https://codeclimate.com/github/lcobucci/di-builder)
-[![Test Coverage](https://codeclimate.com/github/lcobucci/di-builder/badges/coverage.svg)](https://codeclimate.com/github/lcobucci/di-builder)
+[![Build Status](https://secure.travis-ci.org/lcobucci/di-builder.png?branch=master)](http://travis-ci.org/#!/lcobucci/di-builder)
+[![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/lcobucci/di-builder/master.svg?style=flat-square)](https://scrutinizer-ci.com/g/lcobucci/di-builder/?branch=master)
+[![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/lcobucci/di-builder/master.svg?style=flat-square)](https://scrutinizer-ci.com/g/lcobucci/di-builder/?branch=master)
 [![Total Downloads](https://poser.pugx.org/lcobucci/di-builder/downloads.png)](https://packagist.org/packages/lcobucci/di-builder)
 [![Latest Stable Version](https://poser.pugx.org/lcobucci/di-builder/v/stable.png)](https://packagist.org/packages/lcobucci/di-builder)
 
