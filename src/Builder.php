@@ -1,7 +1,8 @@
 <?php
 namespace Lcobucci\DependencyInjection;
 
-use Lcobucci\DependencyInjection\Config\Handler;
+use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -30,13 +31,14 @@ interface Builder
     public function addFile($file);
 
     /**
-     * Add a handler to be executed on container creation
+     * Add a compiler pass
      *
-     * @param Handler $handler
+     * @param CompilerPassInterface $pass
+     * @param string $type
      *
      * @return self
      */
-    public function addHandler(Handler $handler);
+    public function addPass(CompilerPassInterface $pass, $type = PassConfig::TYPE_BEFORE_OPTIMIZATION);
 
     /**
      * Mark the container to be used as development mode

@@ -1,5 +1,5 @@
 <?php
-namespace Lcobucci\DependencyInjection\Config\Handlers;
+namespace Lcobucci\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\ContainerAware as ContainerAwareClass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -13,16 +13,15 @@ class ContainerAwareTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      *
-     * @covers Lcobucci\DependencyInjection\Config\Handlers\ContainerAware::__invoke
-     * @covers Lcobucci\DependencyInjection\Config\Handlers\ContainerAware::createContainerReference
-     * @covers Lcobucci\DependencyInjection\Config\Handlers\ContainerAware::injectContainer
+     * @covers Lcobucci\DependencyInjection\Compiler\ContainerAware::process
+     * @covers Lcobucci\DependencyInjection\Compiler\ContainerAware::injectContainer
      */
-    public function invokeShouldAppendTheSetContainerMethodWhenNeeded()
+    public function processShouldAppendTheSetContainerMethodWhenNeeded()
     {
         $builder = $this->createBuilder();
-        $handler = new ContainerAware();
+        $pass = new ContainerAware();
 
-        $handler($builder);
+        $pass->process($builder);
     }
 
     /**

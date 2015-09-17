@@ -1,12 +1,12 @@
 <?php
 namespace Lcobucci\DependencyInjection;
 
+use Lcobucci\DependencyInjection\Compiler\ParameterBag;
 use Lcobucci\DependencyInjection\Config\ContainerConfiguration;
-use Lcobucci\DependencyInjection\Config\Handlers\ParameterBag;
 use Lcobucci\DependencyInjection\Generators\Xml as XmlGenerator;
 use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Lcobucci\DependencyInjection\Config\Handler;
+use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 
 /**
  * @author Luís Otávio Cobucci Oblonczyk <lcobucci@gmail.com>
@@ -44,9 +44,9 @@ class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
      * @covers Lcobucci\DependencyInjection\ContainerBuilder::__construct
      * @covers Lcobucci\DependencyInjection\ContainerBuilder::setDefaultConfiguration
      * @covers Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
-     * @covers Lcobucci\DependencyInjection\Config\ContainerConfiguration::addHandler
-     * @covers Lcobucci\DependencyInjection\Config\Handlers\ParameterBag::__construct
-     * @covers Lcobucci\DependencyInjection\Config\Handlers\ParameterBag::set
+     * @covers Lcobucci\DependencyInjection\Config\ContainerConfiguration::addPass
+     * @covers Lcobucci\DependencyInjection\Compiler\ParameterBag::__construct
+     * @covers Lcobucci\DependencyInjection\Compiler\ParameterBag::set
      * @covers Lcobucci\DependencyInjection\Generators\Xml::__construct
      */
     public function constructShouldConfigureTheDefaultAttributes()
@@ -71,7 +71,7 @@ class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
                            ->with('app.devmode', false);
 
         $this->config->expects($this->once())
-                     ->method('addHandler')
+                     ->method('addPass')
                      ->with($this->parameterBag);
 
         $builder = new ContainerBuilder($this->config, $this->generator, $this->parameterBag);
@@ -120,18 +120,18 @@ class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
      *
      * @covers Lcobucci\DependencyInjection\ContainerBuilder::__construct
      * @covers Lcobucci\DependencyInjection\ContainerBuilder::setDefaultConfiguration
-     * @covers Lcobucci\DependencyInjection\ContainerBuilder::addHandler
+     * @covers Lcobucci\DependencyInjection\ContainerBuilder::addPass
      */
-    public function addHandlerShouldAppendANewHandlerOnTheListAndReturnSelf()
+    public function addPassShouldAppendANewHandlerOnTheListAndReturnSelf()
     {
         $builder = new ContainerBuilder($this->config, $this->generator, $this->parameterBag);
-        $handler = $this->getMock(Handler::class);
+        $pass = $this->getMock(CompilerPassInterface::class);
 
         $this->config->expects($this->once())
-                     ->method('addHandler')
-                     ->with($handler);
+                     ->method('addPass')
+                     ->with($pass, 'beforeOptimization');
 
-        $this->assertSame($builder, $builder->addHandler($handler));
+        $this->assertSame($builder, $builder->addPass($pass));
     }
 
     /**

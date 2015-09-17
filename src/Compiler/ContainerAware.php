@@ -1,7 +1,7 @@
 <?php
-namespace Lcobucci\DependencyInjection\Config\Handlers;
+namespace Lcobucci\DependencyInjection\Compiler;
 
-use Lcobucci\DependencyInjection\Config\Handler;
+use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -16,26 +16,18 @@ use Symfony\Component\DependencyInjection\Reference;
  *
  * @author Luís Otávio Cobucci Oblonczyk <lcobucci@gmail.com>
  */
-class ContainerAware implements Handler
+class ContainerAware implements CompilerPassInterface
 {
     /**
      * {@inheritdoc}
      */
-    public function __invoke(ContainerBuilder $builder)
+    public function process(ContainerBuilder $container)
     {
-        $container = $this->createContainerReference();
+        $ref = new Reference('service_container');
 
-        foreach ($builder->getDefinitions() as $definition) {
-            $this->injectContainer($definition, $container);
+        foreach ($container->getDefinitions() as $definition) {
+            $this->injectContainer($definition, $ref);
         }
-    }
-
-    /**
-     * @return Reference
-     */
-    protected function createContainerReference()
-    {
-        return new Reference('service_container');
     }
 
     /**

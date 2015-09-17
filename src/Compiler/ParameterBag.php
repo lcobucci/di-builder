@@ -1,7 +1,7 @@
 <?php
-namespace Lcobucci\DependencyInjection\Config\Handlers;
+namespace Lcobucci\DependencyInjection\Compiler;
 
-use Lcobucci\DependencyInjection\Config\Handler;
+use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
@@ -11,7 +11,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  *
  * @author Luís Otávio Cobucci Oblonczyk <lcobucci@gmail.com>
  */
-class ParameterBag implements Handler
+class ParameterBag implements CompilerPassInterface
 {
     /**
      * @var array
@@ -53,8 +53,8 @@ class ParameterBag implements Handler
     /**
      * {@inheritdoc}
      */
-    public function __invoke(ContainerBuilder $builder)
+    public function process(ContainerBuilder $container)
     {
-        $builder->getParameterBag()->add($this->parameters);
+        $container->getParameterBag()->add($this->parameters);
     }
 }

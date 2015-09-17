@@ -1,22 +1,24 @@
 <?php
 namespace Lcobucci\DependencyInjection\Config;
 
+use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+
 /**
  * @author Luís Otávio Cobucci Oblonczyk <lcobucci@gmail.com>
  */
 class ContainerConfigurationTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var Handler
+     * @var CompilerPassInterface
      */
-    private $handler;
+    private $pass;
 
     /**
      * {@inheritdoc}
      */
     protected function setUp()
     {
-        $this->handler = $this->getMock(Handler::class);
+        $this->pass = $this->getMock(CompilerPassInterface::class);
     }
 
     /**
@@ -26,10 +28,14 @@ class ContainerConfigurationTest extends \PHPUnit_Framework_TestCase
      */
     public function constructShouldConfigureTheAttributes()
     {
-        $config = new ContainerConfiguration(['services.xml'], [$this->handler], ['test']);
+        $config = new ContainerConfiguration(
+            ['services.xml'],
+            [[$this->pass, 'beforeOptimization']],
+            ['test']
+        );
 
         $this->assertAttributeEquals(['services.xml'], 'files', $config);
-        $this->assertAttributeSame([$this->handler], 'handlers', $config);
+        $this->assertAttributeSame([[$this->pass, 'beforeOptimization']], 'passList', $config);
         $this->assertAttributeEquals(['test'], 'paths', $config);
         $this->assertAttributeEquals(sys_get_temp_dir(), 'dumpDir', $config);
     }
@@ -65,27 +71,27 @@ class ContainerConfigurationTest extends \PHPUnit_Framework_TestCase
      * @test
      *
      * @covers Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
-     * @covers Lcobucci\DependencyInjection\Config\ContainerConfiguration::getHandlers
+     * @covers Lcobucci\DependencyInjection\Config\ContainerConfiguration::getPassList
      */
-    public function getHandlersShouldReturnTheHandlersList()
+    public function getPassListShouldReturnTheHandlersList()
     {
-        $config = new ContainerConfiguration([], [$this->handler]);
+        $config = new ContainerConfiguration([], [[$this->pass, 'beforeOptimization']]);
 
-        $this->assertSame([$this->handler], $config->getHandlers());
+        $this->assertSame([[$this->pass, 'beforeOptimization']], $config->getPassList());
     }
 
     /**
      * @test
      *
      * @covers Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
-     * @covers Lcobucci\DependencyInjection\Config\ContainerConfiguration::addHandler
+     * @covers Lcobucci\DependencyInjection\Config\ContainerConfiguration::addPass
      */
-    public function addHandlerShouldAppendANewHandlerToTheList()
+    public function addPassShouldAppendANewHandlerToTheList()
     {
         $config = new ContainerConfiguration();
-        $config->addHandler($this->handler);
+        $config->addPass($this->pass);
 
-        $this->assertAttributeSame([$this->handler], 'handlers', $config);
+        $this->assertAttributeSame([[$this->pass, 'beforeOptimization']], 'passList', $config);
     }
 
     /**

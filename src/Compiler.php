@@ -30,7 +30,7 @@ class Compiler
         $container = $this->getBuilder();
 
         $this->loadFiles($container, $config, $generator);
-        $this->processHandlers($container, $config);
+        $this->configurePassList($container, $config);
         $this->updateDump($container, $config, $dump);
     }
 
@@ -62,12 +62,12 @@ class Compiler
      * @param SymfonyBuilder $container
      * @param ContainerConfiguration $config
      */
-    private function processHandlers(
+    private function configurePassList(
         SymfonyBuilder $container,
         ContainerConfiguration $config
     ) {
-        foreach ($config->getHandlers() as $handler) {
-            $handler($container);
+        foreach ($config->getPassList() as $pass) {
+            $container->addCompilerPass($pass[0], $pass[1]);
         }
     }
 

@@ -1,6 +1,8 @@
 <?php
 namespace Lcobucci\DependencyInjection\Config;
 
+use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 /**
  * @author Luís Otávio Cobucci Oblonczyk <lcobucci@gmail.com>
  */
@@ -14,7 +16,7 @@ class ContainerConfiguration
     /**
      * @var array
      */
-    private $handlers;
+    private $passList;
 
     /**
      * @var array
@@ -33,16 +35,16 @@ class ContainerConfiguration
 
     /**
      * @param array $files
-     * @param array $handlers
+     * @param array $passList
      * @param array $paths
      */
     public function __construct(
         array $files = [],
-        array $handlers = [],
+        array $passList = [],
         array $paths = []
     ) {
         $this->files = $files;
-        $this->handlers = $handlers;
+        $this->passList = $passList;
         $this->paths = $paths;
         $this->dumpDir = sys_get_temp_dir();
     }
@@ -66,17 +68,18 @@ class ContainerConfiguration
     /**
      * @return array
      */
-    public function getHandlers()
+    public function getPassList()
     {
-        return $this->handlers;
+        return $this->passList;
     }
 
     /**
-     * @param Handler $handler
+     * @param CompilerPassInterface $pass
+     * @param string $type
      */
-    public function addHandler(Handler $handler)
+    public function addPass(CompilerPassInterface $pass, $type = PassConfig::TYPE_BEFORE_OPTIMIZATION)
     {
-        $this->handlers[] = $handler;
+        $this->passList[] = [$pass, $type];
     }
 
     /**

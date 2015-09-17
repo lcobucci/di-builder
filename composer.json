@@ -24,6 +24,7 @@
     "require-dev": {
         "phpunit/phpunit": "~4.8",
         "squizlabs/php_codesniffer": "*",
+        "symfony/proxy-manager-bridge": "~2.7",
         "mikey179/vfsStream": "~1.5"
     },
     "suggest": {
@@ -31,12 +32,17 @@
     },
     "autoload": {
         "psr-4": {
-            "Lcobucci\\DependencyInjection\\": ["src", "test"]
+            "Lcobucci\\DependencyInjection\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Lcobucci\\DependencyInjection\\": "test"
         }
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "3.2-dev"
+            "dev-master": "4.0-dev"
         }
     }
 }

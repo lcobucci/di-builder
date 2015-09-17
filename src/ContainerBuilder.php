@@ -1,11 +1,12 @@
 <?php
 namespace Lcobucci\DependencyInjection;
 
+use Lcobucci\DependencyInjection\Compiler\ParameterBag;
 use Lcobucci\DependencyInjection\Config\ContainerConfiguration;
-use Lcobucci\DependencyInjection\Config\Handler;
-use Lcobucci\DependencyInjection\Config\Handlers\ParameterBag;
 use Lcobucci\DependencyInjection\Generators\Xml as XmlGenerator;
 use Symfony\Component\Config\ConfigCache;
+use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 
 /**
  * @author Luís Otávio Cobucci Oblonczyk <lcobucci@gmail.com>
@@ -51,7 +52,7 @@ class ContainerBuilder implements Builder
     {
         $this->parameterBag->set('app.devmode', false);
 
-        $this->config->addHandler($this->parameterBag);
+        $this->config->addPass($this->parameterBag);
     }
 
     /**
@@ -77,9 +78,9 @@ class ContainerBuilder implements Builder
     /**
      * {@inheritdoc}
      */
-    public function addHandler(Handler $handler)
+    public function addPass(CompilerPassInterface $pass, $type = PassConfig::TYPE_BEFORE_OPTIMIZATION)
     {
-        $this->config->addHandler($handler);
+        $this->config->addPass($pass, $type);
 
         return $this;
     }
