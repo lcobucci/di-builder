@@ -80,13 +80,15 @@ class EventListenerInjector implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $dispatcher = $builder->getDefinition('event.dispatcher');   
+        $dispatcher = $container->getDefinition('event.dispatcher');   
     
-        foreach ($container->findTaggedServiceIds('event.listener') as $service => $listenerConfig) {
-            $dispatcher->addMethodCall(
-                'addListener',
-                [$listenerConfig['event'], new Reference($service), $listenerConfig['priority']]
-            );
+        foreach ($container->findTaggedServiceIds('event.listener') as $service => $tags) {
+            foreach ($tags as $tag) {
+                $dispatcher->addMethodCall(
+                    'addListener',
+                    [$tag['event'], new Reference($service), $tag['priority']]
+                );
+            }
         }
     }
 }
