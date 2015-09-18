@@ -81,6 +81,8 @@ class Compiler
         ContainerConfiguration $config,
         ConfigCache $dump
     ) {
+        $container->compile();
+
         $dump->write(
             $this->getDumper($container)->dump($config->getDumpOptions()),
             $container->getResources()
