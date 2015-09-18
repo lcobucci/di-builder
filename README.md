@@ -27,10 +27,10 @@ by offering an easy interface to build and load your dependency injection contai
 
 ## Installation using [composer](http://getcomposer.org/)
 
-Just add ```"lcobucci/di-builder": "~3.0"``` to your composer.json and do a ```composer update``` or you can run:
+Just add ```"lcobucci/di-builder": "~4.0"``` to your composer.json and do a ```composer update``` or you can run:
 
 ```bash
-composer require lcobucci/di-builder:~3.0
+composer require lcobucci/di-builder:~4.0
 ```
 
 ## Basic usage
@@ -44,8 +44,8 @@ Take a look:
 <?php
 /* Composer autoloader was required before this */ 
 
+use Lcobucci\DependencyInjection\Compiler\ContainerAware;
 use Lcobucci\DependencyInjection\ContainerBuilder;
-use Lcobucci\DependencyInjection\Config\Handlers\ContainerAware;
 use Lcobucci\DependencyInjection\Generators\Php as PhpGenerator;
 
 $container = (new ContainerBuilder())->setGenerator(new PhpGenerator()) // Changes the generator
@@ -55,34 +55,34 @@ $container = (new ContainerBuilder())->setGenerator(new PhpGenerator()) // Chang
                                      ->useDevelopmentMode() // Enables the development mode (production is the default)
                                      ->setDumpDir(__DIR__ . '/tmp') // Changes the dump directory
                                      ->setParameter('app.basedir', __DIR__) // Configures a dynamic parameter
-                                     ->addHandler(new ContainerAware()) // Appends a new configuration handler
+                                     ->addPass(new ContainerAware()) // Appends a new compiler pass
                                      ->getContainer(); // Retrieves the container =)
 ```
 
 Pretty easy, right?
 
-## Handlers
+## Compiler Pass
 
-The handlers are very great to change your container __before__ the compile process. And
-you can create your own handler by just implementing the ```Lcobucci\DependencyInjection\Config\Handler```
-interface. Like this:
+The handlers are very great to change your container __before__ dumping a container. And
+you can create your own handler by just implementing the ```Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface```
+interface (so you can also use compiler pass from symfony bundles). Like this:
 
 ```php
-use Lcobucci\DependencyInjection\Config\Handler;
+use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 
-class EventListenerInjector implements Handler
+class EventListenerInjector implements CompilerPassInterface
 {
     /**
      * {@inheritdoc}
      */
-    public function __invoke(ContainerBuilder $builder)
+    public function process(ContainerBuilder $container)
     {
         $dispatcher = $builder->getDefinition('event.dispatcher');   
     
-        foreach ($builder->findTaggedServiceIds('event.listener') as $service => $listenerConfig) {
+        foreach ($container->findTaggedServiceIds('event.listener') as $service => $listenerConfig) {
             $dispatcher->addMethodCall(
                 'addListener',
                 [$listenerConfig['event'], new Reference($service), $listenerConfig['priority']]
