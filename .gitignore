@@ -1,9 +1,5 @@
 /vendor
 /composer.phar
-/.settings
-/.buildpath
-/.project
-/.idea
 /build
 /phpunit.xml
 composer.lock
