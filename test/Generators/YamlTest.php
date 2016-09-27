@@ -7,7 +7,7 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 /**
  * @author Luís Otávio Cobucci Oblonczyk <lcobucci@gmail.com>
  */
-class YamlTest extends \PHPUnit_Framework_TestCase
+final class YamlTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
@@ -17,9 +17,9 @@ class YamlTest extends \PHPUnit_Framework_TestCase
      */
     public function getLoaderShouldReturnAYamlLoader()
     {
-        $container = $this->getMock(ContainerBuilder::class);
+        $container = $this->createMock(ContainerBuilder::class);
         $generator = new Yaml();
 
-        $this->assertInstanceOf(YamlFileLoader::class, $generator->getLoader($container, []));
+        self::assertInstanceOf(YamlFileLoader::class, $generator->getLoader($container, []));
     }
 }

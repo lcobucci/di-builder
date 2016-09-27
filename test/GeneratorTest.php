@@ -9,55 +9,55 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * @author Luís Otávio Cobucci Oblonczyk <lcobucci@gmail.com>
  */
-class GeneratorTest extends \PHPUnit_Framework_TestCase
+final class GeneratorTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var Generator
      */
-    protected $generator;
+    private $generator;
 
     /**
      * @var Compiler|\PHPUnit_Framework_MockObject_MockObject
      */
-    protected $compiler;
+    private $compiler;
 
     /**
-     * {@inheritdoc}
+     * @before
      */
-    protected function setUp()
+    public function configureDependencies()
     {
-        $this->compiler = $this->getMock(Compiler::class);
+        $this->compiler = $this->createMock(Compiler::class);
         $this->generator = $this->getMockForAbstractClass(Generator::class, [$this->compiler]);
     }
 
     /**
      * @test
      *
-     * @covers Lcobucci\DependencyInjection\Generator::__construct
+     * @covers \Lcobucci\DependencyInjection\Generator::__construct
      */
     public function constructShouldConfigureTheCompiler()
     {
-        $this->assertAttributeSame($this->compiler, 'compiler', $this->generator);
+        self::assertAttributeSame($this->compiler, 'compiler', $this->generator);
     }
 
     /**
      * @test
      *
-     * @covers Lcobucci\DependencyInjection\Generator::__construct
+     * @covers \Lcobucci\DependencyInjection\Generator::__construct
      */
     public function constructShouldCreateACompilerWhenNotInformed()
     {
         $generator = $this->getMockForAbstractClass(Generator::class);
 
-        $this->assertAttributeInstanceOf(Compiler::class, 'compiler', $generator);
+        self::assertAttributeInstanceOf(Compiler::class, 'compiler', $generator);
     }
 
     /**
      * @test
      *
-     * @covers Lcobucci\DependencyInjection\Generator::__construct
-     * @covers Lcobucci\DependencyInjection\Generator::generate
-     * @covers Lcobucci\DependencyInjection\Generator::loadContainer
+     * @covers \Lcobucci\DependencyInjection\Generator::__construct
+     * @covers \Lcobucci\DependencyInjection\Generator::generate
+     * @covers \Lcobucci\DependencyInjection\Generator::loadContainer
      */
     public function generateShouldCompileAndLoadTheContainer()
     {
@@ -72,7 +72,7 @@ class GeneratorTest extends \PHPUnit_Framework_TestCase
 
         $container = $this->generator->generate($config, $dump);
 
-        $this->assertInstanceOf(ContainerInterface::class, $container);
+        self::assertInstanceOf(ContainerInterface::class, $container);
     }
 
     /**
@@ -82,7 +82,7 @@ class GeneratorTest extends \PHPUnit_Framework_TestCase
      */
     private function createConfiguration($className)
     {
-        $config = $this->getMock(ContainerConfiguration::class, [], [], '', false);
+        $config = $this->createMock(ContainerConfiguration::class);
 
         $config->expects($this->any())
                ->method('getClassName')
@@ -98,7 +98,7 @@ class GeneratorTest extends \PHPUnit_Framework_TestCase
      */
     private function createDump($file)
     {
-        $dump = $this->getMock(ConfigCache::class, [], [], '', false);
+        $dump = $this->createMock(ConfigCache::class);
 
         $dump->expects($this->any())
              ->method('getPath')

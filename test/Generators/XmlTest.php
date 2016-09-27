@@ -7,7 +7,7 @@ use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 /**
  * @author Luís Otávio Cobucci Oblonczyk <lcobucci@gmail.com>
  */
-class XmlTest extends \PHPUnit_Framework_TestCase
+final class XmlTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
@@ -17,9 +17,9 @@ class XmlTest extends \PHPUnit_Framework_TestCase
      */
     public function getLoaderShouldReturnAXmlLoader()
     {
-        $container = $this->getMock(ContainerBuilder::class);
+        $container = $this->createMock(ContainerBuilder::class);
         $generator = new Xml();
 
-        $this->assertInstanceOf(XmlFileLoader::class, $generator->getLoader($container, []));
+        self::assertInstanceOf(XmlFileLoader::class, $generator->getLoader($container, []));
     }
 }

@@ -6,7 +6,7 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 /**
  * @author Luís Otávio Cobucci Oblonczyk <lcobucci@gmail.com>
  */
-class ContainerConfigurationTest extends \PHPUnit_Framework_TestCase
+final class ContainerConfigurationTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var CompilerPassInterface
@@ -14,11 +14,11 @@ class ContainerConfigurationTest extends \PHPUnit_Framework_TestCase
     private $pass;
 
     /**
-     * {@inheritdoc}
+     * @before
      */
-    protected function setUp()
+    public function configureDependencies()
     {
-        $this->pass = $this->getMock(CompilerPassInterface::class);
+        $this->pass = $this->createMock(CompilerPassInterface::class);
     }
 
     /**
@@ -34,10 +34,10 @@ class ContainerConfigurationTest extends \PHPUnit_Framework_TestCase
             ['test']
         );
 
-        $this->assertAttributeEquals(['services.xml'], 'files', $config);
-        $this->assertAttributeSame([[$this->pass, 'beforeOptimization']], 'passList', $config);
-        $this->assertAttributeEquals(['test'], 'paths', $config);
-        $this->assertAttributeEquals(sys_get_temp_dir(), 'dumpDir', $config);
+        self::assertAttributeEquals(['services.xml'], 'files', $config);
+        self::assertAttributeSame([[$this->pass, 'beforeOptimization']], 'passList', $config);
+        self::assertAttributeEquals(['test'], 'paths', $config);
+        self::assertAttributeEquals(sys_get_temp_dir(), 'dumpDir', $config);
     }
 
     /**
@@ -50,7 +50,7 @@ class ContainerConfigurationTest extends \PHPUnit_Framework_TestCase
     {
         $config = new ContainerConfiguration(['services.xml']);
 
-        $this->assertEquals(['services.xml'], $config->getFiles());
+        self::assertEquals(['services.xml'], $config->getFiles());
     }
 
     /**
@@ -64,7 +64,7 @@ class ContainerConfigurationTest extends \PHPUnit_Framework_TestCase
         $config = new ContainerConfiguration();
         $config->addFile('services.xml');
 
-        $this->assertAttributeEquals(['services.xml'], 'files', $config);
+        self::assertAttributeEquals(['services.xml'], 'files', $config);
     }
 
     /**
@@ -77,7 +77,7 @@ class ContainerConfigurationTest extends \PHPUnit_Framework_TestCase
     {
         $config = new ContainerConfiguration([], [[$this->pass, 'beforeOptimization']]);
 
-        $this->assertSame([[$this->pass, 'beforeOptimization']], $config->getPassList());
+        self::assertSame([[$this->pass, 'beforeOptimization']], $config->getPassList());
     }
 
     /**
@@ -91,7 +91,7 @@ class ContainerConfigurationTest extends \PHPUnit_Framework_TestCase
         $config = new ContainerConfiguration();
         $config->addPass($this->pass);
 
-        $this->assertAttributeSame([[$this->pass, 'beforeOptimization']], 'passList', $config);
+        self::assertAttributeSame([[$this->pass, 'beforeOptimization']], 'passList', $config);
     }
 
     /**
@@ -104,7 +104,7 @@ class ContainerConfigurationTest extends \PHPUnit_Framework_TestCase
     {
         $config = new ContainerConfiguration([], [], ['config']);
 
-        $this->assertEquals(['config'], $config->getPaths());
+        self::assertEquals(['config'], $config->getPaths());
     }
 
     /**
@@ -118,7 +118,7 @@ class ContainerConfigurationTest extends \PHPUnit_Framework_TestCase
         $config = new ContainerConfiguration();
         $config->addPath('services');
 
-        $this->assertAttributeEquals(['services'], 'paths', $config);
+        self::assertAttributeEquals(['services'], 'paths', $config);
     }
 
     /**
@@ -132,7 +132,7 @@ class ContainerConfigurationTest extends \PHPUnit_Framework_TestCase
         $config = new ContainerConfiguration();
         $config->setBaseClass('Test');
 
-        $this->assertAttributeEquals('Test', 'baseClass', $config);
+        self::assertAttributeEquals('Test', 'baseClass', $config);
 
         return $config;
     }
@@ -146,7 +146,7 @@ class ContainerConfigurationTest extends \PHPUnit_Framework_TestCase
      */
     public function getBaseClassShouldReturnTheAttributeValue(ContainerConfiguration $config)
     {
-        $this->assertEquals('Test', $config->getBaseClass());
+        self::assertEquals('Test', $config->getBaseClass());
     }
 
     /**
@@ -159,7 +159,7 @@ class ContainerConfigurationTest extends \PHPUnit_Framework_TestCase
     {
         $config = new ContainerConfiguration();
 
-        $this->assertEquals(sys_get_temp_dir(), $config->getDumpDir());
+        self::assertEquals(sys_get_temp_dir(), $config->getDumpDir());
     }
 
     /**
@@ -173,7 +173,7 @@ class ContainerConfigurationTest extends \PHPUnit_Framework_TestCase
         $config = new ContainerConfiguration();
         $config->setDumpDir('/test/');
 
-        $this->assertAttributeEquals('/test', 'dumpDir', $config);
+        self::assertAttributeEquals('/test', 'dumpDir', $config);
     }
 
     /**
@@ -186,7 +186,7 @@ class ContainerConfigurationTest extends \PHPUnit_Framework_TestCase
     {
         $config = new ContainerConfiguration(['services.xml'], [], ['config']);
 
-        $this->assertEquals(
+        self::assertEquals(
             'Project' . md5(implode(';', ['services.xml', 'config'])) . 'ServiceContainer',
             $config->getClassName()
         );
@@ -203,7 +203,7 @@ class ContainerConfigurationTest extends \PHPUnit_Framework_TestCase
     {
         $config = new ContainerConfiguration();
 
-        $this->assertEquals(
+        self::assertEquals(
             sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'Project' . md5('') . 'ServiceContainer.php',
             $config->getDumpFile()
         );
@@ -221,7 +221,7 @@ class ContainerConfigurationTest extends \PHPUnit_Framework_TestCase
         $config = new ContainerConfiguration();
         $options = ['class' => 'Project' . md5('') . 'ServiceContainer'];
 
-        $this->assertEquals($options, $config->getDumpOptions());
+        self::assertEquals($options, $config->getDumpOptions());
     }
 
     /**
@@ -238,6 +238,6 @@ class ContainerConfigurationTest extends \PHPUnit_Framework_TestCase
         $config->setBaseClass('Test');
         $options = ['class' => 'Project' . md5('') . 'ServiceContainer', 'base_class' => 'Test'];
 
-        $this->assertEquals($options, $config->getDumpOptions());
+        self::assertEquals($options, $config->getDumpOptions());
     }
 }

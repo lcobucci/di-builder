@@ -7,7 +7,7 @@ use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 /**
  * @author Luís Otávio Cobucci Oblonczyk <lcobucci@gmail.com>
  */
-class PhpTest extends \PHPUnit_Framework_TestCase
+final class PhpTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
@@ -17,9 +17,9 @@ class PhpTest extends \PHPUnit_Framework_TestCase
      */
     public function getLoaderShouldReturnAPhpLoader()
     {
-        $container = $this->getMock(ContainerBuilder::class);
+        $container = $this->createMock(ContainerBuilder::class);
         $generator = new Php();
 
-        $this->assertInstanceOf(PhpFileLoader::class, $generator->getLoader($container, []));
+        self::assertInstanceOf(PhpFileLoader::class, $generator->getLoader($container, []));
     }
 }

@@ -11,7 +11,7 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 /**
  * @author Luís Otávio Cobucci Oblonczyk <lcobucci@gmail.com>
  */
-class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
+final class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var Generator|\PHPUnit_Framework_MockObject_MockObject
@@ -29,13 +29,13 @@ class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
     private $parameterBag;
 
     /**
-     * {@inheritdoc}
+     * @before
      */
-    protected function setUp()
+    public function configureDependencies()
     {
         $this->generator = $this->getMockForAbstractClass(Generator::class, [], '', false, true, true, ['generate']);
-        $this->config = $this->getMock(ContainerConfiguration::class, [], [], '', false);
-        $this->parameterBag = $this->getMock(ParameterBag::class, [], [], '', false);
+        $this->config = $this->createMock(ContainerConfiguration::class);
+        $this->parameterBag = $this->createMock(ParameterBag::class);
     }
 
     /**
@@ -53,9 +53,9 @@ class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
     {
         $builder = new ContainerBuilder();
 
-        $this->assertAttributeInstanceOf(ContainerConfiguration::class, 'config', $builder);
-        $this->assertAttributeInstanceOf(ParameterBag::class, 'parameterBag', $builder);
-        $this->assertAttributeInstanceOf(XmlGenerator::class, 'generator', $builder);
+        self::assertAttributeInstanceOf(ContainerConfiguration::class, 'config', $builder);
+        self::assertAttributeInstanceOf(ParameterBag::class, 'parameterBag', $builder);
+        self::assertAttributeInstanceOf(XmlGenerator::class, 'generator', $builder);
     }
 
     /**
@@ -76,9 +76,9 @@ class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
 
         $builder = new ContainerBuilder($this->config, $this->generator, $this->parameterBag);
 
-        $this->assertAttributeSame($this->config, 'config', $builder);
-        $this->assertAttributeSame($this->parameterBag, 'parameterBag', $builder);
-        $this->assertAttributeSame($this->generator, 'generator', $builder);
+        self::assertAttributeSame($this->config, 'config', $builder);
+        self::assertAttributeSame($this->parameterBag, 'parameterBag', $builder);
+        self::assertAttributeSame($this->generator, 'generator', $builder);
     }
 
     /**
@@ -93,8 +93,8 @@ class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
         $builder = new ContainerBuilder($this->config, $this->generator, $this->parameterBag);
         $generator = $this->getMockForAbstractClass(Generator::class, [], '', false);
 
-        $this->assertSame($builder, $builder->setGenerator($generator));
-        $this->assertAttributeSame($generator, 'generator', $builder);
+        self::assertSame($builder, $builder->setGenerator($generator));
+        self::assertAttributeSame($generator, 'generator', $builder);
     }
 
     /**
@@ -112,7 +112,7 @@ class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
                      ->method('addFile')
                      ->with('test');
 
-        $this->assertSame($builder, $builder->addFile('test'));
+        self::assertSame($builder, $builder->addFile('test'));
     }
 
     /**
@@ -125,13 +125,13 @@ class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
     public function addPassShouldAppendANewHandlerOnTheListAndReturnSelf()
     {
         $builder = new ContainerBuilder($this->config, $this->generator, $this->parameterBag);
-        $pass = $this->getMock(CompilerPassInterface::class);
+        $pass = $this->createMock(CompilerPassInterface::class);
 
         $this->config->expects($this->once())
                      ->method('addPass')
                      ->with($pass, 'beforeOptimization');
 
-        $this->assertSame($builder, $builder->addPass($pass));
+        self::assertSame($builder, $builder->addPass($pass));
     }
 
     /**
@@ -149,7 +149,7 @@ class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
                      ->method('setDumpDir')
                      ->with('test');
 
-        $this->assertSame($builder, $builder->setDumpDir('test'));
+        self::assertSame($builder, $builder->setDumpDir('test'));
     }
 
     /**
@@ -167,7 +167,7 @@ class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
                      ->method('addPath')
                      ->with('test');
 
-        $this->assertSame($builder, $builder->addPath('test'));
+        self::assertSame($builder, $builder->addPath('test'));
     }
 
     /**
@@ -185,7 +185,7 @@ class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
                      ->method('setBaseClass')
                      ->with('Test');
 
-        $this->assertSame($builder, $builder->setBaseClass('Test'));
+        self::assertSame($builder, $builder->setBaseClass('Test'));
     }
 
     /**
@@ -203,7 +203,7 @@ class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
                            ->method('set')
                            ->with('app.devmode', true);
 
-        $this->assertSame($builder, $builder->useDevelopmentMode());
+        self::assertSame($builder, $builder->useDevelopmentMode());
     }
 
     /**
@@ -221,7 +221,7 @@ class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
                            ->method('set')
                            ->with('test', 1);
 
-        $this->assertSame($builder, $builder->setParameter('test', 1));
+        self::assertSame($builder, $builder->setParameter('test', 1));
     }
 
     /**
@@ -235,13 +235,13 @@ class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
     public function getContainerShouldGenerateAndReturnTheContainer()
     {
         $builder = new ContainerBuilder($this->config, $this->generator, $this->parameterBag);
-        $container = $this->getMock(ContainerInterface::class);
+        $container = $this->createMock(ContainerInterface::class);
 
         $this->generator->expects($this->once())
                         ->method('generate')
                         ->with($this->config, $this->isInstanceOf(ConfigCache::class))
                         ->willReturn($container);
 
-        $this->assertSame($container, $builder->getContainer());
+        self::assertSame($container, $builder->getContainer());
     }
 }

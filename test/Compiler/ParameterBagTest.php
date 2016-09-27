@@ -6,7 +6,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 /**
  * @author Luís Otávio Cobucci Oblonczyk <lcobucci@gmail.com>
  */
-class ParameterBagTest extends \PHPUnit_Framework_TestCase
+final class ParameterBagTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
@@ -17,7 +17,7 @@ class ParameterBagTest extends \PHPUnit_Framework_TestCase
     {
         $pass = new ParameterBag(['test' => 1]);
 
-        $this->assertAttributeEquals(['test' => 1], 'parameters', $pass);
+        self::assertAttributeEquals(['test' => 1], 'parameters', $pass);
     }
 
     /**
@@ -31,7 +31,7 @@ class ParameterBagTest extends \PHPUnit_Framework_TestCase
         $pass = new ParameterBag();
         $pass->set('test', 1);
 
-        $this->assertAttributeEquals(['test' => 1], 'parameters', $pass);
+        self::assertAttributeEquals(['test' => 1], 'parameters', $pass);
     }
 
     /**
@@ -44,7 +44,7 @@ class ParameterBagTest extends \PHPUnit_Framework_TestCase
     {
         $pass = new ParameterBag(['test' => 1]);
 
-        $this->assertEquals(1, $pass->get('test'));
+        self::assertEquals(1, $pass->get('test'));
     }
 
     /**
@@ -57,7 +57,7 @@ class ParameterBagTest extends \PHPUnit_Framework_TestCase
     {
         $pass = new ParameterBag();
 
-        $this->assertEquals(1, $pass->get('test', 1));
+        self::assertEquals(1, $pass->get('test', 1));
     }
 
     /**
@@ -72,6 +72,6 @@ class ParameterBagTest extends \PHPUnit_Framework_TestCase
         $pass = new ParameterBag(['test' => 1]);
 
         $pass->process($builder);
-        $this->assertEquals(1, $builder->getParameter('test'));
+        self::assertEquals(1, $builder->getParameter('test'));
     }
 }
