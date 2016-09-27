@@ -55,9 +55,10 @@ final class GeneratorTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      *
-     * @covers \Lcobucci\DependencyInjection\Generator::__construct
      * @covers \Lcobucci\DependencyInjection\Generator::generate
      * @covers \Lcobucci\DependencyInjection\Generator::loadContainer
+     *
+     * @uses \Lcobucci\DependencyInjection\Generator::__construct
      */
     public function generateShouldCompileAndLoadTheContainer()
     {

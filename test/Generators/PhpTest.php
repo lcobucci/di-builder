@@ -12,8 +12,8 @@ final class PhpTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      *
-     * @covers Lcobucci\DependencyInjection\Generator::__construct
-     * @covers Lcobucci\DependencyInjection\Generators\Php::getLoader
+     * @covers \Lcobucci\DependencyInjection\Generator::__construct
+     * @covers \Lcobucci\DependencyInjection\Generators\Php::getLoader
      */
     public function getLoaderShouldReturnAPhpLoader()
     {

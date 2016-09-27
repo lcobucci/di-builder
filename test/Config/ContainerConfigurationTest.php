@@ -24,7 +24,7 @@ final class ContainerConfigurationTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      *
-     * @covers Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
+     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
      */
     public function constructShouldConfigureTheAttributes()
     {
@@ -43,8 +43,9 @@ final class ContainerConfigurationTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      *
-     * @covers Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
-     * @covers Lcobucci\DependencyInjection\Config\ContainerConfiguration::getFiles
+     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getFiles
+     *
+     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
      */
     public function getFilesShouldReturnTheFileList()
     {
@@ -56,8 +57,9 @@ final class ContainerConfigurationTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      *
-     * @covers Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
-     * @covers Lcobucci\DependencyInjection\Config\ContainerConfiguration::addFile
+     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::addFile
+     *
+     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
      */
     public function addFileShouldAppendANewFileToTheList()
     {
@@ -70,8 +72,9 @@ final class ContainerConfigurationTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      *
-     * @covers Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
-     * @covers Lcobucci\DependencyInjection\Config\ContainerConfiguration::getPassList
+     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getPassList
+     *
+     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
      */
     public function getPassListShouldReturnTheHandlersList()
     {
@@ -83,8 +86,9 @@ final class ContainerConfigurationTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      *
-     * @covers Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
-     * @covers Lcobucci\DependencyInjection\Config\ContainerConfiguration::addPass
+     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::addPass
+     *
+     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
      */
     public function addPassShouldAppendANewHandlerToTheList()
     {
@@ -97,8 +101,9 @@ final class ContainerConfigurationTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      *
-     * @covers Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
-     * @covers Lcobucci\DependencyInjection\Config\ContainerConfiguration::getPaths
+     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getPaths
+     *
+     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
      */
     public function getPathsShouldReturnThePathsList()
     {
@@ -110,8 +115,9 @@ final class ContainerConfigurationTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      *
-     * @covers Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
-     * @covers Lcobucci\DependencyInjection\Config\ContainerConfiguration::addPath
+     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::addPath
+     *
+     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
      */
     public function addPathShouldAppendANewPathToTheList()
     {
@@ -124,8 +130,9 @@ final class ContainerConfigurationTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      *
-     * @covers Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
-     * @covers Lcobucci\DependencyInjection\Config\ContainerConfiguration::setBaseClass
+     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::setBaseClass
+     *
+     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
      */
     public function setBaseClassShouldChangeTheAttribute()
     {
@@ -142,7 +149,7 @@ final class ContainerConfigurationTest extends \PHPUnit_Framework_TestCase
      *
      * @depends setBaseClassShouldChangeTheAttribute
      *
-     * @covers Lcobucci\DependencyInjection\Config\ContainerConfiguration::getBaseClass
+     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getBaseClass
      */
     public function getBaseClassShouldReturnTheAttributeValue(ContainerConfiguration $config)
     {
@@ -152,8 +159,9 @@ final class ContainerConfigurationTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      *
-     * @covers Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
-     * @covers Lcobucci\DependencyInjection\Config\ContainerConfiguration::getDumpDir
+     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getDumpDir
+     *
+     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
      */
     public function getDumpDirShouldReturnTheAttributeValue()
     {
@@ -165,8 +173,9 @@ final class ContainerConfigurationTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      *
-     * @covers Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
-     * @covers Lcobucci\DependencyInjection\Config\ContainerConfiguration::setDumpDir
+     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::setDumpDir
+     *
+     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
      */
     public function setDumpDirShouldChangeTheAttribute()
     {
@@ -179,8 +188,9 @@ final class ContainerConfigurationTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      *
-     * @covers Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
-     * @covers Lcobucci\DependencyInjection\Config\ContainerConfiguration::getClassName
+     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getClassName
+     *
+     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
      */
     public function getClassNameShouldCreateAHashFromFilesAndPaths()
     {
@@ -195,9 +205,10 @@ final class ContainerConfigurationTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      *
-     * @covers Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
-     * @covers Lcobucci\DependencyInjection\Config\ContainerConfiguration::getClassName
-     * @covers Lcobucci\DependencyInjection\Config\ContainerConfiguration::getDumpFile
+     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getDumpFile
+     *
+     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
+     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getClassName
      */
     public function getDumpFileShouldReturnTheFullPathOfDumpFile()
     {
@@ -212,9 +223,10 @@ final class ContainerConfigurationTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      *
-     * @covers Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
-     * @covers Lcobucci\DependencyInjection\Config\ContainerConfiguration::getClassName
-     * @covers Lcobucci\DependencyInjection\Config\ContainerConfiguration::getDumpOptions
+     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getDumpOptions
+     *
+     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
+     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getClassName
      */
     public function getDumpOptionsShouldReturnTheDumpingInformations()
     {
@@ -227,10 +239,11 @@ final class ContainerConfigurationTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      *
-     * @covers Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
-     * @covers Lcobucci\DependencyInjection\Config\ContainerConfiguration::setBaseClass
-     * @covers Lcobucci\DependencyInjection\Config\ContainerConfiguration::getClassName
-     * @covers Lcobucci\DependencyInjection\Config\ContainerConfiguration::getDumpOptions
+     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::setBaseClass
+     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getDumpOptions
+     *
+     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
+     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getClassName
      */
     public function getDumpOptionsShouldIncludeBaseWhenWasConfigured()
     {

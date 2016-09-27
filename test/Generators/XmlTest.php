@@ -12,8 +12,8 @@ final class XmlTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      *
-     * @covers Lcobucci\DependencyInjection\Generator::__construct
-     * @covers Lcobucci\DependencyInjection\Generators\Xml::getLoader
+     * @covers \Lcobucci\DependencyInjection\Generator::__construct
+     * @covers \Lcobucci\DependencyInjection\Generators\Xml::getLoader
      */
     public function getLoaderShouldReturnAXmlLoader()
     {

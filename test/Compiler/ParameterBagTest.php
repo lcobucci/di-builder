@@ -11,7 +11,7 @@ final class ParameterBagTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      *
-     * @covers Lcobucci\DependencyInjection\Compiler\ParameterBag::__construct
+     * @covers \Lcobucci\DependencyInjection\Compiler\ParameterBag::__construct
      */
     public function constructShouldInitializeTheParameters()
     {
@@ -23,8 +23,8 @@ final class ParameterBagTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      *
-     * @covers Lcobucci\DependencyInjection\Compiler\ParameterBag::__construct
-     * @covers Lcobucci\DependencyInjection\Compiler\ParameterBag::set
+     * @covers \Lcobucci\DependencyInjection\Compiler\ParameterBag::__construct
+     * @covers \Lcobucci\DependencyInjection\Compiler\ParameterBag::set
      */
     public function setShouldConfigureAParameter()
     {
@@ -37,8 +37,9 @@ final class ParameterBagTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      *
-     * @covers Lcobucci\DependencyInjection\Compiler\ParameterBag::__construct
-     * @covers Lcobucci\DependencyInjection\Compiler\ParameterBag::get
+     * @covers \Lcobucci\DependencyInjection\Compiler\ParameterBag::get
+     *
+     * @uses \Lcobucci\DependencyInjection\Compiler\ParameterBag::__construct
      */
     public function getShouldReturnTheValueOfTheParameter()
     {
@@ -50,8 +51,9 @@ final class ParameterBagTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      *
-     * @covers Lcobucci\DependencyInjection\Compiler\ParameterBag::__construct
-     * @covers Lcobucci\DependencyInjection\Compiler\ParameterBag::get
+     * @covers \Lcobucci\DependencyInjection\Compiler\ParameterBag::get
+     *
+     * @uses \Lcobucci\DependencyInjection\Compiler\ParameterBag::__construct
      */
     public function getShouldReturnTheDefaultValueWhenParameterDoesNotExist()
     {
@@ -63,8 +65,9 @@ final class ParameterBagTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      *
-     * @covers Lcobucci\DependencyInjection\Compiler\ParameterBag::__construct
-     * @covers Lcobucci\DependencyInjection\Compiler\ParameterBag::process
+     * @covers \Lcobucci\DependencyInjection\Compiler\ParameterBag::process
+     *
+     * @uses \Lcobucci\DependencyInjection\Compiler\ParameterBag::__construct
      */
     public function invokeShouldAppendAllConfiguredParametersOnTheBuilder()
     {

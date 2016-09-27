@@ -12,8 +12,8 @@ final class YamlTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      *
-     * @covers Lcobucci\DependencyInjection\Generator::__construct
-     * @covers Lcobucci\DependencyInjection\Generators\Yaml::getLoader
+     * @covers \Lcobucci\DependencyInjection\Generator::__construct
+     * @covers \Lcobucci\DependencyInjection\Generators\Yaml::getLoader
      */
     public function getLoaderShouldReturnAYamlLoader()
     {
