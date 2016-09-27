@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Lcobucci\DependencyInjection;
 
 use Lcobucci\DependencyInjection\Config\ContainerConfiguration;
@@ -27,42 +29,25 @@ abstract class Generator
 
     /**
      * Loads the container
-     *
-     * @param ContainerConfiguration $config
-     * @param ConfigCache $dump
-     *
-     * @return ContainerInterface
      */
     public function generate(
         ContainerConfiguration $config,
         ConfigCache $dump
-    ) {
+    ): ContainerInterface {
         $this->compiler->compile($config, $dump, $this);
 
         return $this->loadContainer($config, $dump);
     }
 
-    /**
-     * @param ContainerConfiguration $config
-     * @param ConfigCache $dump
-     *
-     * @return ContainerInterface
-     */
     private function loadContainer(
         ContainerConfiguration $config,
         ConfigCache $dump
-    ) {
+    ): ContainerInterface {
         require_once $dump->getPath();
         $className = '\\' . $config->getClassName();
 
         return new $className();
     }
 
-    /**
-     * @param SymfonyBuilder $container
-     * @param array $paths
-     *
-     * @return LoaderInterface
-     */
-    abstract public function getLoader(SymfonyBuilder $container, array $paths);
+    abstract public function getLoader(SymfonyBuilder $container, array $paths): LoaderInterface;
 }

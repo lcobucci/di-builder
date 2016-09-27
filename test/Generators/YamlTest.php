@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Lcobucci\DependencyInjection\Generators;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;

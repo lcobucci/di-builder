@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Lcobucci\DependencyInjection\Config;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -24,7 +26,7 @@ class ContainerConfiguration
     private $paths;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $baseClass;
 
@@ -33,11 +35,6 @@ class ContainerConfiguration
      */
     private $dumpDir;
 
-    /**
-     * @param array $files
-     * @param array $passList
-     * @param array $paths
-     */
     public function __construct(
         array $files = [],
         array $passList = [],
@@ -49,107 +46,72 @@ class ContainerConfiguration
         $this->dumpDir = sys_get_temp_dir();
     }
 
-    /**
-     * @return array
-     */
-    public function getFiles()
+    public function getFiles(): array
     {
         return $this->files;
     }
 
-    /**
-     * @param string $file
-     */
-    public function addFile($file)
+    public function addFile(string $file)
     {
         $this->files[] = $file;
     }
 
-    /**
-     * @return array
-     */
-    public function getPassList()
+    public function getPassList(): array
     {
         return $this->passList;
     }
 
-    /**
-     * @param CompilerPassInterface $pass
-     * @param string $type
-     */
-    public function addPass(CompilerPassInterface $pass, $type = PassConfig::TYPE_BEFORE_OPTIMIZATION)
-    {
+    public function addPass(
+        CompilerPassInterface $pass,
+        string $type = PassConfig::TYPE_BEFORE_OPTIMIZATION
+    ) {
         $this->passList[] = [$pass, $type];
     }
 
-    /**
-     * @return array
-     */
-    public function getPaths()
+    public function getPaths(): array
     {
         return $this->paths;
     }
 
-    /**
-     * @param string $path
-     */
-    public function addPath($path)
+    public function addPath(string $path)
     {
         $this->paths[] = $path;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getBaseClass()
     {
         return $this->baseClass;
     }
 
-    /**
-     * @param string $baseClass
-     */
-    public function setBaseClass($baseClass)
+    public function setBaseClass(string $baseClass)
     {
         $this->baseClass = $baseClass;
     }
 
-    /**
-     * @return string
-     */
-    public function getDumpDir()
+    public function getDumpDir(): string
     {
         return $this->dumpDir;
     }
 
-    /**
-     * @param string $dumpDir
-     */
-    public function setDumpDir($dumpDir)
+    public function setDumpDir(string $dumpDir)
     {
         $this->dumpDir = rtrim($dumpDir, DIRECTORY_SEPARATOR);
     }
 
-    /**
-     * @return string
-     */
-    public function getClassName()
+    public function getClassName(): string
     {
         return 'Project' . md5(implode(';', array_merge($this->files, $this->paths))) . 'ServiceContainer';
     }
 
-    /**
-     * @return string
-     */
-    public function getDumpFile()
+    public function getDumpFile(): string
     {
         return $this->dumpDir . DIRECTORY_SEPARATOR . $this->getClassName() . '.php';
     }
 
-    /**
-     * @return array
-     */
-    public function getDumpOptions()
+    public function getDumpOptions(): array
     {
         $options = ['class' => $this->getClassName()];
 

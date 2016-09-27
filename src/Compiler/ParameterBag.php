@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Lcobucci\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -18,30 +20,17 @@ class ParameterBag implements CompilerPassInterface
      */
     private $parameters;
 
-    /**
-     * @param array $parameters
-     */
     public function __construct(array $parameters = [])
     {
         $this->parameters = $parameters;
     }
 
-    /**
-     * @param string $name
-     * @param mixed $value
-     */
-    public function set($name, $value)
+    public function set(string $name, $value)
     {
         $this->parameters[$name] = $value;
     }
 
-    /**
-     * @param string $name
-     * @param mixed $default
-     *
-     * @return mixed
-     */
-    public function get($name, $default = null)
+    public function get(string $name, $default = null)
     {
         if (!isset($this->parameters[$name])) {
             return $default;

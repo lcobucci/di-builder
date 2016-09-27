@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Lcobucci\DependencyInjection;
 
 use Lcobucci\DependencyInjection\Compiler\ParameterBag;
@@ -7,6 +9,7 @@ use Lcobucci\DependencyInjection\Generators\Xml as XmlGenerator;
 use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * @author Luís Otávio Cobucci Oblonczyk <lcobucci@gmail.com>
@@ -29,9 +32,9 @@ class ContainerBuilder implements Builder
     private $parameterBag;
 
     /**
-     * @param ContainerConfiguration $config
-     * @param Generator $generator
-     * @param ParameterBag $parameterBag
+     * @param ContainerConfiguration|null $config
+     * @param Generator|null $generator
+     * @param ParameterBag|null $parameterBag
      */
     public function __construct(
         ContainerConfiguration $config = null,
@@ -58,7 +61,7 @@ class ContainerBuilder implements Builder
     /**
      * {@inheritdoc}
      */
-    public function setGenerator(Generator $generator)
+    public function setGenerator(Generator $generator): Builder
     {
         $this->generator = $generator;
 
@@ -68,7 +71,7 @@ class ContainerBuilder implements Builder
     /**
      * {@inheritdoc}
      */
-    public function addFile($file)
+    public function addFile(string $file): Builder
     {
         $this->config->addFile($file);
 
@@ -78,8 +81,10 @@ class ContainerBuilder implements Builder
     /**
      * {@inheritdoc}
      */
-    public function addPass(CompilerPassInterface $pass, $type = PassConfig::TYPE_BEFORE_OPTIMIZATION)
-    {
+    public function addPass(
+        CompilerPassInterface $pass,
+        string $type = PassConfig::TYPE_BEFORE_OPTIMIZATION
+    ): Builder {
         $this->config->addPass($pass, $type);
 
         return $this;
@@ -88,7 +93,7 @@ class ContainerBuilder implements Builder
     /**
      * {@inheritdoc}
      */
-    public function useDevelopmentMode()
+    public function useDevelopmentMode(): Builder
     {
         $this->parameterBag->set('app.devmode', true);
 
@@ -98,7 +103,7 @@ class ContainerBuilder implements Builder
     /**
      * {@inheritdoc}
      */
-    public function setDumpDir($dir)
+    public function setDumpDir(string $dir): Builder
     {
         $this->config->setDumpDir($dir);
 
@@ -108,7 +113,7 @@ class ContainerBuilder implements Builder
     /**
      * {@inheritdoc}
      */
-    public function setParameter($name, $value)
+    public function setParameter(string $name, $value): Builder
     {
         $this->parameterBag->set($name, $value);
 
@@ -118,7 +123,7 @@ class ContainerBuilder implements Builder
     /**
      * {@inheritdoc}
      */
-    public function addPath($path)
+    public function addPath(string $path): Builder
     {
         $this->config->addPath($path);
 
@@ -128,17 +133,14 @@ class ContainerBuilder implements Builder
     /**
      * {@inheritdoc}
      */
-    public function setBaseClass($class)
+    public function setBaseClass(string $class): Builder
     {
         $this->config->setBaseClass($class);
 
         return $this;
     }
 
-    /**
-     * @return ConfigCache
-     */
-    protected function createDumpCache()
+    protected function createDumpCache(): ConfigCache
     {
         return new ConfigCache(
             $this->config->getDumpFile(),
@@ -149,7 +151,7 @@ class ContainerBuilder implements Builder
     /**
      * {@inheritdoc}
      */
-    public function getContainer()
+    public function getContainer(): ContainerInterface
     {
         return $this->generator->generate(
             $this->config,

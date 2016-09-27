@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Lcobucci\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -14,78 +16,49 @@ interface Builder
 {
     /**
      * Changes the generator to handle the files
-     *
-     * @param Generator $generator
-     *
-     * @return self
      */
-    public function setGenerator(Generator $generator);
+    public function setGenerator(Generator $generator): Builder;
 
     /**
      * Add a file to be loaded
-     *
-     * @param string $file
-     *
-     * @return self
      */
-    public function addFile($file);
+    public function addFile(string $file): Builder;
 
     /**
      * Add a compiler pass
-     *
-     * @param CompilerPassInterface $pass
-     * @param string $type
-     *
-     * @return self
      */
-    public function addPass(CompilerPassInterface $pass, $type = PassConfig::TYPE_BEFORE_OPTIMIZATION);
+    public function addPass(
+        CompilerPassInterface $pass,
+        string $type = PassConfig::TYPE_BEFORE_OPTIMIZATION
+    ): Builder;
 
     /**
      * Mark the container to be used as development mode
-     *
-     * @return self
      */
-    public function useDevelopmentMode();
+    public function useDevelopmentMode(): Builder;
 
     /**
      * Configures the dump directory
-     *
-     * @param string $dir
-     *
-     * @return self
      */
-    public function setDumpDir($dir);
+    public function setDumpDir(string $dir): Builder;
 
     /**
      * Adds a default parameter
-     *
-     * @param string $name
-     * @param mixed $value
-     *
-     * @return self
      */
-    public function setParameter($name, $value);
+    public function setParameter(string $name, $value): Builder;
 
     /**
      * Adds a path to load the files
-     *
-     * @param string $path
-     *
-     * @return self
      */
-    public function addPath($path);
+    public function addPath(string $path): Builder;
 
     /**
-     * @param string $class
-     *
-     * @return self
+     * Configures the container's base class
      */
-    public function setBaseClass($class);
+    public function setBaseClass(string $class): Builder;
 
     /**
      * Creates the container with the given configuration
-     *
-     * @return ContainerInterface
      */
-    public function getContainer();
+    public function getContainer(): ContainerInterface;
 }
