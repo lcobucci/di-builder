@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
-    colors="true" 
-    backupGlobals="false" 
-    backupStaticAttributes="false" 
+    colors="true"
+    backupGlobals="false"
+    backupStaticAttributes="false"
     bootstrap="vendor/autoload.php"
     verbose="true"
+    beStrictAboutChangesToGlobalState="true"
+    beStrictAboutCoversAnnotation="true"
+    beStrictAboutResourceUsageDuringSmallTests="true"
     beStrictAboutOutputDuringTests="true"
-    beStrictAboutTestSize="true"
     beStrictAboutTestsThatDoNotTestAnything="true"
     beStrictAboutTodoAnnotatedTests="true"
     checkForUnintentionallyCoveredCode="true"
@@ -18,11 +20,8 @@
         </testsuite>
     </testsuites>
 
-    
+
     <filter>
-        <blacklist>
-            <directory suffix=".php">vendor</directory>
-        </blacklist>
         <whitelist processUncoveredFilesFromWhitelist="true">
             <directory suffix=".php">src</directory>
         </whitelist>

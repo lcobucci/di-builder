@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Lcobucci\DependencyInjection;
 
 use Lcobucci\DependencyInjection\Config\ContainerConfiguration;
@@ -27,25 +29,13 @@ class Compiler
             return;
         }
 
-        $container = $this->getBuilder();
+        $container = new SymfonyBuilder();
 
         $this->loadFiles($container, $config, $generator);
         $this->configurePassList($container, $config);
         $this->updateDump($container, $config, $dump);
     }
 
-    /**
-     * @return SymfonyBuilder
-     */
-    protected function getBuilder()
-    {
-        return new SymfonyBuilder();
-    }
-
-    /**
-     * @param SymfonyBuilder $container
-     * @param ContainerConfiguration $config
-     */
     private function loadFiles(
         SymfonyBuilder $container,
         ContainerConfiguration $config,
@@ -58,24 +48,15 @@ class Compiler
         }
     }
 
-    /**
-     * @param SymfonyBuilder $container
-     * @param ContainerConfiguration $config
-     */
     private function configurePassList(
         SymfonyBuilder $container,
         ContainerConfiguration $config
     ) {
         foreach ($config->getPassList() as $pass) {
-            $container->addCompilerPass($pass[0], $pass[1]);
+            $container->addCompilerPass(...$pass);
         }
     }
 
-    /**
-     * @param SymfonyBuilder $container
-     * @param ContainerConfiguration $config
-     * @param ConfigCache $dump
-     */
     private function updateDump(
         SymfonyBuilder $container,
         ContainerConfiguration $config,
@@ -89,12 +70,7 @@ class Compiler
         );
     }
 
-    /**
-     * @param SymfonyBuilder $container
-     *
-     * @return DumperInterface
-     */
-    protected function getDumper(SymfonyBuilder $container)
+    protected function getDumper(SymfonyBuilder $container): DumperInterface
     {
         $dumper = new PhpDumper($container);
 

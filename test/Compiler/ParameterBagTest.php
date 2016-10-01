@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Lcobucci\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -6,65 +8,68 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 /**
  * @author Luís Otávio Cobucci Oblonczyk <lcobucci@gmail.com>
  */
-class ParameterBagTest extends \PHPUnit_Framework_TestCase
+final class ParameterBagTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
      *
-     * @covers Lcobucci\DependencyInjection\Compiler\ParameterBag::__construct
+     * @covers \Lcobucci\DependencyInjection\Compiler\ParameterBag::__construct
      */
     public function constructShouldInitializeTheParameters()
     {
         $pass = new ParameterBag(['test' => 1]);
 
-        $this->assertAttributeEquals(['test' => 1], 'parameters', $pass);
+        self::assertAttributeEquals(['test' => 1], 'parameters', $pass);
     }
 
     /**
      * @test
      *
-     * @covers Lcobucci\DependencyInjection\Compiler\ParameterBag::__construct
-     * @covers Lcobucci\DependencyInjection\Compiler\ParameterBag::set
+     * @covers \Lcobucci\DependencyInjection\Compiler\ParameterBag::__construct
+     * @covers \Lcobucci\DependencyInjection\Compiler\ParameterBag::set
      */
     public function setShouldConfigureAParameter()
     {
         $pass = new ParameterBag();
         $pass->set('test', 1);
 
-        $this->assertAttributeEquals(['test' => 1], 'parameters', $pass);
+        self::assertAttributeEquals(['test' => 1], 'parameters', $pass);
     }
 
     /**
      * @test
      *
-     * @covers Lcobucci\DependencyInjection\Compiler\ParameterBag::__construct
-     * @covers Lcobucci\DependencyInjection\Compiler\ParameterBag::get
+     * @covers \Lcobucci\DependencyInjection\Compiler\ParameterBag::get
+     *
+     * @uses \Lcobucci\DependencyInjection\Compiler\ParameterBag::__construct
      */
     public function getShouldReturnTheValueOfTheParameter()
     {
         $pass = new ParameterBag(['test' => 1]);
 
-        $this->assertEquals(1, $pass->get('test'));
+        self::assertEquals(1, $pass->get('test'));
     }
 
     /**
      * @test
      *
-     * @covers Lcobucci\DependencyInjection\Compiler\ParameterBag::__construct
-     * @covers Lcobucci\DependencyInjection\Compiler\ParameterBag::get
+     * @covers \Lcobucci\DependencyInjection\Compiler\ParameterBag::get
+     *
+     * @uses \Lcobucci\DependencyInjection\Compiler\ParameterBag::__construct
      */
     public function getShouldReturnTheDefaultValueWhenParameterDoesNotExist()
     {
         $pass = new ParameterBag();
 
-        $this->assertEquals(1, $pass->get('test', 1));
+        self::assertEquals(1, $pass->get('test', 1));
     }
 
     /**
      * @test
      *
-     * @covers Lcobucci\DependencyInjection\Compiler\ParameterBag::__construct
-     * @covers Lcobucci\DependencyInjection\Compiler\ParameterBag::process
+     * @covers \Lcobucci\DependencyInjection\Compiler\ParameterBag::process
+     *
+     * @uses \Lcobucci\DependencyInjection\Compiler\ParameterBag::__construct
      */
     public function invokeShouldAppendAllConfiguredParametersOnTheBuilder()
     {
@@ -72,6 +77,6 @@ class ParameterBagTest extends \PHPUnit_Framework_TestCase
         $pass = new ParameterBag(['test' => 1]);
 
         $pass->process($builder);
-        $this->assertEquals(1, $builder->getParameter('test'));
+        self::assertEquals(1, $builder->getParameter('test'));
     }
 }
