@@ -14,7 +14,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * @author Luís Otávio Cobucci Oblonczyk <lcobucci@gmail.com>
  */
-class ContainerBuilder implements Builder
+final class ContainerBuilder implements Builder
 {
     /**
      * @var ContainerConfiguration

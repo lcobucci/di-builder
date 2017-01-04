@@ -13,7 +13,7 @@ use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
 /**
  * @author Luís Otávio Cobucci Oblonczyk <lcobucci@gmail.com>
  */
-class Compiler
+final class Compiler
 {
     /**
      * @param ContainerConfiguration $config
@@ -70,7 +70,7 @@ class Compiler
         );
     }
 
-    protected function getDumper(SymfonyBuilder $container): DumperInterface
+    private function getDumper(SymfonyBuilder $container): DumperInterface
     {
         $dumper = new PhpDumper($container);
 

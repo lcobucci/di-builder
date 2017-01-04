@@ -5,10 +5,11 @@ namespace Lcobucci\DependencyInjection\Config;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
+
 /**
  * @author Luís Otávio Cobucci Oblonczyk <lcobucci@gmail.com>
  */
-class ContainerConfiguration
+final class ContainerConfiguration
 {
     /**
      * @var array

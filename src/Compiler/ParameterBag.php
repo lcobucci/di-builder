@@ -13,7 +13,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  *
  * @author Luís Otávio Cobucci Oblonczyk <lcobucci@gmail.com>
  */
-class ParameterBag implements CompilerPassInterface
+final class ParameterBag implements CompilerPassInterface
 {
     /**
      * @var array
