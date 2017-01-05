@@ -24,7 +24,7 @@ final class Compiler
         ContainerConfiguration $config,
         ConfigCache $dump,
         Generator $generator
-    ) {
+    ): void {
         if ($dump->isFresh()) {
             return;
         }
@@ -40,7 +40,7 @@ final class Compiler
         SymfonyBuilder $container,
         ContainerConfiguration $config,
         Generator $generator
-    ) {
+    ): void {
         $loader = $generator->getLoader($container, $config->getPaths());
 
         foreach ($config->getFiles() as $file) {
@@ -51,7 +51,7 @@ final class Compiler
     private function configurePassList(
         SymfonyBuilder $container,
         ContainerConfiguration $config
-    ) {
+    ): void {
         foreach ($config->getPassList() as $pass) {
             $container->addCompilerPass(...$pass);
         }
@@ -61,7 +61,7 @@ final class Compiler
         SymfonyBuilder $container,
         ContainerConfiguration $config,
         ConfigCache $dump
-    ) {
+    ): void {
         $container->compile();
 
         $dump->write(

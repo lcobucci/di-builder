@@ -1,6 +1,6 @@
 {
     "name": "lcobucci/di-builder",
-    "description": "Dependency Injection Builder for PHP 5.3+ applications",
+    "description": "Dependency Injection Builder for PHP 7.1+ applications",
     "type": "library",
     "authors": [
         {
@@ -16,15 +16,15 @@
         "BSD-3-Clause"
     ],
     "require": {
-        "php": ">=7.0",
-        "symfony/config": "~3.1",
-        "symfony/dependency-injection": "~3.1",
-        "symfony/expression-language": "~3.1"
+        "php": "~7.1",
+        "symfony/config": "~3.2",
+        "symfony/dependency-injection": "~3.2",
+        "symfony/expression-language": "~3.2"
     },
     "require-dev": {
-        "phpunit/phpunit": "~5.5",
+        "phpunit/phpunit": "~5.7",
         "squizlabs/php_codesniffer": "~2.7",
-        "symfony/proxy-manager-bridge": "~3.1",
+        "symfony/proxy-manager-bridge": "~3.2",
         "mikey179/vfsStream": "~1.6",
         "humbug/humbug": "dev-master@dev"
     },
@@ -40,6 +40,9 @@
         "psr-4": {
             "Lcobucci\\DependencyInjection\\": "test"
         }
+    },
+    "config": {
+        "preferred-install": "dist"
     },
     "extra": {
         "branch-alias": {

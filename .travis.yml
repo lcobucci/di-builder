@@ -1,12 +1,11 @@
 language: php
 
 php:
-  - 7
   - 7.1
   - nightly
 
 before_script:
-  - composer install --prefer-dist -o
+  - composer install -o
 
 script:
   - ./vendor/bin/phpunit --coverage-clover ./clover.xml

@@ -18,7 +18,7 @@ final class ContainerConfigurationTest extends \PHPUnit_Framework_TestCase
     /**
      * @before
      */
-    public function configureDependencies()
+    public function configureDependencies(): void
     {
         $this->pass = $this->createMock(CompilerPassInterface::class);
     }
@@ -28,7 +28,7 @@ final class ContainerConfigurationTest extends \PHPUnit_Framework_TestCase
      *
      * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
      */
-    public function constructShouldConfigureTheAttributes()
+    public function constructShouldConfigureTheAttributes(): void
     {
         $config = new ContainerConfiguration(
             ['services.xml'],
@@ -49,7 +49,7 @@ final class ContainerConfigurationTest extends \PHPUnit_Framework_TestCase
      *
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
      */
-    public function getFilesShouldReturnTheFileList()
+    public function getFilesShouldReturnTheFileList(): void
     {
         $config = new ContainerConfiguration(['services.xml']);
 
@@ -63,7 +63,7 @@ final class ContainerConfigurationTest extends \PHPUnit_Framework_TestCase
      *
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
      */
-    public function addFileShouldAppendANewFileToTheList()
+    public function addFileShouldAppendANewFileToTheList(): void
     {
         $config = new ContainerConfiguration();
         $config->addFile('services.xml');
@@ -78,7 +78,7 @@ final class ContainerConfigurationTest extends \PHPUnit_Framework_TestCase
      *
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
      */
-    public function getPassListShouldReturnTheHandlersList()
+    public function getPassListShouldReturnTheHandlersList(): void
     {
         $config = new ContainerConfiguration([], [[$this->pass, 'beforeOptimization']]);
 
@@ -92,7 +92,7 @@ final class ContainerConfigurationTest extends \PHPUnit_Framework_TestCase
      *
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
      */
-    public function addPassShouldAppendANewHandlerToTheList()
+    public function addPassShouldAppendANewHandlerToTheList(): void
     {
         $config = new ContainerConfiguration();
         $config->addPass($this->pass);
@@ -121,7 +121,7 @@ final class ContainerConfigurationTest extends \PHPUnit_Framework_TestCase
      *
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
      */
-    public function addPathShouldAppendANewPathToTheList()
+    public function addPathShouldAppendANewPathToTheList(): void
     {
         $config = new ContainerConfiguration();
         $config->addPath('services');
@@ -136,7 +136,7 @@ final class ContainerConfigurationTest extends \PHPUnit_Framework_TestCase
      *
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
      */
-    public function setBaseClassShouldChangeTheAttribute()
+    public function setBaseClassShouldChangeTheAttribute(): ContainerConfiguration
     {
         $config = new ContainerConfiguration();
         $config->setBaseClass('Test');
@@ -153,7 +153,7 @@ final class ContainerConfigurationTest extends \PHPUnit_Framework_TestCase
      *
      * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getBaseClass
      */
-    public function getBaseClassShouldReturnTheAttributeValue(ContainerConfiguration $config)
+    public function getBaseClassShouldReturnTheAttributeValue(ContainerConfiguration $config): void
     {
         self::assertEquals('Test', $config->getBaseClass());
     }
@@ -165,7 +165,7 @@ final class ContainerConfigurationTest extends \PHPUnit_Framework_TestCase
      *
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
      */
-    public function getDumpDirShouldReturnTheAttributeValue()
+    public function getDumpDirShouldReturnTheAttributeValue(): void
     {
         $config = new ContainerConfiguration();
 
@@ -179,7 +179,7 @@ final class ContainerConfigurationTest extends \PHPUnit_Framework_TestCase
      *
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
      */
-    public function setDumpDirShouldChangeTheAttribute()
+    public function setDumpDirShouldChangeTheAttribute(): void
     {
         $config = new ContainerConfiguration();
         $config->setDumpDir('/test/');
@@ -194,7 +194,7 @@ final class ContainerConfigurationTest extends \PHPUnit_Framework_TestCase
      *
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
      */
-    public function getClassNameShouldCreateAHashFromFilesAndPaths()
+    public function getClassNameShouldCreateAHashFromFilesAndPaths(): void
     {
         $config = new ContainerConfiguration(['services.xml'], [], ['config']);
 
@@ -212,7 +212,7 @@ final class ContainerConfigurationTest extends \PHPUnit_Framework_TestCase
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getClassName
      */
-    public function getDumpFileShouldReturnTheFullPathOfDumpFile()
+    public function getDumpFileShouldReturnTheFullPathOfDumpFile(): void
     {
         $config = new ContainerConfiguration();
 
@@ -230,7 +230,7 @@ final class ContainerConfigurationTest extends \PHPUnit_Framework_TestCase
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getClassName
      */
-    public function getDumpOptionsShouldReturnTheDumpingInformations()
+    public function getDumpOptionsShouldReturnTheDumpingInformation(): void
     {
         $config = new ContainerConfiguration();
         $options = ['class' => 'Project' . md5('') . 'ServiceContainer'];
@@ -247,7 +247,7 @@ final class ContainerConfigurationTest extends \PHPUnit_Framework_TestCase
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getClassName
      */
-    public function getDumpOptionsShouldIncludeBaseWhenWasConfigured()
+    public function getDumpOptionsShouldIncludeBaseWhenWasConfigured(): void
     {
         $config = new ContainerConfiguration();
         $config->setBaseClass('Test');

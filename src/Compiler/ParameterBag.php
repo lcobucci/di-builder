@@ -25,7 +25,7 @@ final class ParameterBag implements CompilerPassInterface
         $this->parameters = $parameters;
     }
 
-    public function set(string $name, $value)
+    public function set(string $name, $value): void
     {
         $this->parameters[$name] = $value;
     }
@@ -42,7 +42,7 @@ final class ParameterBag implements CompilerPassInterface
     /**
      * {@inheritdoc}
      */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         $container->getParameterBag()->add($this->parameters);
     }

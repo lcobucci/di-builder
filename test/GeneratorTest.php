@@ -30,7 +30,7 @@ final class GeneratorTest extends \PHPUnit_Framework_TestCase
     /**
      * @before
      */
-    public function configureDependencies()
+    public function configureDependencies(): void
     {
         $this->compiler = new Compiler();
         $this->generator = $this->getMockForAbstractClass(Generator::class, [$this->compiler]);
@@ -41,7 +41,7 @@ final class GeneratorTest extends \PHPUnit_Framework_TestCase
      *
      * @covers \Lcobucci\DependencyInjection\Generator::__construct
      */
-    public function constructShouldConfigureTheCompiler()
+    public function constructShouldConfigureTheCompiler(): void
     {
         self::assertAttributeSame($this->compiler, 'compiler', $this->generator);
     }
@@ -51,7 +51,7 @@ final class GeneratorTest extends \PHPUnit_Framework_TestCase
      *
      * @covers \Lcobucci\DependencyInjection\Generator::__construct
      */
-    public function constructShouldCreateACompilerWhenNotInformed()
+    public function constructShouldCreateACompilerWhenNotInformed(): void
     {
         $generator = $this->getMockForAbstractClass(Generator::class);
 
@@ -68,7 +68,7 @@ final class GeneratorTest extends \PHPUnit_Framework_TestCase
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration
      * @uses \Lcobucci\DependencyInjection\Compiler
      */
-    public function generateShouldCompileAndLoadTheContainer()
+    public function generateShouldCompileAndLoadTheContainer(): void
     {
         vfsStream::setup(
             'tests',

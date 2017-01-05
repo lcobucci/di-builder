@@ -17,7 +17,7 @@ final class YamlTest extends \PHPUnit_Framework_TestCase
      * @covers \Lcobucci\DependencyInjection\Generator::__construct
      * @covers \Lcobucci\DependencyInjection\Generators\Yaml::getLoader
      */
-    public function getLoaderShouldReturnAYamlLoader()
+    public function getLoaderShouldReturnAYamlLoader(): void
     {
         $container = $this->createMock(ContainerBuilder::class);
         $generator = new Yaml();

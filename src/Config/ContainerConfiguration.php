@@ -79,10 +79,7 @@ final class ContainerConfiguration
         $this->paths[] = $path;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getBaseClass()
+    public function getBaseClass(): ?string
     {
         return $this->baseClass;
     }

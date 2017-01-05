@@ -51,7 +51,7 @@ final class ContainerBuilder implements Builder
     /**
      * Configures the default parameters and appends the handler
      */
-    protected function setDefaultConfiguration()
+    private function setDefaultConfiguration(): void
     {
         $this->parameterBag->set('app.devmode', false);
 

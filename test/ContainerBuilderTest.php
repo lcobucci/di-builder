@@ -34,7 +34,7 @@ final class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
     /**
      * @before
      */
-    public function configureDependencies()
+    public function configureDependencies(): void
     {
         $this->generator = $this->getMockForAbstractClass(Generator::class, [], '', false, true, true, ['generate']);
         $this->config = new ContainerConfiguration();
@@ -52,7 +52,7 @@ final class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
      * @uses \Lcobucci\DependencyInjection\Generator
      * @uses \Lcobucci\DependencyInjection\Generators\Xml
      */
-    public function constructShouldConfigureTheDefaultAttributes()
+    public function constructShouldConfigureTheDefaultAttributes(): void
     {
         $builder = new ContainerBuilder();
 
@@ -70,7 +70,7 @@ final class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration
      * @uses \Lcobucci\DependencyInjection\Compiler\ParameterBag
      */
-    public function constructShouldReceiveTheDependenciesAsArguments()
+    public function constructShouldReceiveTheDependenciesAsArguments(): void
     {
         $builder = new ContainerBuilder($this->config, $this->generator, $this->parameterBag);
 
@@ -92,7 +92,7 @@ final class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration
      * @uses \Lcobucci\DependencyInjection\Compiler\ParameterBag
      */
-    public function setGeneratorShouldChangeTheAttributeAndReturnSelf()
+    public function setGeneratorShouldChangeTheAttributeAndReturnSelf(): void
     {
         $builder = new ContainerBuilder($this->config, $this->generator, $this->parameterBag);
         $generator = $this->getMockForAbstractClass(Generator::class, [], '', false);
@@ -112,7 +112,7 @@ final class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration
      * @uses \Lcobucci\DependencyInjection\Compiler\ParameterBag
      */
-    public function addFileShouldAppendANewFileOnTheListAndReturnSelf()
+    public function addFileShouldAppendANewFileOnTheListAndReturnSelf(): void
     {
         $builder = new ContainerBuilder($this->config, $this->generator, $this->parameterBag);
 
@@ -131,7 +131,7 @@ final class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration
      * @uses \Lcobucci\DependencyInjection\Compiler\ParameterBag
      */
-    public function addPassShouldAppendANewHandlerOnTheListAndReturnSelf()
+    public function addPassShouldAppendANewHandlerOnTheListAndReturnSelf(): void
     {
         $builder = new ContainerBuilder($this->config, $this->generator, $this->parameterBag);
         $pass = $this->createMock(CompilerPassInterface::class);
@@ -151,7 +151,7 @@ final class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration
      * @uses \Lcobucci\DependencyInjection\Compiler\ParameterBag
      */
-    public function setDumpDirShouldChangeTheConfigureAndReturnSelf()
+    public function setDumpDirShouldChangeTheConfigureAndReturnSelf(): void
     {
         $builder = new ContainerBuilder($this->config, $this->generator, $this->parameterBag);
 
@@ -170,7 +170,7 @@ final class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration
      * @uses \Lcobucci\DependencyInjection\Compiler\ParameterBag
      */
-    public function addPathShouldAppendANewPathOnTheListAndReturnSelf()
+    public function addPathShouldAppendANewPathOnTheListAndReturnSelf(): void
     {
         $builder = new ContainerBuilder($this->config, $this->generator, $this->parameterBag);
 
@@ -189,7 +189,7 @@ final class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration
      * @uses \Lcobucci\DependencyInjection\Compiler\ParameterBag
      */
-    public function setBaseClassShouldConfigureTheBaseClassAndReturnSelf()
+    public function setBaseClassShouldConfigureTheBaseClassAndReturnSelf(): void
     {
         $builder = new ContainerBuilder($this->config, $this->generator, $this->parameterBag);
 
@@ -208,7 +208,7 @@ final class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration
      * @uses \Lcobucci\DependencyInjection\Compiler\ParameterBag
      */
-    public function useDevelopmentModeShouldChangeTheParameterAndReturnSelf()
+    public function useDevelopmentModeShouldChangeTheParameterAndReturnSelf(): void
     {
         $builder = new ContainerBuilder($this->config, $this->generator, $this->parameterBag);
 
@@ -227,7 +227,7 @@ final class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration
      * @uses \Lcobucci\DependencyInjection\Compiler\ParameterBag
      */
-    public function setParameterShouldConfigureTheParameterAndReturnSelf()
+    public function setParameterShouldConfigureTheParameterAndReturnSelf(): void
     {
         $builder = new ContainerBuilder($this->config, $this->generator, $this->parameterBag);
 
@@ -247,7 +247,7 @@ final class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration
      * @uses \Lcobucci\DependencyInjection\Compiler\ParameterBag
      */
-    public function getContainerShouldGenerateAndReturnTheContainer()
+    public function getContainerShouldGenerateAndReturnTheContainer(): void
     {
         $builder = new ContainerBuilder($this->config, $this->generator, $this->parameterBag);
         $container = $this->createMock(ContainerInterface::class);

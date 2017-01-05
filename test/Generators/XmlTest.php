@@ -17,7 +17,7 @@ final class XmlTest extends \PHPUnit_Framework_TestCase
      * @covers \Lcobucci\DependencyInjection\Generator::__construct
      * @covers \Lcobucci\DependencyInjection\Generators\Xml::getLoader
      */
-    public function getLoaderShouldReturnAXmlLoader()
+    public function getLoaderShouldReturnAXmlLoader(): void
     {
         $container = $this->createMock(ContainerBuilder::class);
         $generator = new Xml();
