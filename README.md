@@ -8,7 +8,7 @@
 [![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/lcobucci/di-builder/master.svg?style=flat-square)](https://scrutinizer-ci.com/g/lcobucci/di-builder/?branch=master)
 
 This library tries to help the usage of the
-[Symfony2 dependecy injection Component](http://symfony.com/doc/current/components/dependency_injection/introduction.html)
+[Symfony dependecy injection Component](http://symfony.com/doc/current/components/dependency_injection/introduction.html)
 by offering an easy interface to build and load your dependency injection container.
 
 ## Features
