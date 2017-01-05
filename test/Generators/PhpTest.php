@@ -17,7 +17,7 @@ final class PhpTest extends \PHPUnit_Framework_TestCase
      * @covers \Lcobucci\DependencyInjection\Generator::__construct
      * @covers \Lcobucci\DependencyInjection\Generators\Php::getLoader
      */
-    public function getLoaderShouldReturnAPhpLoader()
+    public function getLoaderShouldReturnAPhpLoader(): void
     {
         $container = $this->createMock(ContainerBuilder::class);
         $generator = new Php();

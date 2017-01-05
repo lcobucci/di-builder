@@ -13,7 +13,7 @@ use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
 /**
  * @author Luís Otávio Cobucci Oblonczyk <lcobucci@gmail.com>
  */
-class Compiler
+final class Compiler
 {
     /**
      * @param ContainerConfiguration $config
@@ -24,7 +24,7 @@ class Compiler
         ContainerConfiguration $config,
         ConfigCache $dump,
         Generator $generator
-    ) {
+    ): void {
         if ($dump->isFresh()) {
             return;
         }
@@ -40,7 +40,7 @@ class Compiler
         SymfonyBuilder $container,
         ContainerConfiguration $config,
         Generator $generator
-    ) {
+    ): void {
         $loader = $generator->getLoader($container, $config->getPaths());
 
         foreach ($config->getFiles() as $file) {
@@ -51,7 +51,7 @@ class Compiler
     private function configurePassList(
         SymfonyBuilder $container,
         ContainerConfiguration $config
-    ) {
+    ): void {
         foreach ($config->getPassList() as $pass) {
             $container->addCompilerPass(...$pass);
         }
@@ -61,7 +61,7 @@ class Compiler
         SymfonyBuilder $container,
         ContainerConfiguration $config,
         ConfigCache $dump
-    ) {
+    ): void {
         $container->compile();
 
         $dump->write(
@@ -70,7 +70,7 @@ class Compiler
         );
     }
 
-    protected function getDumper(SymfonyBuilder $container): DumperInterface
+    private function getDumper(SymfonyBuilder $container): DumperInterface
     {
         $dumper = new PhpDumper($container);
 

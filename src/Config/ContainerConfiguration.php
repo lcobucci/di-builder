@@ -5,10 +5,11 @@ namespace Lcobucci\DependencyInjection\Config;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
+
 /**
  * @author Luís Otávio Cobucci Oblonczyk <lcobucci@gmail.com>
  */
-class ContainerConfiguration
+final class ContainerConfiguration
 {
     /**
      * @var array
@@ -78,10 +79,7 @@ class ContainerConfiguration
         $this->paths[] = $path;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getBaseClass()
+    public function getBaseClass(): ?string
     {
         return $this->baseClass;
     }

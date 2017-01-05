@@ -18,7 +18,7 @@ final class DelegatingTest extends \PHPUnit_Framework_TestCase
      * @covers \Lcobucci\DependencyInjection\Generator::__construct
      * @covers \Lcobucci\DependencyInjection\Generators\Delegating::getLoader
      */
-    public function getLoaderShouldReturnADelegatingLoaderWithTheOtherLoaders()
+    public function getLoaderShouldReturnADelegatingLoaderWithTheOtherLoaders(): void
     {
         $container = $this->createMock(ContainerBuilder::class);
         $generator = new Delegating();

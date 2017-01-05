@@ -15,7 +15,7 @@ final class ParameterBagTest extends \PHPUnit_Framework_TestCase
      *
      * @covers \Lcobucci\DependencyInjection\Compiler\ParameterBag::__construct
      */
-    public function constructShouldInitializeTheParameters()
+    public function constructShouldInitializeTheParameters(): void
     {
         $pass = new ParameterBag(['test' => 1]);
 
@@ -28,7 +28,7 @@ final class ParameterBagTest extends \PHPUnit_Framework_TestCase
      * @covers \Lcobucci\DependencyInjection\Compiler\ParameterBag::__construct
      * @covers \Lcobucci\DependencyInjection\Compiler\ParameterBag::set
      */
-    public function setShouldConfigureAParameter()
+    public function setShouldConfigureAParameter(): void
     {
         $pass = new ParameterBag();
         $pass->set('test', 1);
@@ -43,7 +43,7 @@ final class ParameterBagTest extends \PHPUnit_Framework_TestCase
      *
      * @uses \Lcobucci\DependencyInjection\Compiler\ParameterBag::__construct
      */
-    public function getShouldReturnTheValueOfTheParameter()
+    public function getShouldReturnTheValueOfTheParameter(): void
     {
         $pass = new ParameterBag(['test' => 1]);
 
@@ -57,7 +57,7 @@ final class ParameterBagTest extends \PHPUnit_Framework_TestCase
      *
      * @uses \Lcobucci\DependencyInjection\Compiler\ParameterBag::__construct
      */
-    public function getShouldReturnTheDefaultValueWhenParameterDoesNotExist()
+    public function getShouldReturnTheDefaultValueWhenParameterDoesNotExist(): void
     {
         $pass = new ParameterBag();
 
@@ -71,7 +71,7 @@ final class ParameterBagTest extends \PHPUnit_Framework_TestCase
      *
      * @uses \Lcobucci\DependencyInjection\Compiler\ParameterBag::__construct
      */
-    public function invokeShouldAppendAllConfiguredParametersOnTheBuilder()
+    public function invokeShouldAppendAllConfiguredParametersOnTheBuilder(): void
     {
         $builder = new ContainerBuilder();
         $pass = new ParameterBag(['test' => 1]);

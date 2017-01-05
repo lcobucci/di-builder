@@ -14,7 +14,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * @author Luís Otávio Cobucci Oblonczyk <lcobucci@gmail.com>
  */
-class ContainerBuilder implements Builder
+final class ContainerBuilder implements Builder
 {
     /**
      * @var ContainerConfiguration
@@ -51,7 +51,7 @@ class ContainerBuilder implements Builder
     /**
      * Configures the default parameters and appends the handler
      */
-    protected function setDefaultConfiguration()
+    private function setDefaultConfiguration(): void
     {
         $this->parameterBag->set('app.devmode', false);
 

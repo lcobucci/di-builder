@@ -13,7 +13,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  *
  * @author Luís Otávio Cobucci Oblonczyk <lcobucci@gmail.com>
  */
-class ParameterBag implements CompilerPassInterface
+final class ParameterBag implements CompilerPassInterface
 {
     /**
      * @var array
@@ -25,7 +25,7 @@ class ParameterBag implements CompilerPassInterface
         $this->parameters = $parameters;
     }
 
-    public function set(string $name, $value)
+    public function set(string $name, $value): void
     {
         $this->parameters[$name] = $value;
     }
@@ -42,7 +42,7 @@ class ParameterBag implements CompilerPassInterface
     /**
      * {@inheritdoc}
      */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         $container->getParameterBag()->add($this->parameters);
     }
