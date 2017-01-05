@@ -1,10 +1,11 @@
 # di-builder
 
-[![Build Status](https://secure.travis-ci.org/lcobucci/di-builder.png?branch=master)](http://travis-ci.org/#!/lcobucci/di-builder)
+[![Total Downloads](https://img.shields.io/packagist/dt/lcobucci/di-builder.svg?style=flat-square)](https://packagist.org/packages/lcobucci/di-builder)
+[![Latest Stable Version](https://img.shields.io/packagist/v/lcobucci/di-builder.svg?style=flat-square)](https://packagist.org/packages/lcobucci/di-builder)
+
+[![Build Status](https://img.shields.io/travis/lcobucci/di-builder.svg?style=flat-square)](http://travis-ci.org/#!/lcobucci/di-builder)
 [![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/lcobucci/di-builder/master.svg?style=flat-square)](https://scrutinizer-ci.com/g/lcobucci/di-builder/?branch=master)
 [![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/lcobucci/di-builder/master.svg?style=flat-square)](https://scrutinizer-ci.com/g/lcobucci/di-builder/?branch=master)
-[![Total Downloads](https://poser.pugx.org/lcobucci/di-builder/downloads.png)](https://packagist.org/packages/lcobucci/di-builder)
-[![Latest Stable Version](https://poser.pugx.org/lcobucci/di-builder/v/stable.png)](https://packagist.org/packages/lcobucci/di-builder)
 
 This library tries to help the usage of the
 [Symfony2 dependecy injection Component](http://symfony.com/doc/current/components/dependency_injection/introduction.html)
@@ -27,10 +28,10 @@ by offering an easy interface to build and load your dependency injection contai
 
 ## Installation using [composer](http://getcomposer.org/)
 
-Just add ```"lcobucci/di-builder": "~4.0"``` to your composer.json and do a ```composer update``` or you can run:
+Just add ```"lcobucci/di-builder": "~5.0"``` to your composer.json and do a ```composer update``` or you can run:
 
 ```bash
-composer require lcobucci/di-builder:~4.0
+composer require lcobucci/di-builder:~5.0
 ```
 
 ## Basic usage
@@ -73,7 +74,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 
-class EventListenerInjector implements CompilerPassInterface
+final class EventListenerInjector implements CompilerPassInterface
 {
     /**
      * {@inheritdoc}
