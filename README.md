@@ -45,7 +45,7 @@ Take a look:
 <?php
 /* Composer autoloader was required before this */ 
 
-use Lcobucci\DependencyInjection\Compiler\ContainerAware;
+use Your\Own\Compiler\DoSomethingPass;
 use Lcobucci\DependencyInjection\ContainerBuilder;
 use Lcobucci\DependencyInjection\Generators\Php as PhpGenerator;
 
@@ -56,7 +56,7 @@ $container = (new ContainerBuilder())->setGenerator(new PhpGenerator()) // Chang
                                      ->useDevelopmentMode() // Enables the development mode (production is the default)
                                      ->setDumpDir(__DIR__ . '/tmp') // Changes the dump directory
                                      ->setParameter('app.basedir', __DIR__) // Configures a dynamic parameter
-                                     ->addPass(new ContainerAware()) // Appends a new compiler pass
+                                     ->addPass(new DoSomethingPass()) // Appends a new compiler pass
                                      ->getContainer(); // Retrieves the container =)
 ```
 
