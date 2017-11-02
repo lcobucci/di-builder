@@ -61,4 +61,9 @@ interface Builder
      * Creates the container with the given configuration
      */
     public function getContainer(): ContainerInterface;
+
+    /**
+     * Creates a test container with the given configuration
+     */
+    public function getTestContainer(): ContainerInterface;
 }
