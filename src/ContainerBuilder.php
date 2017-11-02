@@ -6,6 +6,7 @@ namespace Lcobucci\DependencyInjection;
 use Lcobucci\DependencyInjection\Compiler\ParameterBag;
 use Lcobucci\DependencyInjection\Config\ContainerConfiguration;
 use Lcobucci\DependencyInjection\Generators\Xml as XmlGenerator;
+use Lcobucci\DependencyInjection\Testing\MakeServicesPublic;
 use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
@@ -140,14 +141,6 @@ final class ContainerBuilder implements Builder
         return $this;
     }
 
-    protected function createDumpCache(): ConfigCache
-    {
-        return new ConfigCache(
-            $this->config->getDumpFile(),
-            $this->parameterBag->get('app.devmode')
-        );
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -155,7 +148,21 @@ final class ContainerBuilder implements Builder
     {
         return $this->generator->generate(
             $this->config,
-            $this->createDumpCache()
+            new ConfigCache(
+                $this->config->getDumpFile(),
+                $this->parameterBag->get('app.devmode')
+            )
+        );
+    }
+
+    public function getTestContainer(): ContainerInterface
+    {
+        $config = clone $this->config;
+        $config->addPass(new MakeServicesPublic());
+
+        return $this->generator->generate(
+            $config,
+            new ConfigCache($config->getDumpFile('test_'), true)
         );
     }
 }

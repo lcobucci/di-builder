@@ -6,6 +6,7 @@ namespace Lcobucci\DependencyInjection;
 use Lcobucci\DependencyInjection\Compiler\ParameterBag;
 use Lcobucci\DependencyInjection\Config\ContainerConfiguration;
 use Lcobucci\DependencyInjection\Generators\Xml as XmlGenerator;
+use Lcobucci\DependencyInjection\Testing\MakeServicesPublic;
 use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
@@ -238,7 +239,6 @@ final class ContainerBuilderTest extends \PHPUnit\Framework\TestCase
     /**
      * @test
      *
-     * @covers \Lcobucci\DependencyInjection\ContainerBuilder::createDumpCache
      * @covers \Lcobucci\DependencyInjection\ContainerBuilder::getContainer
      *
      * @uses \Lcobucci\DependencyInjection\ContainerBuilder::__construct
@@ -254,9 +254,39 @@ final class ContainerBuilderTest extends \PHPUnit\Framework\TestCase
 
         $this->generator->expects($this->once())
                         ->method('generate')
-                        ->with($this->config, $this->isInstanceOf(ConfigCache::class))
+                        ->with($this->config, $this->equalTo(new ConfigCache($this->config->getDumpFile(), false)))
                         ->willReturn($container);
 
         self::assertSame($container, $builder->getContainer());
+    }
+
+    /**
+     * @test
+     *
+     * @covers \Lcobucci\DependencyInjection\ContainerBuilder::getTestContainer
+     *
+     * @uses \Lcobucci\DependencyInjection\ContainerBuilder::__construct
+     * @uses \Lcobucci\DependencyInjection\ContainerBuilder::setDefaultConfiguration
+     *
+     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration
+     * @uses \Lcobucci\DependencyInjection\Compiler\ParameterBag
+     */
+    public function getTestContainerShouldGenerateAndReturnTheContainer(): void
+    {
+        $builder   = new ContainerBuilder($this->config, $this->generator, $this->parameterBag);
+        $container = $this->createMock(ContainerInterface::class);
+
+        $config = new ContainerConfiguration();
+        $config->addPass($this->parameterBag);
+        $config->addPass(new MakeServicesPublic());
+
+        $cacheConfig = new ConfigCache($config->getDumpFile('test_'), true);
+
+        $this->generator->expects($this->once())
+                        ->method('generate')
+                        ->with($this->equalTo($config), $this->equalTo($cacheConfig))
+                        ->willReturn($container);
+
+        self::assertSame($container, $builder->getTestContainer());
     }
 }
