@@ -73,7 +73,7 @@ final class GeneratorTest extends \PHPUnit\Framework\TestCase
         vfsStream::setup(
             'tests',
             null,
-            ['services.yml' => 'services: { testing: { class: stdClass } }']
+            ['services.yml' => 'services: { testing: { class: stdClass, public: true } }']
         );
 
         $config = new ContainerConfiguration([vfsStream::url('tests/services.yml')]);

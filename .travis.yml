@@ -27,7 +27,11 @@ jobs:
   include:
     - stage: Test
       env: DEPENDENCIES=low
-      install: travis_retry composer update --prefer-dist --prefer-lowest
+      install: travis_retry composer update --prefer-lowest
+
+    - stage: Test
+      env: DEPENDENCIES=stable
+      install: travis_retry composer update --prefer-stable
 
     - stage: Coverage
       before_script:
