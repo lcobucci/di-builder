@@ -42,8 +42,8 @@ final class ContainerBuilder implements Builder
         ParameterBag $parameterBag = null
     ) {
         $this->parameterBag = $parameterBag ?: new ParameterBag();
-        $this->generator = $generator ?: new XmlGenerator();
-        $this->config = $config ?: new ContainerConfiguration();
+        $this->generator    = $generator ?: new XmlGenerator();
+        $this->config       = $config ?: new ContainerConfiguration();
 
         $this->setDefaultConfiguration();
     }

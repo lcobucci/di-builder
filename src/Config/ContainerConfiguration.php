@@ -41,10 +41,10 @@ final class ContainerConfiguration
         array $passList = [],
         array $paths = []
     ) {
-        $this->files = $files;
+        $this->files    = $files;
         $this->passList = $passList;
-        $this->paths = $paths;
-        $this->dumpDir = sys_get_temp_dir();
+        $this->paths    = $paths;
+        $this->dumpDir  = sys_get_temp_dir();
     }
 
     public function getFiles(): array

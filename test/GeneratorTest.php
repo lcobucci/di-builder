@@ -32,7 +32,7 @@ final class GeneratorTest extends \PHPUnit\Framework\TestCase
      */
     public function configureDependencies(): void
     {
-        $this->compiler = new Compiler();
+        $this->compiler  = new Compiler();
         $this->generator = $this->getMockForAbstractClass(Generator::class, [$this->compiler]);
     }
 
@@ -77,7 +77,7 @@ final class GeneratorTest extends \PHPUnit\Framework\TestCase
         );
 
         $config = new ContainerConfiguration([vfsStream::url('tests/services.yml')]);
-        $dump = new ConfigCache(vfsStream::url('tests/container.php'), false);
+        $dump   = new ConfigCache(vfsStream::url('tests/container.php'), false);
 
         $this->generator->method('getLoader')->willReturnCallback(
             function (SymfonyBuilder $container, array $paths) {
