@@ -104,9 +104,9 @@ final class ContainerConfiguration
         return 'Project' . md5(implode(';', array_merge($this->files, $this->paths))) . 'ServiceContainer';
     }
 
-    public function getDumpFile(): string
+    public function getDumpFile(string $prefix = ''): string
     {
-        return $this->dumpDir . DIRECTORY_SEPARATOR . $this->getClassName() . '.php';
+        return $this->dumpDir . DIRECTORY_SEPARATOR . $prefix . $this->getClassName() . '.php';
     }
 
     public function getDumpOptions(): array
