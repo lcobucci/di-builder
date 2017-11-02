@@ -14,7 +14,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * @author Luís Otávio Cobucci Oblonczyk <lcobucci@gmail.com>
  */
-final class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
+final class ContainerBuilderTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var Generator|\PHPUnit_Framework_MockObject_MockObject

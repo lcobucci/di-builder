@@ -8,7 +8,7 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 /**
  * @author Luís Otávio Cobucci Oblonczyk <lcobucci@gmail.com>
  */
-final class ContainerConfigurationTest extends \PHPUnit_Framework_TestCase
+final class ContainerConfigurationTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var CompilerPassInterface

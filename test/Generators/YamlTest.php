@@ -9,7 +9,7 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 /**
  * @author Luís Otávio Cobucci Oblonczyk <lcobucci@gmail.com>
  */
-final class YamlTest extends \PHPUnit_Framework_TestCase
+final class YamlTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @test

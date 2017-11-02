@@ -15,7 +15,7 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 /**
  * @author Luís Otávio Cobucci Oblonczyk <lcobucci@gmail.com>
  */
-final class GeneratorTest extends \PHPUnit_Framework_TestCase
+final class GeneratorTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var Generator|\PHPUnit_Framework_MockObject_MockObject

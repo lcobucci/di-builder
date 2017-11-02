@@ -10,7 +10,7 @@ use Symfony\Component\Config\Loader\LoaderResolver;
 /**
  * @author Luís Otávio Cobucci Oblonczyk <lcobucci@gmail.com>
  */
-final class DelegatingTest extends \PHPUnit_Framework_TestCase
+final class DelegatingTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @test

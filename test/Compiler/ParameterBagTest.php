@@ -8,7 +8,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 /**
  * @author Luís Otávio Cobucci Oblonczyk <lcobucci@gmail.com>
  */
-final class ParameterBagTest extends \PHPUnit_Framework_TestCase
+final class ParameterBagTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @test
