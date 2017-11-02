@@ -59,9 +59,6 @@ final class ContainerBuilder implements Builder
         $this->config->addPass($this->parameterBag);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setGenerator(Generator $generator): Builder
     {
         $this->generator = $generator;
@@ -69,9 +66,6 @@ final class ContainerBuilder implements Builder
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function addFile(string $file): Builder
     {
         $this->config->addFile($file);
@@ -79,9 +73,6 @@ final class ContainerBuilder implements Builder
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function addPass(
         CompilerPassInterface $pass,
         string $type = PassConfig::TYPE_BEFORE_OPTIMIZATION
@@ -91,9 +82,6 @@ final class ContainerBuilder implements Builder
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function useDevelopmentMode(): Builder
     {
         $this->parameterBag->set('app.devmode', true);
@@ -101,9 +89,6 @@ final class ContainerBuilder implements Builder
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setDumpDir(string $dir): Builder
     {
         $this->config->setDumpDir($dir);
@@ -111,9 +96,6 @@ final class ContainerBuilder implements Builder
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setParameter(string $name, $value): Builder
     {
         $this->parameterBag->set($name, $value);
@@ -121,9 +103,6 @@ final class ContainerBuilder implements Builder
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function addPath(string $path): Builder
     {
         $this->config->addPath($path);
@@ -131,9 +110,6 @@ final class ContainerBuilder implements Builder
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setBaseClass(string $class): Builder
     {
         $this->config->setBaseClass($class);
@@ -141,9 +117,6 @@ final class ContainerBuilder implements Builder
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getContainer(): ContainerInterface
     {
         return $this->generator->generate(

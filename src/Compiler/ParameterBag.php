@@ -39,9 +39,6 @@ final class ParameterBag implements CompilerPassInterface
         return $this->parameters[$name];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function process(ContainerBuilder $container): void
     {
         $container->getParameterBag()->add($this->parameters);
