@@ -225,6 +225,24 @@ final class ContainerConfigurationTest extends \PHPUnit\Framework\TestCase
     /**
      * @test
      *
+     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getDumpFile
+     *
+     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
+     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getClassName
+     */
+    public function getDumpFileCanAlsoAddPrefixForTheFile(): void
+    {
+        $config = new ContainerConfiguration();
+
+        self::assertEquals(
+            sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'test_Project' . md5('') . 'ServiceContainer.php',
+            $config->getDumpFile('test_')
+        );
+    }
+
+    /**
+     * @test
+     *
      * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getDumpOptions
      *
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
