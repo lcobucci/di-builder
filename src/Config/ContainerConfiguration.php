@@ -113,7 +113,7 @@ final class ContainerConfiguration
     {
         $options = ['class' => $this->getClassName()];
 
-        if ($this->baseClass) {
+        if ($this->baseClass !== null) {
             $options['base_class'] = $this->baseClass;
         }
 
