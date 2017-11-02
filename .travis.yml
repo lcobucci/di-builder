@@ -53,3 +53,7 @@ jobs:
         - if [[ ! $(php -m | grep -si xdebug) ]]; then echo "xdebug required for coverage"; exit 1; fi
       script:
         - ./vendor/bin/humbug
+
+    - stage: Static analysis
+      script:
+        - ./vendor/bin/phpstan analyse -c phpstan.neon -l max src test

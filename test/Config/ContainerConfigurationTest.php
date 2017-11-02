@@ -11,7 +11,7 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 final class ContainerConfigurationTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var CompilerPassInterface
+     * @var CompilerPassInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     private $pass;
 
