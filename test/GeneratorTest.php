@@ -15,7 +15,7 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 /**
  * @author Luís Otávio Cobucci Oblonczyk <lcobucci@gmail.com>
  */
-final class GeneratorTest extends \PHPUnit_Framework_TestCase
+final class GeneratorTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var Generator|\PHPUnit_Framework_MockObject_MockObject
@@ -32,7 +32,7 @@ final class GeneratorTest extends \PHPUnit_Framework_TestCase
      */
     public function configureDependencies(): void
     {
-        $this->compiler = new Compiler();
+        $this->compiler  = new Compiler();
         $this->generator = $this->getMockForAbstractClass(Generator::class, [$this->compiler]);
     }
 
@@ -73,11 +73,11 @@ final class GeneratorTest extends \PHPUnit_Framework_TestCase
         vfsStream::setup(
             'tests',
             null,
-            ['services.yml' => 'services: { testing: { class: stdClass } }']
+            ['services.yml' => 'services: { testing: { class: stdClass, public: true } }']
         );
 
         $config = new ContainerConfiguration([vfsStream::url('tests/services.yml')]);
-        $dump = new ConfigCache(vfsStream::url('tests/container.php'), false);
+        $dump   = new ConfigCache(vfsStream::url('tests/container.php'), false);
 
         $this->generator->method('getLoader')->willReturnCallback(
             function (SymfonyBuilder $container, array $paths) {

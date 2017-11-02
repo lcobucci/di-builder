@@ -14,7 +14,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * @author Luís Otávio Cobucci Oblonczyk <lcobucci@gmail.com>
  */
-final class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
+final class ContainerBuilderTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var Generator|\PHPUnit_Framework_MockObject_MockObject
@@ -36,8 +36,8 @@ final class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function configureDependencies(): void
     {
-        $this->generator = $this->getMockForAbstractClass(Generator::class, [], '', false, true, true, ['generate']);
-        $this->config = new ContainerConfiguration();
+        $this->generator    = $this->getMockForAbstractClass(Generator::class, [], '', false, true, true, ['generate']);
+        $this->config       = new ContainerConfiguration();
         $this->parameterBag = new ParameterBag();
     }
 
@@ -94,7 +94,7 @@ final class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function setGeneratorShouldChangeTheAttributeAndReturnSelf(): void
     {
-        $builder = new ContainerBuilder($this->config, $this->generator, $this->parameterBag);
+        $builder   = new ContainerBuilder($this->config, $this->generator, $this->parameterBag);
         $generator = $this->getMockForAbstractClass(Generator::class, [], '', false);
 
         self::assertSame($builder, $builder->setGenerator($generator));
@@ -134,7 +134,7 @@ final class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
     public function addPassShouldAppendANewHandlerOnTheListAndReturnSelf(): void
     {
         $builder = new ContainerBuilder($this->config, $this->generator, $this->parameterBag);
-        $pass = $this->createMock(CompilerPassInterface::class);
+        $pass    = $this->createMock(CompilerPassInterface::class);
 
         self::assertSame($builder, $builder->addPass($pass));
         self::assertContains([$pass, PassConfig::TYPE_BEFORE_OPTIMIZATION], $this->config->getPassList());
@@ -249,7 +249,7 @@ final class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function getContainerShouldGenerateAndReturnTheContainer(): void
     {
-        $builder = new ContainerBuilder($this->config, $this->generator, $this->parameterBag);
+        $builder   = new ContainerBuilder($this->config, $this->generator, $this->parameterBag);
         $container = $this->createMock(ContainerInterface::class);
 
         $this->generator->expects($this->once())

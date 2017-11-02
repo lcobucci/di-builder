@@ -9,7 +9,7 @@ use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 /**
  * @author Luís Otávio Cobucci Oblonczyk <lcobucci@gmail.com>
  */
-final class PhpTest extends \PHPUnit_Framework_TestCase
+final class PhpTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @test

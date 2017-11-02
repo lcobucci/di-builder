@@ -32,7 +32,7 @@ final class ParameterBag implements CompilerPassInterface
 
     public function get(string $name, $default = null)
     {
-        if (!isset($this->parameters[$name])) {
+        if (! isset($this->parameters[$name])) {
             return $default;
         }
 

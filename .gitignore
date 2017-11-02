@@ -2,5 +2,6 @@
 /composer.phar
 /build
 /phpunit.xml
+/.phpcs.cache
 composer.lock
 humbuglog.txt

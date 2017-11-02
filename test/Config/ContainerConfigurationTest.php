@@ -8,7 +8,7 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 /**
  * @author Luís Otávio Cobucci Oblonczyk <lcobucci@gmail.com>
  */
-final class ContainerConfigurationTest extends \PHPUnit_Framework_TestCase
+final class ContainerConfigurationTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var CompilerPassInterface
@@ -232,7 +232,7 @@ final class ContainerConfigurationTest extends \PHPUnit_Framework_TestCase
      */
     public function getDumpOptionsShouldReturnTheDumpingInformation(): void
     {
-        $config = new ContainerConfiguration();
+        $config  = new ContainerConfiguration();
         $options = ['class' => 'Project' . md5('') . 'ServiceContainer'];
 
         self::assertEquals($options, $config->getDumpOptions());

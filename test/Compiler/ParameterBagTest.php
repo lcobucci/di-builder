@@ -8,7 +8,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 /**
  * @author Luís Otávio Cobucci Oblonczyk <lcobucci@gmail.com>
  */
-final class ParameterBagTest extends \PHPUnit_Framework_TestCase
+final class ParameterBagTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @test
@@ -74,7 +74,7 @@ final class ParameterBagTest extends \PHPUnit_Framework_TestCase
     public function invokeShouldAppendAllConfiguredParametersOnTheBuilder(): void
     {
         $builder = new ContainerBuilder();
-        $pass = new ParameterBag(['test' => 1]);
+        $pass    = new ParameterBag(['test' => 1]);
 
         $pass->process($builder);
         self::assertEquals(1, $builder->getParameter('test'));

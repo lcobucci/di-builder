@@ -1,31 +1,28 @@
 build:
-    environment:
-        mysql: false
-        postgresql: false
-        redis: false
-        rabbitmq: false
-        php:
-            version: 7.1.0
+    nodes:
+        analysis:
+            environment:
+                mysql: false
+                postgresql: false
+                redis: false
+                rabbitmq: false
+                mongodb: false
+                php:
+                    version: 7.1
+            cache:
+                disabled: false
+                directories:
+                    - ~/.composer/cache
+
+            project_setup:
+                override: true
+            tests:
+                override:
+                    - php-scrutinizer-run
 tools:
-    php_sim: true
-    php_pdepend: true
-    php_analyzer: true
-    php_changetracking: true
-    sensiolabs_security_checker: true
-    php_mess_detector: true
-    php_code_coverage: true
     external_code_coverage:
         timeout: 1800
-    php_code_sniffer:
-        enabled: true
-        config:
-            standard: "PSR2"
-    php_cpd:
-        enabled: true
-        excluded_dirs: ["test", "vendor"]
-    php_loc:
-        enabled: true
-        excluded_dirs: ["test", "vendor"]
+
 checks:
     php:
         code_rating: true
@@ -64,3 +61,11 @@ checks:
 filter:
     excluded_paths:
         - test/*
+
+build_failure_conditions:
+    - 'elements.rating(<= C).new.exists'                        # No new classes/methods with a rating of C or worse allowed
+    - 'issues.label("coding-style").new.exists'                 # No new coding style issues allowed
+    - 'issues.severity(>= MAJOR).new.exists'                    # New issues of major or higher severity
+    - 'project.metric_change("scrutinizer.test_coverage", < 0)' # Code Coverage decreased from previous inspection
+    - 'patches.label("Doc Comments").new.exists'                # No new doc comments patches allowed
+    - 'patches.label("Unused Use Statements").new.exists'       # No new unused imports patches allowed
