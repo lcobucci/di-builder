@@ -52,7 +52,7 @@ final class ContainerConfiguration
         return $this->files;
     }
 
-    public function addFile(string $file)
+    public function addFile(string $file): void
     {
         $this->files[] = $file;
     }
@@ -65,7 +65,7 @@ final class ContainerConfiguration
     public function addPass(
         CompilerPassInterface $pass,
         string $type = PassConfig::TYPE_BEFORE_OPTIMIZATION
-    ) {
+    ): void {
         $this->passList[] = [$pass, $type];
     }
 
@@ -74,7 +74,7 @@ final class ContainerConfiguration
         return $this->paths;
     }
 
-    public function addPath(string $path)
+    public function addPath(string $path): void
     {
         $this->paths[] = $path;
     }
@@ -84,7 +84,7 @@ final class ContainerConfiguration
         return $this->baseClass;
     }
 
-    public function setBaseClass(string $baseClass)
+    public function setBaseClass(string $baseClass): void
     {
         $this->baseClass = $baseClass;
     }
@@ -94,7 +94,7 @@ final class ContainerConfiguration
         return $this->dumpDir;
     }
 
-    public function setDumpDir(string $dumpDir)
+    public function setDumpDir(string $dumpDir): void
     {
         $this->dumpDir = rtrim($dumpDir, DIRECTORY_SEPARATOR);
     }

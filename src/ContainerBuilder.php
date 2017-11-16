@@ -123,7 +123,7 @@ final class ContainerBuilder implements Builder
             $this->config,
             new ConfigCache(
                 $this->config->getDumpFile(),
-                $this->parameterBag->get('app.devmode')
+                (bool) $this->parameterBag->get('app.devmode')
             )
         );
     }
