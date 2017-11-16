@@ -32,6 +32,12 @@ interface Builder
         string $type = PassConfig::TYPE_BEFORE_OPTIMIZATION
     ): Builder;
 
+    public function addDelayedPass(
+        string $className,
+        array $constructArguments = [],
+        string $type = PassConfig::TYPE_BEFORE_OPTIMIZATION
+    ): Builder;
+
     /**
      * Mark the container to be used as development mode
      */

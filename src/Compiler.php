@@ -6,6 +6,7 @@ namespace Lcobucci\DependencyInjection;
 use Lcobucci\DependencyInjection\Config\ContainerConfiguration;
 use Symfony\Bridge\ProxyManager\LazyProxy\PhpDumper\ProxyDumper;
 use Symfony\Component\Config\ConfigCache;
+use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder as SymfonyBuilder;
 use Symfony\Component\DependencyInjection\Dumper\DumperInterface;
 use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
@@ -52,8 +53,16 @@ final class Compiler
         SymfonyBuilder $container,
         ContainerConfiguration $config
     ): void {
-        foreach ($config->getPassList() as $pass) {
-            $container->addCompilerPass(...$pass);
+        foreach ($config->getPassList() as $passConfig) {
+            [$pass, $type] = $passConfig;
+
+            if (! $pass instanceof CompilerPassInterface) {
+                [$className, $constructArguments] = $pass;
+
+                $pass = new $className(...$constructArguments);
+            }
+
+            $container->addCompilerPass($pass, $type);
         }
     }
 
