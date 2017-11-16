@@ -69,6 +69,14 @@ final class ContainerConfiguration
         $this->passList[] = [$pass, $type];
     }
 
+    public function addDelayedPass(
+        string $className,
+        array $constructArguments,
+        string $type = PassConfig::TYPE_BEFORE_OPTIMIZATION
+    ): void {
+        $this->passList[] = [[$className, $constructArguments], $type];
+    }
+
     public function getPaths(): array
     {
         return $this->paths;

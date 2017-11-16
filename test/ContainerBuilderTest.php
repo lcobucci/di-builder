@@ -144,6 +144,26 @@ final class ContainerBuilderTest extends \PHPUnit\Framework\TestCase
     /**
      * @test
      *
+     * @covers \Lcobucci\DependencyInjection\ContainerBuilder::addDelayedPass
+     *
+     * @uses \Lcobucci\DependencyInjection\ContainerBuilder::__construct
+     * @uses \Lcobucci\DependencyInjection\ContainerBuilder::setDefaultConfiguration
+     *
+     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration
+     * @uses \Lcobucci\DependencyInjection\Compiler\ParameterBag
+     */
+    public function addDelayedPassShouldAppendANewHandlerOnTheListAndReturnSelf(): void
+    {
+        $builder = new ContainerBuilder($this->config, $this->generator, $this->parameterBag);
+        $pass    = get_class($this->createMock(CompilerPassInterface::class));
+
+        self::assertSame($builder, $builder->addDelayedPass($pass));
+        self::assertContains([[$pass, []], PassConfig::TYPE_BEFORE_OPTIMIZATION], $this->config->getPassList());
+    }
+
+    /**
+     * @test
+     *
      * @covers \Lcobucci\DependencyInjection\ContainerBuilder::setDumpDir
      *
      * @uses \Lcobucci\DependencyInjection\ContainerBuilder::__construct

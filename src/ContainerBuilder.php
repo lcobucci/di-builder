@@ -82,6 +82,16 @@ final class ContainerBuilder implements Builder
         return $this;
     }
 
+    public function addDelayedPass(
+        string $className,
+        array $constructArguments = [],
+        string $type = PassConfig::TYPE_BEFORE_OPTIMIZATION
+    ): Builder {
+        $this->config->addDelayedPass($className, $constructArguments, $type);
+
+        return $this;
+    }
+
     public function useDevelopmentMode(): Builder
     {
         $this->parameterBag->set('app.devmode', true);

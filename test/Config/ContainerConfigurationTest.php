@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace Lcobucci\DependencyInjection\Config;
 
+use Lcobucci\DependencyInjection\Compiler\ParameterBag;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 
 /**
  * @author Luís Otávio Cobucci Oblonczyk <lcobucci@gmail.com>
@@ -98,6 +100,25 @@ final class ContainerConfigurationTest extends \PHPUnit\Framework\TestCase
         $config->addPass($this->pass);
 
         self::assertAttributeSame([[$this->pass, 'beforeOptimization']], 'passList', $config);
+    }
+
+    /**
+     * @test
+     *
+     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::addDelayedPass
+     *
+     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
+     */
+    public function addDelayedPassShouldAppendANewCompilerPassToTheList(): void
+    {
+        $config = new ContainerConfiguration();
+        $config->addDelayedPass(ParameterBag::class, ['a' => 'b']);
+
+        self::assertAttributeSame(
+            [[[ParameterBag::class, ['a' => 'b']], 'beforeOptimization']],
+            'passList',
+            $config
+        );
     }
 
     /**
