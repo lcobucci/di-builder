@@ -55,7 +55,7 @@ final class ContainerConfigurationTest extends \PHPUnit\Framework\TestCase
     {
         $config = new ContainerConfiguration(['services.xml']);
 
-        self::assertEquals(['services.xml'], $config->getFiles());
+        self::assertSame(['services.xml'], iterator_to_array($config->getFiles()));
     }
 
     /**
@@ -84,7 +84,7 @@ final class ContainerConfigurationTest extends \PHPUnit\Framework\TestCase
     {
         $config = new ContainerConfiguration([], [[$this->pass, 'beforeOptimization']]);
 
-        self::assertSame([[$this->pass, 'beforeOptimization']], $config->getPassList());
+        self::assertSame([[$this->pass, 'beforeOptimization']], iterator_to_array($config->getPassList()));
     }
 
     /**

@@ -47,9 +47,11 @@ final class ContainerConfiguration
         $this->dumpDir  = sys_get_temp_dir();
     }
 
-    public function getFiles(): array
+    public function getFiles(): \Generator
     {
-        return $this->files;
+        foreach ($this->files as $file) {
+            yield $file;
+        }
     }
 
     public function addFile(string $file): void
@@ -57,9 +59,11 @@ final class ContainerConfiguration
         $this->files[] = $file;
     }
 
-    public function getPassList(): array
+    public function getPassList(): \Generator
     {
-        return $this->passList;
+        foreach ($this->passList as $compilerPass) {
+            yield $compilerPass;
+        }
     }
 
     public function addPass(
