@@ -28,10 +28,10 @@ by offering an easy interface to build and load your dependency injection contai
 
 ## Installation using [composer](http://getcomposer.org/)
 
-Just add ```"lcobucci/di-builder": "~5.0"``` to your composer.json and do a ```composer update``` or you can run:
+Just add ```"lcobucci/di-builder": "^5.3"``` to your composer.json and do a ```composer update``` or you can run:
 
 ```bash
-composer require lcobucci/di-builder:~5.0
+composer require lcobucci/di-builder:^5.3
 ```
 
 ## Basic usage
@@ -57,6 +57,8 @@ $container = (new ContainerBuilder())->setGenerator(new PhpGenerator()) // Chang
                                      ->setDumpDir(__DIR__ . '/tmp') // Changes the dump directory
                                      ->setParameter('app.basedir', __DIR__) // Configures a dynamic parameter
                                      ->addPass(new DoSomethingPass()) // Appends a new compiler pass
+                                     ->addDelayedPass(DoSomethingPass::class) // Appends a new compiler pass that will only be initialised while building the container
+                                     ->addPackage(MyPackage::class) // Appends a new package that might provide files and compiler passes to be added to the the container
                                      ->getContainer(); // Retrieves the container =)
 ```
 
