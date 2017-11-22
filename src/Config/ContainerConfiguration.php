@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Lcobucci\DependencyInjection\Config;
 
+use Lcobucci\DependencyInjection\FileListProvider;
+use Lcobucci\DependencyInjection\CompilerPassListProvider;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 
@@ -84,9 +86,31 @@ final class ContainerConfiguration
 
     public function getFiles(): \Generator
     {
+        foreach ($this->getPackagesThatProvideFiles() as $module) {
+            yield from $module->getFiles();
+        }
+
         foreach ($this->files as $file) {
             yield $file;
         }
+    }
+
+    /**
+     * @return FileListProvider[]
+     */
+    private function getPackagesThatProvideFiles(): array
+    {
+        return $this->filterModules(FileListProvider::class);
+    }
+
+    private function filterModules(string $moduleType): array
+    {
+        return array_filter(
+            $this->getPackages(),
+            function (Package $module) use ($moduleType): bool {
+                return $module instanceof $moduleType;
+            }
+        );
     }
 
     public function addFile(string $file): void
@@ -96,9 +120,21 @@ final class ContainerConfiguration
 
     public function getPassList(): \Generator
     {
+        foreach ($this->getPackagesThatProvideCompilerPasses() as $module) {
+            yield from $module->getCompilerPasses();
+        }
+
         foreach ($this->passList as $compilerPass) {
             yield $compilerPass;
         }
+    }
+
+    /**
+     * @return CompilerPassListProvider[]
+     */
+    private function getPackagesThatProvideCompilerPasses(): array
+    {
+        return $this->filterModules(CompilerPassListProvider::class);
     }
 
     public function addPass(

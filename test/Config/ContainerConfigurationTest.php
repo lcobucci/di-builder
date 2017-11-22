@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace Lcobucci\DependencyInjection\Config;
 
 use Lcobucci\DependencyInjection\Compiler\ParameterBag;
+use Lcobucci\DependencyInjection\FileListProvider;
+use Lcobucci\DependencyInjection\CompilerPassListProvider;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 
 /**
@@ -51,7 +53,10 @@ final class ContainerConfigurationTest extends \PHPUnit\Framework\TestCase
      * @test
      *
      * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getFiles
+     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getPackagesThatProvideFiles
+     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::filterModules
      *
+     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getPackages
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
      */
     public function getFilesShouldReturnTheFileList(): void
@@ -59,6 +64,31 @@ final class ContainerConfigurationTest extends \PHPUnit\Framework\TestCase
         $config = new ContainerConfiguration(['services.xml']);
 
         self::assertSame(['services.xml'], iterator_to_array($config->getFiles()));
+    }
+
+    /**
+     * @test
+     *
+     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getFiles
+     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getPackagesThatProvideFiles
+     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::filterModules
+     *
+     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getPackages
+     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
+     */
+    public function getFilesShouldYieldTheFilesFromPackagesFirst(): void
+    {
+        $package = new class implements FileListProvider
+        {
+            public function getFiles(): \Generator
+            {
+                yield 'services2.xml';
+            }
+        };
+
+        $config = new ContainerConfiguration(['services.xml'], [], [], [[get_class($package), []]]);
+
+        self::assertSame(['services2.xml', 'services.xml'], iterator_to_array($config->getFiles(), false));
     }
 
     /**
@@ -80,7 +110,10 @@ final class ContainerConfigurationTest extends \PHPUnit\Framework\TestCase
      * @test
      *
      * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getPassList
+     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getPackagesThatProvideCompilerPasses
+     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::filterModules
      *
+     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getPackages
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
      */
     public function getPassListShouldReturnTheHandlersList(): void
@@ -88,6 +121,42 @@ final class ContainerConfigurationTest extends \PHPUnit\Framework\TestCase
         $config = new ContainerConfiguration([], [[$this->pass, 'beforeOptimization']]);
 
         self::assertSame([[$this->pass, 'beforeOptimization']], iterator_to_array($config->getPassList()));
+    }
+
+    /**
+     * @test
+     *
+     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getPassList
+     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getPackagesThatProvideCompilerPasses
+     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::filterModules
+     *
+     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getPackages
+     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
+     */
+    public function getPassListShouldYieldTheCompilerPassesFromPackagesFirst(): void
+    {
+        $package = new class implements CompilerPassListProvider
+        {
+            public function getCompilerPasses(): \Generator
+            {
+                yield [CompilerPassInterface::class, 'beforeOptimization'];
+            }
+        };
+
+        $config = new ContainerConfiguration(
+            [],
+            [[$this->pass, 'beforeOptimization']],
+            [],
+            [[get_class($package), []]]
+        );
+
+        self::assertSame(
+            [
+                [CompilerPassInterface::class, 'beforeOptimization'],
+                [$this->pass, 'beforeOptimization'],
+            ],
+            iterator_to_array($config->getPassList(), false)
+        );
     }
 
     /**
