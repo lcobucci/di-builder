@@ -5,7 +5,6 @@ namespace Lcobucci\DependencyInjection\Config;
 
 use Lcobucci\DependencyInjection\Compiler\ParameterBag;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
-use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 
 /**
  * @author Luís Otávio Cobucci Oblonczyk <lcobucci@gmail.com>
@@ -32,15 +31,19 @@ final class ContainerConfigurationTest extends \PHPUnit\Framework\TestCase
      */
     public function constructShouldConfigureTheAttributes(): void
     {
+        $package = get_class($this->createMock(Package::class));
+
         $config = new ContainerConfiguration(
             ['services.xml'],
             [[$this->pass, 'beforeOptimization']],
-            ['test']
+            ['test'],
+            [[$package, []]]
         );
 
         self::assertAttributeEquals(['services.xml'], 'files', $config);
         self::assertAttributeSame([[$this->pass, 'beforeOptimization']], 'passList', $config);
         self::assertAttributeEquals(['test'], 'paths', $config);
+        self::assertAttributeEquals([[$package, []]], 'packages', $config);
         self::assertAttributeEquals(sys_get_temp_dir(), 'dumpDir', $config);
     }
 
@@ -119,6 +122,53 @@ final class ContainerConfigurationTest extends \PHPUnit\Framework\TestCase
             'passList',
             $config
         );
+    }
+
+    /**
+     * @test
+     *
+     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::addPackage
+     *
+     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
+     */
+    public function addPackageShouldAppendThePackageConfigurationToTheList(): void
+    {
+        $package = get_class($this->createMock(Package::class));
+        $config  = new ContainerConfiguration();
+
+        $config->addPackage($package, ['a' => 'b']);
+
+        self::assertAttributeSame([[$package, ['a' => 'b']]], 'packages', $config);
+    }
+
+    /**
+     * @test
+     *
+     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getPackages
+     *
+     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
+     */
+    public function getPackagesShouldReturnAListOfInstantiatedPackages(): void
+    {
+        $package = $this->createMock(Package::class);
+        $config  = new ContainerConfiguration([], [], [], [[get_class($package), []]]);
+
+        self::assertEquals([$package], $config->getPackages());
+    }
+
+    /**
+     * @test
+     *
+     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getPackages
+     *
+     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
+     */
+    public function getPackagesShouldInstantiateThePackagesOnlyOnce(): void
+    {
+        $packageName = get_class($this->createMock(Package::class));
+        $config      = new ContainerConfiguration([], [], [], [[$packageName, []]]);
+
+        self::assertSame($config->getPackages(), $config->getPackages());
     }
 
     /**

@@ -92,6 +92,13 @@ final class ContainerBuilder implements Builder
         return $this;
     }
 
+    public function addPackage(string $className, array $constructArguments = []): Builder
+    {
+        $this->config->addPackage($className, $constructArguments);
+
+        return $this;
+    }
+
     public function useDevelopmentMode(): Builder
     {
         $this->parameterBag->set('app.devmode', true);

@@ -32,6 +32,16 @@ final class ContainerConfiguration
     private $baseClass;
 
     /**
+     * @var array
+     */
+    private $packages;
+
+    /**
+     * @var Package[]
+     */
+    private $initializedPackages;
+
+    /**
      * @var string
      */
     private $dumpDir;
@@ -39,12 +49,37 @@ final class ContainerConfiguration
     public function __construct(
         array $files = [],
         array $passList = [],
-        array $paths = []
+        array $paths = [],
+        array $packages = []
     ) {
         $this->files    = $files;
         $this->passList = $passList;
         $this->paths    = $paths;
+        $this->packages = $packages;
         $this->dumpDir  = sys_get_temp_dir();
+    }
+
+    /**
+     * @return Package[]
+     */
+    public function getPackages(): array
+    {
+        if (! $this->initializedPackages) {
+            $this->initializedPackages = array_map(
+                function (array $data): Package {
+                    [$package, $arguments] = $data;
+                    return new $package(...$arguments);
+                },
+                $this->packages
+            );
+        }
+
+        return $this->initializedPackages;
+    }
+
+    public function addPackage(string $className, array $constructArguments = []): void
+    {
+        $this->packages[] = [$className, $constructArguments];
     }
 
     public function getFiles(): \Generator
@@ -113,7 +148,9 @@ final class ContainerConfiguration
 
     public function getClassName(): string
     {
-        return 'Project' . md5(implode(';', array_merge($this->files, $this->paths))) . 'ServiceContainer';
+        $hash = md5(implode(';', array_merge($this->files, $this->paths, array_column($this->packages, 0))));
+
+        return 'Project' . $hash . 'ServiceContainer';
     }
 
     public function getDumpFile(string $prefix = ''): string
