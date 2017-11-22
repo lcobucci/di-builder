@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Lcobucci\DependencyInjection\Config;
 
+use Lcobucci\DependencyInjection\FileListProvider;
+use Lcobucci\DependencyInjection\CompilerPassListProvider;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 
@@ -32,6 +34,16 @@ final class ContainerConfiguration
     private $baseClass;
 
     /**
+     * @var array
+     */
+    private $packages;
+
+    /**
+     * @var Package[]
+     */
+    private $initializedPackages;
+
+    /**
      * @var string
      */
     private $dumpDir;
@@ -39,17 +51,66 @@ final class ContainerConfiguration
     public function __construct(
         array $files = [],
         array $passList = [],
-        array $paths = []
+        array $paths = [],
+        array $packages = []
     ) {
         $this->files    = $files;
         $this->passList = $passList;
         $this->paths    = $paths;
+        $this->packages = $packages;
         $this->dumpDir  = sys_get_temp_dir();
     }
 
-    public function getFiles(): array
+    /**
+     * @return Package[]
+     */
+    public function getPackages(): array
     {
-        return $this->files;
+        if (! $this->initializedPackages) {
+            $this->initializedPackages = array_map(
+                function (array $data): Package {
+                    [$package, $arguments] = $data;
+                    return new $package(...$arguments);
+                },
+                $this->packages
+            );
+        }
+
+        return $this->initializedPackages;
+    }
+
+    public function addPackage(string $className, array $constructArguments = []): void
+    {
+        $this->packages[] = [$className, $constructArguments];
+    }
+
+    public function getFiles(): \Generator
+    {
+        foreach ($this->getPackagesThatProvideFiles() as $module) {
+            yield from $module->getFiles();
+        }
+
+        foreach ($this->files as $file) {
+            yield $file;
+        }
+    }
+
+    /**
+     * @return FileListProvider[]
+     */
+    private function getPackagesThatProvideFiles(): array
+    {
+        return $this->filterModules(FileListProvider::class);
+    }
+
+    private function filterModules(string $moduleType): array
+    {
+        return array_filter(
+            $this->getPackages(),
+            function (Package $module) use ($moduleType): bool {
+                return $module instanceof $moduleType;
+            }
+        );
     }
 
     public function addFile(string $file): void
@@ -57,9 +118,23 @@ final class ContainerConfiguration
         $this->files[] = $file;
     }
 
-    public function getPassList(): array
+    public function getPassList(): \Generator
     {
-        return $this->passList;
+        foreach ($this->getPackagesThatProvideCompilerPasses() as $module) {
+            yield from $module->getCompilerPasses();
+        }
+
+        foreach ($this->passList as $compilerPass) {
+            yield $compilerPass;
+        }
+    }
+
+    /**
+     * @return CompilerPassListProvider[]
+     */
+    private function getPackagesThatProvideCompilerPasses(): array
+    {
+        return $this->filterModules(CompilerPassListProvider::class);
     }
 
     public function addPass(
@@ -109,7 +184,9 @@ final class ContainerConfiguration
 
     public function getClassName(): string
     {
-        return 'Project' . md5(implode(';', array_merge($this->files, $this->paths))) . 'ServiceContainer';
+        $hash = md5(implode(';', array_merge($this->files, $this->paths, array_column($this->packages, 0))));
+
+        return 'Project' . $hash . 'ServiceContainer';
     }
 
     public function getDumpFile(string $prefix = ''): string

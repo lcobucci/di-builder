@@ -5,6 +5,7 @@ namespace Lcobucci\DependencyInjection;
 
 use Lcobucci\DependencyInjection\Compiler\ParameterBag;
 use Lcobucci\DependencyInjection\Config\ContainerConfiguration;
+use Lcobucci\DependencyInjection\Config\Package;
 use Lcobucci\DependencyInjection\Generators\Xml as XmlGenerator;
 use Lcobucci\DependencyInjection\Testing\MakeServicesPublic;
 use Symfony\Component\Config\ConfigCache;
@@ -159,6 +160,26 @@ final class ContainerBuilderTest extends \PHPUnit\Framework\TestCase
 
         self::assertSame($builder, $builder->addDelayedPass($pass));
         self::assertContains([[$pass, []], PassConfig::TYPE_BEFORE_OPTIMIZATION], $this->config->getPassList());
+    }
+
+    /**
+     * @test
+     *
+     * @covers \Lcobucci\DependencyInjection\ContainerBuilder::addPackage
+     *
+     * @uses \Lcobucci\DependencyInjection\ContainerBuilder::__construct
+     * @uses \Lcobucci\DependencyInjection\ContainerBuilder::setDefaultConfiguration
+     *
+     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration
+     * @uses \Lcobucci\DependencyInjection\Compiler\ParameterBag
+     */
+    public function addPackageShouldAppendANewHandlerOnTheListAndReturnSelf(): void
+    {
+        $builder = new ContainerBuilder($this->config, $this->generator, $this->parameterBag);
+        $module  = $this->createMock(Package::class);
+
+        self::assertSame($builder, $builder->addPackage(get_class($module)));
+        self::assertEquals([$module], $this->config->getPackages());
     }
 
     /**

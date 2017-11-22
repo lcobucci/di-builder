@@ -38,6 +38,8 @@ interface Builder
         string $type = PassConfig::TYPE_BEFORE_OPTIMIZATION
     ): Builder;
 
+    public function addPackage(string $className, array $constructArguments = []): Builder;
+
     /**
      * Mark the container to be used as development mode
      */
