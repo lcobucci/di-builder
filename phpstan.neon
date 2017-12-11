@@ -1,5 +1,2 @@
-parameters:
-    ignoreErrors:
-        # Ignore PHPUnit mock stuff
-        - '#PHPUnit\\Framework\\MockObject\\MockObject.* given#'
-        - '#PHPUnit\\Framework\\MockObject\\MockObject::.*\(\)#'
+includes:
+    - vendor/phpstan/phpstan-phpunit/extension.neon
