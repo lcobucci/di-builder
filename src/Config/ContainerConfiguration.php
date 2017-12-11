@@ -202,6 +202,8 @@ final class ContainerConfiguration
             $options['base_class'] = $this->baseClass;
         }
 
+        $options['hot_path_tag'] = 'container.hot_path';
+
         return $options;
     }
 }

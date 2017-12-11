@@ -73,8 +73,12 @@ final class Compiler
     ): void {
         $container->compile();
 
+        $options          = $config->getDumpOptions();
+        $options['file']  = $dump->getPath();
+        $options['debug'] = $container->getParameter('app.devmode');
+
         $dump->write(
-            $this->getDumper($container)->dump($config->getDumpOptions()),
+            $this->getDumper($container)->dump($options),
             $container->getResources()
         );
     }

@@ -3,11 +3,13 @@ declare(strict_types=1);
 
 namespace Lcobucci\DependencyInjection;
 
+use Lcobucci\DependencyInjection\Compiler\ParameterBag;
 use Lcobucci\DependencyInjection\Config\ContainerConfiguration;
 use org\bovigo\vfs\vfsStream;
 use stdClass;
 use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder as SymfonyBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
@@ -67,6 +69,7 @@ final class GeneratorTest extends \PHPUnit\Framework\TestCase
      * @uses \Lcobucci\DependencyInjection\Generator::__construct
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration
      * @uses \Lcobucci\DependencyInjection\Compiler
+     * @uses \Lcobucci\DependencyInjection\Compiler\ParameterBag
      */
     public function generateShouldCompileAndLoadTheContainer(): void
     {
@@ -76,8 +79,12 @@ final class GeneratorTest extends \PHPUnit\Framework\TestCase
             ['services.yml' => 'services: { testing: { class: stdClass, public: true } }']
         );
 
-        $config = new ContainerConfiguration([vfsStream::url('tests/services.yml')]);
-        $dump   = new ConfigCache(vfsStream::url('tests/container.php'), false);
+        $config = new ContainerConfiguration(
+            [vfsStream::url('tests/services.yml')],
+            [[new ParameterBag(['app.devmode' => true]), PassConfig::TYPE_BEFORE_OPTIMIZATION]]
+        );
+
+        $dump = new ConfigCache(vfsStream::url('tests/container.php'), false);
 
         $this->generator->method('getLoader')->willReturnCallback(
             function (SymfonyBuilder $container, array $paths) {
