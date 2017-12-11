@@ -391,9 +391,12 @@ final class ContainerConfigurationTest extends \PHPUnit\Framework\TestCase
     public function getDumpOptionsShouldReturnTheDumpingInformation(): void
     {
         $config  = new ContainerConfiguration();
-        $options = ['class' => 'Project' . md5('') . 'ServiceContainer'];
+        $options = [
+            'class'        => 'Project' . md5('') . 'ServiceContainer',
+            'hot_path_tag' => 'container.hot_path',
+        ];
 
-        self::assertEquals($options, $config->getDumpOptions());
+        self::assertSame($options, $config->getDumpOptions());
     }
 
     /**
@@ -409,8 +412,13 @@ final class ContainerConfigurationTest extends \PHPUnit\Framework\TestCase
     {
         $config = new ContainerConfiguration();
         $config->setBaseClass('Test');
-        $options = ['class' => 'Project' . md5('') . 'ServiceContainer', 'base_class' => 'Test'];
 
-        self::assertEquals($options, $config->getDumpOptions());
+        $options = [
+            'class'        => 'Project' . md5('') . 'ServiceContainer',
+            'base_class'   => 'Test',
+            'hot_path_tag' => 'container.hot_path',
+        ];
+
+        self::assertSame($options, $config->getDumpOptions());
     }
 }
