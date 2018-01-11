@@ -33,7 +33,8 @@ jobs:
       env: DEPENDENCIES=stable
       install: travis_retry composer update --prefer-stable
 
-    - stage: Coverage
+    - stage: Test
+      env: TEST_COVERAGE=1
       before_script:
         - mv ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini{.disabled,}
         - if [[ ! $(php -m | grep -si xdebug) ]]; then echo "xdebug required for coverage"; exit 1; fi
@@ -43,17 +44,20 @@ jobs:
         - wget https://scrutinizer-ci.com/ocular.phar
         - php ocular.phar code-coverage:upload --format=php-clover ./clover.xml
 
-    - stage: Code-style
+    - stage: Quality
+      env: CODE_STYLE=1
       script:
         - ./vendor/bin/phpcs
 
-    - stage: Mutation
+    - stage: Quality
+      env: MUTATION=1
       before_script:
         - mv ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini{.disabled,}
-        - if [[ ! $(php -m | grep -si xdebug) ]]; then echo "xdebug required for coverage"; exit 1; fi
+        - if [[ ! $(php -m | grep -si xdebug) ]]; then echo "xdebug required for mutation"; exit 1; fi
       script:
-        - ./vendor/bin/humbug
+        - ./vendor/bin/infection -s --min-msi=82 --min-covered-msi=100
 
-    - stage: Static analysis
+    - stage: Quality
+      env: STATIC_ANALYSIS=1
       script:
         - ./vendor/bin/phpstan analyse -c phpstan.neon -l max src test

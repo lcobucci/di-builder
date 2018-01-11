@@ -369,12 +369,12 @@ final class ContainerConfigurationTest extends \PHPUnit\Framework\TestCase
      *
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
      */
-    public function getClassNameShouldCreateAHashFromFilesAndPaths(): void
+    public function getClassNameShouldCreateAHashFromPackagesFilesAndPaths(): void
     {
-        $config = new ContainerConfiguration(['services.xml'], [], ['config']);
+        $config = new ContainerConfiguration(['services.xml'], [], ['config'], [[FileListProvider::class, []]]);
 
         self::assertEquals(
-            'Project' . md5(implode(';', ['services.xml', 'config'])) . 'ServiceContainer',
+            'Project' . md5(implode(';', ['services.xml', 'config', FileListProvider::class])) . 'ServiceContainer',
             $config->getClassName()
         );
     }

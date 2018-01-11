@@ -23,7 +23,7 @@
         "symfony/expression-language": "^3.3|^4.0"
     },
     "require-dev": {
-        "humbug/humbug": "dev-master@dev",
+        "infection/infection": "^0.7",
         "mikey179/vfsStream": "^1.6",
         "phpstan/phpstan": "^0.9",
         "phpstan/phpstan-phpunit": "^0.9",

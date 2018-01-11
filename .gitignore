@@ -4,4 +4,4 @@
 /phpunit.xml
 /.phpcs.cache
 composer.lock
-humbuglog.txt
+/infection-log.txt
