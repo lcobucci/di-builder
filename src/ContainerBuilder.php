@@ -76,9 +76,10 @@ final class ContainerBuilder implements Builder
 
     public function addPass(
         CompilerPassInterface $pass,
-        string $type = PassConfig::TYPE_BEFORE_OPTIMIZATION
+        string $type = PassConfig::TYPE_BEFORE_OPTIMIZATION,
+        int $priority = 0
     ): Builder {
-        $this->config->addPass($pass, $type);
+        $this->config->addPass($pass, $type, $priority);
 
         return $this;
     }
@@ -86,9 +87,10 @@ final class ContainerBuilder implements Builder
     public function addDelayedPass(
         string $className,
         array $constructArguments = [],
-        string $type = PassConfig::TYPE_BEFORE_OPTIMIZATION
+        string $type = PassConfig::TYPE_BEFORE_OPTIMIZATION,
+        int $priority = 0
     ): Builder {
-        $this->config->addDelayedPass($className, $constructArguments, $type);
+        $this->config->addDelayedPass($className, $constructArguments, $type, $priority);
 
         return $this;
     }

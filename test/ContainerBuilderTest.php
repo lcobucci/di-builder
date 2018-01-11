@@ -139,7 +139,7 @@ final class ContainerBuilderTest extends \PHPUnit\Framework\TestCase
         $pass    = $this->createMock(CompilerPassInterface::class);
 
         self::assertSame($builder, $builder->addPass($pass));
-        self::assertContains([$pass, PassConfig::TYPE_BEFORE_OPTIMIZATION], $this->config->getPassList());
+        self::assertContains([$pass, PassConfig::TYPE_BEFORE_OPTIMIZATION, 0], $this->config->getPassList());
     }
 
     /**
@@ -159,7 +159,7 @@ final class ContainerBuilderTest extends \PHPUnit\Framework\TestCase
         $pass    = get_class($this->createMock(CompilerPassInterface::class));
 
         self::assertSame($builder, $builder->addDelayedPass($pass));
-        self::assertContains([[$pass, []], PassConfig::TYPE_BEFORE_OPTIMIZATION], $this->config->getPassList());
+        self::assertContains([[$pass, []], PassConfig::TYPE_BEFORE_OPTIMIZATION, 0], $this->config->getPassList());
     }
 
     /**

@@ -29,13 +29,15 @@ interface Builder
      */
     public function addPass(
         CompilerPassInterface $pass,
-        string $type = PassConfig::TYPE_BEFORE_OPTIMIZATION
+        string $type = PassConfig::TYPE_BEFORE_OPTIMIZATION,
+        int $priority = 0
     ): Builder;
 
     public function addDelayedPass(
         string $className,
         array $constructArguments = [],
-        string $type = PassConfig::TYPE_BEFORE_OPTIMIZATION
+        string $type = PassConfig::TYPE_BEFORE_OPTIMIZATION,
+        int $priority = 0
     ): Builder;
 
     public function addPackage(string $className, array $constructArguments = []): Builder;

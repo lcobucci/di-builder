@@ -7,6 +7,7 @@ use Lcobucci\DependencyInjection\Compiler\ParameterBag;
 use Lcobucci\DependencyInjection\FileListProvider;
 use Lcobucci\DependencyInjection\CompilerPassListProvider;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 
 /**
  * @author Luís Otávio Cobucci Oblonczyk <lcobucci@gmail.com>
@@ -171,7 +172,22 @@ final class ContainerConfigurationTest extends \PHPUnit\Framework\TestCase
         $config = new ContainerConfiguration();
         $config->addPass($this->pass);
 
-        self::assertAttributeSame([[$this->pass, 'beforeOptimization']], 'passList', $config);
+        self::assertAttributeSame([[$this->pass, PassConfig::TYPE_BEFORE_OPTIMIZATION, 0]], 'passList', $config);
+    }
+
+    /**
+     * @test
+     *
+     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::addPass
+     *
+     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
+     */
+    public function addPassCanReceiveTheTypeAndPriority(): void
+    {
+        $config = new ContainerConfiguration();
+        $config->addPass($this->pass, PassConfig::TYPE_AFTER_REMOVING, 1);
+
+        self::assertAttributeSame([[$this->pass, PassConfig::TYPE_AFTER_REMOVING, 1]], 'passList', $config);
     }
 
     /**
@@ -187,7 +203,26 @@ final class ContainerConfigurationTest extends \PHPUnit\Framework\TestCase
         $config->addDelayedPass(ParameterBag::class, ['a' => 'b']);
 
         self::assertAttributeSame(
-            [[[ParameterBag::class, ['a' => 'b']], 'beforeOptimization']],
+            [[[ParameterBag::class, ['a' => 'b']], PassConfig::TYPE_BEFORE_OPTIMIZATION, 0]],
+            'passList',
+            $config
+        );
+    }
+
+    /**
+     * @test
+     *
+     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::addDelayedPass
+     *
+     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
+     */
+    public function addDelayedPassCanReceiveTheTypeAndPriority(): void
+    {
+        $config = new ContainerConfiguration();
+        $config->addDelayedPass(ParameterBag::class, ['a' => 'b'], PassConfig::TYPE_AFTER_REMOVING, 1);
+
+        self::assertAttributeSame(
+            [[[ParameterBag::class, ['a' => 'b']], PassConfig::TYPE_AFTER_REMOVING, 1]],
             'passList',
             $config
         );
