@@ -374,7 +374,7 @@ final class ContainerConfigurationTest extends \PHPUnit\Framework\TestCase
         $config = new ContainerConfiguration(['services.xml'], [], ['config'], [[FileListProvider::class, []]]);
 
         self::assertEquals(
-            'Project' . md5(implode(';', ['services.xml', 'config', FileListProvider::class])) . 'ServiceContainer',
+            'Container' . md5(implode(';', ['services.xml', 'config', FileListProvider::class])),
             $config->getClassName()
         );
     }
@@ -392,7 +392,7 @@ final class ContainerConfigurationTest extends \PHPUnit\Framework\TestCase
         $config = new ContainerConfiguration();
 
         self::assertEquals(
-            sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'Project' . md5('') . 'ServiceContainer.php',
+            sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'Container' . md5('') . '.php',
             $config->getDumpFile()
         );
     }
@@ -410,7 +410,7 @@ final class ContainerConfigurationTest extends \PHPUnit\Framework\TestCase
         $config = new ContainerConfiguration();
 
         self::assertEquals(
-            sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'test_Project' . md5('') . 'ServiceContainer.php',
+            sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'test_Container' . md5('') . '.php',
             $config->getDumpFile('test_')
         );
     }
@@ -427,7 +427,7 @@ final class ContainerConfigurationTest extends \PHPUnit\Framework\TestCase
     {
         $config  = new ContainerConfiguration();
         $options = [
-            'class'        => 'Project' . md5('') . 'ServiceContainer',
+            'class'        => 'Container' . md5(''),
             'hot_path_tag' => 'container.hot_path',
         ];
 
@@ -449,7 +449,7 @@ final class ContainerConfigurationTest extends \PHPUnit\Framework\TestCase
         $config->setBaseClass('Test');
 
         $options = [
-            'class'        => 'Project' . md5('') . 'ServiceContainer',
+            'class'        => 'Container' . md5(''),
             'base_class'   => 'Test',
             'hot_path_tag' => 'container.hot_path',
         ];

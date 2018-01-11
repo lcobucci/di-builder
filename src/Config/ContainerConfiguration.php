@@ -186,9 +186,13 @@ final class ContainerConfiguration
 
     public function getClassName(): string
     {
-        $hash = md5(implode(';', array_merge($this->files, $this->paths, array_column($this->packages, 0))));
+        $relevantData = array_merge(
+            $this->files,
+            $this->paths,
+            array_column($this->packages, 0)
+        );
 
-        return 'Project' . $hash . 'ServiceContainer';
+        return 'Container' . md5(implode(';', $relevantData));
     }
 
     public function getDumpFile(string $prefix = ''): string
