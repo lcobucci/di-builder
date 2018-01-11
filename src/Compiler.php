@@ -16,6 +16,8 @@ use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
  */
 final class Compiler
 {
+    private const DEFAULT_PASS_CONFIG = [null, null, 0];
+
     /**
      * @param ContainerConfiguration $config
      * @param ConfigCache $dump
@@ -54,7 +56,7 @@ final class Compiler
         ContainerConfiguration $config
     ): void {
         foreach ($config->getPassList() as $passConfig) {
-            [$pass, $type] = $passConfig;
+            [$pass, $type, $priority] = $passConfig + self::DEFAULT_PASS_CONFIG;
 
             if (! $pass instanceof CompilerPassInterface) {
                 [$className, $constructArguments] = $pass;
@@ -62,7 +64,7 @@ final class Compiler
                 $pass = new $className(...$constructArguments);
             }
 
-            $container->addCompilerPass($pass, $type);
+            $container->addCompilerPass($pass, $type, $priority);
         }
     }
 
