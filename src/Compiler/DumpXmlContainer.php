@@ -23,7 +23,7 @@ final class DumpXmlContainer implements CompilerPassInterface
 
     public function process(ContainerBuilder $container): void
     {
-        if (! $container->getParameter('app.devmode') || ! $this->configCache->isFresh()) {
+        if (! $container->getParameter('app.devmode') || $this->configCache->isFresh()) {
             return;
         }
 
