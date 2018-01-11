@@ -49,10 +49,10 @@ final class DumpXmlContainerTest extends TestCase
      * @covers \Lcobucci\DependencyInjection\Compiler\DumpXmlContainer::__construct
      * @covers \Lcobucci\DependencyInjection\Compiler\DumpXmlContainer::process
      */
-    public function processShouldBeSkippedWhenCacheIsNotFresh(): void
+    public function processShouldBeSkippedWhenCacheIsFresh(): void
     {
         $this->configCache->method('isFresh')
-                          ->willReturn(false);
+                          ->willReturn(true);
 
         $this->configCache->expects($this->never())
                           ->method('write');
@@ -77,7 +77,7 @@ final class DumpXmlContainerTest extends TestCase
         );
 
         $this->configCache->method('isFresh')
-                          ->willReturn(true);
+                          ->willReturn(false);
 
         $this->configCache->expects($this->once())
                           ->method('write')
