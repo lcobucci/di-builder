@@ -50,9 +50,9 @@ jobs:
     - stage: Mutation
       before_script:
         - mv ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini{.disabled,}
-        - if [[ ! $(php -m | grep -si xdebug) ]]; then echo "xdebug required for coverage"; exit 1; fi
+        - if [[ ! $(php -m | grep -si xdebug) ]]; then echo "xdebug required for mutation"; exit 1; fi
       script:
-        - ./vendor/bin/humbug
+        - ./vendor/bin/infection -s --min-msi=82 --min-covered-msi=100
 
     - stage: Static analysis
       script:

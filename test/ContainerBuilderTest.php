@@ -81,6 +81,7 @@ final class ContainerBuilderTest extends \PHPUnit\Framework\TestCase
         self::assertAttributeSame($this->generator, 'generator', $builder);
         self::assertNotEmpty($this->config->getPassList());
         self::assertFalse($this->parameterBag->get('app.devmode'));
+        self::assertTrue($this->parameterBag->get('container.dumper.inline_class_loader'));
     }
 
     /**
@@ -256,6 +257,7 @@ final class ContainerBuilderTest extends \PHPUnit\Framework\TestCase
 
         self::assertSame($builder, $builder->useDevelopmentMode());
         self::assertTrue($this->parameterBag->get('app.devmode'));
+        self::assertFalse($this->parameterBag->get('container.dumper.inline_class_loader'));
     }
 
     /**
