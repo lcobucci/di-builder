@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Lcobucci\DependencyInjection;
 
+use Lcobucci\DependencyInjection\Compiler\DumpXmlContainer;
 use Lcobucci\DependencyInjection\Compiler\ParameterBag;
 use Lcobucci\DependencyInjection\Config\ContainerConfiguration;
 use org\bovigo\vfs\vfsStream;
@@ -81,7 +82,16 @@ final class GeneratorTest extends \PHPUnit\Framework\TestCase
 
         $config = new ContainerConfiguration(
             [vfsStream::url('tests/services.yml')],
-            [[new ParameterBag(['app.devmode' => true]), PassConfig::TYPE_BEFORE_OPTIMIZATION]]
+            [
+                [new ParameterBag(['app.devmode' => true]), PassConfig::TYPE_BEFORE_OPTIMIZATION],
+                [
+                    new DumpXmlContainer(
+                        new ConfigCache(vfsStream::url('tests/dump.xml'), true)
+                    ),
+                    PassConfig::TYPE_AFTER_REMOVING,
+                    -255
+                ],
+            ]
         );
 
         $dump = new ConfigCache(vfsStream::url('tests/container.php'), false);
@@ -99,5 +109,6 @@ final class GeneratorTest extends \PHPUnit\Framework\TestCase
 
         self::assertInstanceOf(ContainerInterface::class, $container);
         self::assertInstanceOf(stdClass::class, $container->get('testing'));
+        self::assertFileExists(vfsStream::url('tests/dump.xml'));
     }
 }
