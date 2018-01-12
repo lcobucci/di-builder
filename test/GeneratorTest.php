@@ -71,6 +71,7 @@ final class GeneratorTest extends \PHPUnit\Framework\TestCase
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration
      * @uses \Lcobucci\DependencyInjection\Compiler
      * @uses \Lcobucci\DependencyInjection\Compiler\ParameterBag
+     * @uses \Lcobucci\DependencyInjection\Compiler\DumpXmlContainer
      */
     public function generateShouldCompileAndLoadTheContainer(): void
     {
