@@ -1,7 +1,7 @@
 /vendor
-/composer.phar
-/build
 /phpunit.xml
+/phpcs.xml
+/phpstan.neon
 /.phpcs.cache
 composer.lock
 /infection-log.txt

@@ -3,7 +3,6 @@ sudo: false
 language: php
 
 php:
-  - 7.1
   - 7.2
   - nightly
 
@@ -23,6 +22,7 @@ script:
 jobs:
   allow_failures:
     - php: nightly
+    - env: STATIC_ANALYSIS=1
 
   include:
     - stage: Test
@@ -33,7 +33,7 @@ jobs:
       env: DEPENDENCIES=stable
       install: travis_retry composer update --prefer-stable
 
-    - stage: Test
+    - stage: Quality
       env: TEST_COVERAGE=1
       before_script:
         - mv ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini{.disabled,}
@@ -55,9 +55,9 @@ jobs:
         - mv ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini{.disabled,}
         - if [[ ! $(php -m | grep -si xdebug) ]]; then echo "xdebug required for mutation"; exit 1; fi
       script:
-        - ./vendor/bin/infection -s --min-msi=82 --min-covered-msi=100
+        - ./vendor/bin/infection -s --min-msi=88 --min-covered-msi=100
 
     - stage: Quality
       env: STATIC_ANALYSIS=1
       script:
-        - ./vendor/bin/phpstan analyse -c phpstan.neon -l max src test
+        - ./vendor/bin/phpstan analyse

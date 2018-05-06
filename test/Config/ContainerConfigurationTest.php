@@ -4,18 +4,23 @@ declare(strict_types=1);
 namespace Lcobucci\DependencyInjection\Config;
 
 use Lcobucci\DependencyInjection\Compiler\ParameterBag;
-use Lcobucci\DependencyInjection\FileListProvider;
 use Lcobucci\DependencyInjection\CompilerPassListProvider;
+use Lcobucci\DependencyInjection\FileListProvider;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
+use const DIRECTORY_SEPARATOR;
+use function get_class;
+use function implode;
+use function iterator_to_array;
+use function md5;
+use function sys_get_temp_dir;
 
-/**
- * @author Luís Otávio Cobucci Oblonczyk <lcobucci@gmail.com>
- */
-final class ContainerConfigurationTest extends \PHPUnit\Framework\TestCase
+final class ContainerConfigurationTest extends TestCase
 {
     /**
-     * @var CompilerPassInterface|\PHPUnit\Framework\MockObject\MockObject
+     * @var CompilerPassInterface|MockObject
      */
     private $pass;
 
@@ -54,7 +59,6 @@ final class ContainerConfigurationTest extends \PHPUnit\Framework\TestCase
      * @test
      *
      * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getFiles
-     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getPackagesThatProvideFiles
      * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::filterModules
      *
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getPackages
@@ -71,7 +75,6 @@ final class ContainerConfigurationTest extends \PHPUnit\Framework\TestCase
      * @test
      *
      * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getFiles
-     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getPackagesThatProvideFiles
      * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::filterModules
      *
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getPackages
@@ -111,7 +114,6 @@ final class ContainerConfigurationTest extends \PHPUnit\Framework\TestCase
      * @test
      *
      * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getPassList
-     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getPackagesThatProvideCompilerPasses
      * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::filterModules
      *
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getPackages
@@ -128,7 +130,6 @@ final class ContainerConfigurationTest extends \PHPUnit\Framework\TestCase
      * @test
      *
      * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getPassList
-     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getPackagesThatProvideCompilerPasses
      * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::filterModules
      *
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getPackages
@@ -272,7 +273,9 @@ final class ContainerConfigurationTest extends \PHPUnit\Framework\TestCase
         $packageName = get_class($this->createMock(Package::class));
         $config      = new ContainerConfiguration([], [], [], [[$packageName, []]]);
 
-        self::assertSame($config->getPackages(), $config->getPackages());
+        $createdPackages = $config->getPackages();
+
+        self::assertSame($createdPackages, $config->getPackages());
     }
 
     /**
@@ -282,7 +285,7 @@ final class ContainerConfigurationTest extends \PHPUnit\Framework\TestCase
      *
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
      */
-    public function getPathsShouldReturnThePathsList()
+    public function getPathsShouldReturnThePathsList(): void
     {
         $config = new ContainerConfiguration([], [], ['config']);
 

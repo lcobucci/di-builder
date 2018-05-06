@@ -3,13 +3,11 @@ declare(strict_types=1);
 
 namespace Lcobucci\DependencyInjection\Generators;
 
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 
-/**
- * @author Luís Otávio Cobucci Oblonczyk <lcobucci@gmail.com>
- */
-final class PhpTest extends \PHPUnit\Framework\TestCase
+final class PhpTest extends TestCase
 {
     /**
      * @test

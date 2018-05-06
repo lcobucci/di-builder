@@ -7,21 +7,19 @@ use Lcobucci\DependencyInjection\Compiler\DumpXmlContainer;
 use Lcobucci\DependencyInjection\Compiler\ParameterBag;
 use Lcobucci\DependencyInjection\Config\ContainerConfiguration;
 use org\bovigo\vfs\vfsStream;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 use stdClass;
 use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder as SymfonyBuilder;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
-/**
- * @author Luís Otávio Cobucci Oblonczyk <lcobucci@gmail.com>
- */
-final class GeneratorTest extends \PHPUnit\Framework\TestCase
+final class GeneratorTest extends TestCase
 {
     /**
-     * @var Generator|\PHPUnit\Framework\MockObject\MockObject
+     * @var Generator|MockObject
      */
     private $generator;
 
@@ -90,7 +88,7 @@ final class GeneratorTest extends \PHPUnit\Framework\TestCase
                         new ConfigCache(vfsStream::url('tests/dump.xml'), true)
                     ),
                     PassConfig::TYPE_AFTER_REMOVING,
-                    -255
+                    -255,
                 ],
             ]
         );
@@ -108,7 +106,6 @@ final class GeneratorTest extends \PHPUnit\Framework\TestCase
 
         $container = $this->generator->generate($config, $dump);
 
-        self::assertInstanceOf(ContainerInterface::class, $container);
         self::assertInstanceOf(stdClass::class, $container->get('testing'));
         self::assertFileExists(vfsStream::url('tests/dump.xml'));
     }

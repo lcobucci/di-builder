@@ -8,18 +8,18 @@ use Lcobucci\DependencyInjection\Config\ContainerConfiguration;
 use Lcobucci\DependencyInjection\Config\Package;
 use Lcobucci\DependencyInjection\Generators\Xml as XmlGenerator;
 use Lcobucci\DependencyInjection\Testing\MakeServicesPublic;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use function get_class;
 
-/**
- * @author Luís Otávio Cobucci Oblonczyk <lcobucci@gmail.com>
- */
-final class ContainerBuilderTest extends \PHPUnit\Framework\TestCase
+final class ContainerBuilderTest extends TestCase
 {
     /**
-     * @var Generator|\PHPUnit\Framework\MockObject\MockObject
+     * @var Generator|MockObject
      */
     private $generator;
 
@@ -295,9 +295,9 @@ final class ContainerBuilderTest extends \PHPUnit\Framework\TestCase
         $builder   = new ContainerBuilder($this->config, $this->generator, $this->parameterBag);
         $container = $this->createMock(ContainerInterface::class);
 
-        $this->generator->expects($this->once())
+        $this->generator->expects(self::once())
                         ->method('generate')
-                        ->with($this->config, $this->equalTo(new ConfigCache($this->config->getDumpFile(), false)))
+                        ->with($this->config, self::equalTo(new ConfigCache($this->config->getDumpFile(), false)))
                         ->willReturn($container);
 
         self::assertSame($container, $builder->getContainer());
@@ -325,9 +325,9 @@ final class ContainerBuilderTest extends \PHPUnit\Framework\TestCase
 
         $cacheConfig = new ConfigCache($config->getDumpFile('test_'), true);
 
-        $this->generator->expects($this->once())
+        $this->generator->expects(self::once())
                         ->method('generate')
-                        ->with($this->equalTo($config), $this->equalTo($cacheConfig))
+                        ->with(self::equalTo($config), self::equalTo($cacheConfig))
                         ->willReturn($container);
 
         self::assertSame($container, $builder->getTestContainer());

@@ -15,11 +15,12 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 /**
  * The dependency injection generator that allows XML, YAML and PHP files
- *
- * @author Luís Otávio Cobucci Oblonczyk <lcobucci@gmail.com>
  */
 final class Delegating extends Generator
 {
+    /**
+     * {@inheritdoc}
+     */
     public function getLoader(SymfonyBuilder $container, array $paths): LoaderInterface
     {
         $locator = new FileLocator($paths);
@@ -29,7 +30,7 @@ final class Delegating extends Generator
                 [
                     new XmlFileLoader($container, $locator),
                     new YamlFileLoader($container, $locator),
-                    new PhpFileLoader($container, $locator)
+                    new PhpFileLoader($container, $locator),
                 ]
             )
         );

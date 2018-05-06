@@ -6,12 +6,9 @@ namespace Lcobucci\DependencyInjection;
 use Lcobucci\DependencyInjection\Config\ContainerConfiguration;
 use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\Config\Loader\LoaderInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder as SymfonyBuilder;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
-/**
- * @author Luís Otávio Cobucci Oblonczyk <lcobucci@gmail.com>
- */
 abstract class Generator
 {
     /**
@@ -19,10 +16,7 @@ abstract class Generator
      */
     private $compiler;
 
-    /**
-     * @param Compiler $compiler
-     */
-    public function __construct(Compiler $compiler = null)
+    public function __construct(?Compiler $compiler = null)
     {
         $this->compiler = $compiler ?: new Compiler();
     }
@@ -49,5 +43,8 @@ abstract class Generator
         return new $className();
     }
 
+    /**
+     * @param string[] $paths
+     */
     abstract public function getLoader(SymfonyBuilder $container, array $paths): LoaderInterface;
 }

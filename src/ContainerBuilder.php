@@ -12,9 +12,6 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-/**
- * @author Luís Otávio Cobucci Oblonczyk <lcobucci@gmail.com>
- */
 final class ContainerBuilder implements Builder
 {
     /**
@@ -32,15 +29,10 @@ final class ContainerBuilder implements Builder
      */
     private $parameterBag;
 
-    /**
-     * @param ContainerConfiguration|null $config
-     * @param Generator|null $generator
-     * @param ParameterBag|null $parameterBag
-     */
     public function __construct(
-        ContainerConfiguration $config = null,
-        Generator $generator = null,
-        ParameterBag $parameterBag = null
+        ?ContainerConfiguration $config = null,
+        ?Generator $generator = null,
+        ?ParameterBag $parameterBag = null
     ) {
         $this->parameterBag = $parameterBag ?: new ParameterBag();
         $this->generator    = $generator ?: new XmlGenerator();
@@ -84,6 +76,9 @@ final class ContainerBuilder implements Builder
         return $this;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function addDelayedPass(
         string $className,
         array $constructArguments = [],
@@ -95,6 +90,9 @@ final class ContainerBuilder implements Builder
         return $this;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function addPackage(string $className, array $constructArguments = []): Builder
     {
         $this->config->addPackage($className, $constructArguments);
@@ -117,6 +115,9 @@ final class ContainerBuilder implements Builder
         return $this;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function setParameter(string $name, $value): Builder
     {
         $this->parameterBag->set($name, $value);

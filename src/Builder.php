@@ -9,8 +9,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Definition of how the container builder should behave
- *
- * @author Luís Otávio Cobucci Oblonczyk <lcobucci@gmail.com>
  */
 interface Builder
 {
@@ -33,6 +31,9 @@ interface Builder
         int $priority = 0
     ): Builder;
 
+    /**
+     * @param mixed[] $constructArguments
+     */
     public function addDelayedPass(
         string $className,
         array $constructArguments = [],
@@ -40,6 +41,9 @@ interface Builder
         int $priority = 0
     ): Builder;
 
+    /**
+     * @param mixed[] $constructArguments
+     */
     public function addPackage(string $className, array $constructArguments = []): Builder;
 
     /**
@@ -54,6 +58,8 @@ interface Builder
 
     /**
      * Adds a default parameter
+     *
+     * @param mixed $value
      */
     public function setParameter(string $name, $value): Builder;
 

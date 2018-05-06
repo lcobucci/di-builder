@@ -11,11 +11,12 @@ use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 
 /**
  * The dependency injection generator for XML files
- *
- * @author Luís Otávio Cobucci Oblonczyk <lcobucci@gmail.com>
  */
 final class Xml extends Generator
 {
+    /**
+     * {@inheritdoc}
+     */
     public function getLoader(SymfonyBuilder $container, array $paths): LoaderInterface
     {
         return new XmlFileLoader(

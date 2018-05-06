@@ -33,10 +33,10 @@ final class DumpXmlContainerTest extends TestCase
      */
     public function processShouldBeSkippedWhenDevModeIsNotEnabled(): void
     {
-        $this->configCache->expects($this->never())
+        $this->configCache->expects(self::never())
                           ->method('isFresh');
 
-        $this->configCache->expects($this->never())
+        $this->configCache->expects(self::never())
                           ->method('write');
 
         $pass = new DumpXmlContainer($this->configCache);
@@ -54,7 +54,7 @@ final class DumpXmlContainerTest extends TestCase
         $this->configCache->method('isFresh')
                           ->willReturn(true);
 
-        $this->configCache->expects($this->never())
+        $this->configCache->expects(self::never())
                           ->method('write');
 
         $pass = new DumpXmlContainer($this->configCache);
@@ -79,7 +79,7 @@ final class DumpXmlContainerTest extends TestCase
         $this->configCache->method('isFresh')
                           ->willReturn(false);
 
-        $this->configCache->expects($this->once())
+        $this->configCache->expects(self::once())
                           ->method('write')
                           ->with($assertXmlHeader, []);
 

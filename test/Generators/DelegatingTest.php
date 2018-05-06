@@ -3,14 +3,12 @@ declare(strict_types=1);
 
 namespace Lcobucci\DependencyInjection\Generators;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\Loader\DelegatingLoader;
 use Symfony\Component\Config\Loader\LoaderResolver;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-/**
- * @author Luís Otávio Cobucci Oblonczyk <lcobucci@gmail.com>
- */
-final class DelegatingTest extends \PHPUnit\Framework\TestCase
+final class DelegatingTest extends TestCase
 {
     /**
      * @test

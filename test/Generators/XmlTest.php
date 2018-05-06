@@ -3,13 +3,11 @@ declare(strict_types=1);
 
 namespace Lcobucci\DependencyInjection\Generators;
 
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 
-/**
- * @author Luís Otávio Cobucci Oblonczyk <lcobucci@gmail.com>
- */
-final class XmlTest extends \PHPUnit\Framework\TestCase
+final class XmlTest extends TestCase
 {
     /**
      * @test
