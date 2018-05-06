@@ -295,9 +295,9 @@ final class ContainerBuilderTest extends TestCase
         $builder   = new ContainerBuilder($this->config, $this->generator, $this->parameterBag);
         $container = $this->createMock(ContainerInterface::class);
 
-        $this->generator->expects($this->once())
+        $this->generator->expects(self::once())
                         ->method('generate')
-                        ->with($this->config, $this->equalTo(new ConfigCache($this->config->getDumpFile(), false)))
+                        ->with($this->config, self::equalTo(new ConfigCache($this->config->getDumpFile(), false)))
                         ->willReturn($container);
 
         self::assertSame($container, $builder->getContainer());
@@ -325,9 +325,9 @@ final class ContainerBuilderTest extends TestCase
 
         $cacheConfig = new ConfigCache($config->getDumpFile('test_'), true);
 
-        $this->generator->expects($this->once())
+        $this->generator->expects(self::once())
                         ->method('generate')
-                        ->with($this->equalTo($config), $this->equalTo($cacheConfig))
+                        ->with(self::equalTo($config), self::equalTo($cacheConfig))
                         ->willReturn($container);
 
         self::assertSame($container, $builder->getTestContainer());

@@ -22,6 +22,7 @@ script:
 jobs:
   allow_failures:
     - php: nightly
+    - env: STATIC_ANALYSIS=1
 
   include:
     - stage: Test
@@ -59,4 +60,4 @@ jobs:
     - stage: Quality
       env: STATIC_ANALYSIS=1
       script:
-        - ./vendor/bin/phpstan analyse -c phpstan.neon -l max src test
+        - ./vendor/bin/phpstan analyse

@@ -10,7 +10,9 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder as SymfonyBuilder;
 use Symfony\Component\DependencyInjection\Dumper\DumperInterface;
 use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
+use function assert;
 use function class_exists;
+use function is_array;
 
 final class Compiler
 {
@@ -49,6 +51,7 @@ final class Compiler
         ContainerConfiguration $config
     ): void {
         foreach ($config->getPassList() as $passConfig) {
+            assert(is_array($passConfig));
             [$pass, $type, $priority] = $passConfig + self::DEFAULT_PASS_CONFIG;
 
             if (! $pass instanceof CompilerPassInterface) {

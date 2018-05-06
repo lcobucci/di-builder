@@ -273,7 +273,9 @@ final class ContainerConfigurationTest extends TestCase
         $packageName = get_class($this->createMock(Package::class));
         $config      = new ContainerConfiguration([], [], [], [[$packageName, []]]);
 
-        self::assertSame($config->getPackages(), $config->getPackages());
+        $createdPackages = $config->getPackages();
+
+        self::assertSame($createdPackages, $config->getPackages());
     }
 
     /**

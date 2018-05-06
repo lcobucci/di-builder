@@ -80,7 +80,7 @@ final class ContainerConfiguration
      */
     public function getPackages(): array
     {
-        if (! $this->initializedPackages) {
+        if ($this->initializedPackages === null) {
             $this->initializedPackages = array_map(
                 function (array $data): Package {
                     [$package, $arguments] = $data;

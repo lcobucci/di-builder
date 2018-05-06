@@ -14,7 +14,6 @@ use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder as SymfonyBuilder;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 final class GeneratorTest extends TestCase
@@ -107,7 +106,6 @@ final class GeneratorTest extends TestCase
 
         $container = $this->generator->generate($config, $dump);
 
-        self::assertInstanceOf(ContainerInterface::class, $container);
         self::assertInstanceOf(stdClass::class, $container->get('testing'));
         self::assertFileExists(vfsStream::url('tests/dump.xml'));
     }
