@@ -30,8 +30,11 @@ jobs:
       install: travis_retry composer update --prefer-lowest
 
     - stage: Test
-      env: DEPENDENCIES=stable
-      install: travis_retry composer update --prefer-stable
+      env: DEPENDENCIES=dev
+      if: type = cron
+      install:
+        - composer config minimum-stability dev
+        - travis_retry composer update
 
     - stage: Quality
       env: TEST_COVERAGE=1
@@ -55,7 +58,7 @@ jobs:
         - mv ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini{.disabled,}
         - if [[ ! $(php -m | grep -si xdebug) ]]; then echo "xdebug required for mutation"; exit 1; fi
       script:
-        - ./vendor/bin/infection -s --min-msi=88 --min-covered-msi=100
+        - ./vendor/bin/infection -s --min-msi=95 --min-covered-msi=95 --threads=4
 
     - stage: Quality
       env: STATIC_ANALYSIS=1
