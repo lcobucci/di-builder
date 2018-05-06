@@ -32,7 +32,7 @@ jobs:
       env: DEPENDENCIES=stable
       install: travis_retry composer update --prefer-stable
 
-    - stage: Test
+    - stage: Quality
       env: TEST_COVERAGE=1
       before_script:
         - mv ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini{.disabled,}
