@@ -26,12 +26,13 @@ by offering an easy interface to build and load your dependency injection contai
  - Dynamic parameters: if you need to configure parameters that may change according
    with the environment automatically (like base project directory using ```__DIR__```).
 
-## Installation using [composer](http://getcomposer.org/)
+## Installation
 
-Just add ```"lcobucci/di-builder": "^5.3"``` to your composer.json and do a ```composer update``` or you can run:
+This package is available on [Packagist](http://packagist.org/packages/lcobucci/di-builder),
+you can install it using [Composer](http://getcomposer.org).
 
-```bash
-composer require lcobucci/di-builder:^5.3
+```shell
+composer require lcobucci/di-builder
 ```
 
 ## Basic usage
