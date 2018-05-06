@@ -3,28 +3,36 @@ declare(strict_types=1);
 
 namespace Lcobucci\DependencyInjection\Config;
 
-use Lcobucci\DependencyInjection\FileListProvider;
+use Generator;
 use Lcobucci\DependencyInjection\CompilerPassListProvider;
+use Lcobucci\DependencyInjection\FileListProvider;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
+use const DIRECTORY_SEPARATOR;
+use function array_column;
+use function array_filter;
+use function array_map;
+use function array_merge;
+use function assert;
+use function implode;
+use function md5;
+use function rtrim;
+use function sys_get_temp_dir;
 
-/**
- * @author Luís Otávio Cobucci Oblonczyk <lcobucci@gmail.com>
- */
 final class ContainerConfiguration
 {
     /**
-     * @var array
+     * @var string[]
      */
     private $files;
 
     /**
-     * @var array
+     * @var mixed[]
      */
     private $passList;
 
     /**
-     * @var array
+     * @var string[]
      */
     private $paths;
 
@@ -34,7 +42,7 @@ final class ContainerConfiguration
     private $baseClass;
 
     /**
-     * @var array
+     * @var mixed[]
      */
     private $packages;
 
@@ -48,6 +56,12 @@ final class ContainerConfiguration
      */
     private $dumpDir;
 
+    /**
+     * @param string[] $files
+     * @param mixed[]  $passList
+     * @param string[] $paths
+     * @param mixed[]  $packages
+     */
     public function __construct(
         array $files = [],
         array $passList = [],
@@ -79,14 +93,19 @@ final class ContainerConfiguration
         return $this->initializedPackages;
     }
 
+    /**
+     * @param mixed[] $constructArguments
+     */
     public function addPackage(string $className, array $constructArguments = []): void
     {
         $this->packages[] = [$className, $constructArguments];
     }
 
-    public function getFiles(): \Generator
+    public function getFiles(): Generator
     {
-        foreach ($this->getPackagesThatProvideFiles() as $module) {
+        foreach ($this->filterModules(FileListProvider::class) as $module) {
+            assert($module instanceof FileListProvider);
+
             yield from $module->getFiles();
         }
 
@@ -96,13 +115,8 @@ final class ContainerConfiguration
     }
 
     /**
-     * @return FileListProvider[]
+     * @return Package[]
      */
-    private function getPackagesThatProvideFiles(): array
-    {
-        return $this->filterModules(FileListProvider::class);
-    }
-
     private function filterModules(string $moduleType): array
     {
         return array_filter(
@@ -118,23 +132,17 @@ final class ContainerConfiguration
         $this->files[] = $file;
     }
 
-    public function getPassList(): \Generator
+    public function getPassList(): Generator
     {
-        foreach ($this->getPackagesThatProvideCompilerPasses() as $module) {
+        foreach ($this->filterModules(CompilerPassListProvider::class) as $module) {
+            assert($module instanceof CompilerPassListProvider);
+
             yield from $module->getCompilerPasses();
         }
 
         foreach ($this->passList as $compilerPass) {
             yield $compilerPass;
         }
-    }
-
-    /**
-     * @return CompilerPassListProvider[]
-     */
-    private function getPackagesThatProvideCompilerPasses(): array
-    {
-        return $this->filterModules(CompilerPassListProvider::class);
     }
 
     public function addPass(
@@ -145,6 +153,9 @@ final class ContainerConfiguration
         $this->passList[] = [$pass, $type, $priority];
     }
 
+    /**
+     * @param mixed[] $constructArguments
+     */
     public function addDelayedPass(
         string $className,
         array $constructArguments,
@@ -154,6 +165,9 @@ final class ContainerConfiguration
         $this->passList[] = [[$className, $constructArguments], $type, $priority];
     }
 
+    /**
+     * @return string[]
+     */
     public function getPaths(): array
     {
         return $this->paths;
@@ -200,6 +214,9 @@ final class ContainerConfiguration
         return $this->dumpDir . DIRECTORY_SEPARATOR . $prefix . $this->getClassName() . '.php';
     }
 
+    /**
+     * @return mixed[]
+     */
     public function getDumpOptions(): array
     {
         $options = ['class' => $this->getClassName()];

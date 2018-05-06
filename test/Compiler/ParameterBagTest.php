@@ -3,12 +3,10 @@ declare(strict_types=1);
 
 namespace Lcobucci\DependencyInjection\Compiler;
 
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-/**
- * @author Luís Otávio Cobucci Oblonczyk <lcobucci@gmail.com>
- */
-final class ParameterBagTest extends \PHPUnit\Framework\TestCase
+final class ParameterBagTest extends TestCase
 {
     /**
      * @test

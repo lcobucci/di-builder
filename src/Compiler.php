@@ -10,19 +10,12 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder as SymfonyBuilder;
 use Symfony\Component\DependencyInjection\Dumper\DumperInterface;
 use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
+use function class_exists;
 
-/**
- * @author Luís Otávio Cobucci Oblonczyk <lcobucci@gmail.com>
- */
 final class Compiler
 {
     private const DEFAULT_PASS_CONFIG = [null, null, 0];
 
-    /**
-     * @param ContainerConfiguration $config
-     * @param ConfigCache $dump
-     * @param Generator $generator
-     */
     public function compile(
         ContainerConfiguration $config,
         ConfigCache $dump,

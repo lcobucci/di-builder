@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Lcobucci\DependencyInjection\Compiler;
 
-use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\Config\ConfigCacheInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

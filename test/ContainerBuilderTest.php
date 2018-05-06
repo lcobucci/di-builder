@@ -8,18 +8,18 @@ use Lcobucci\DependencyInjection\Config\ContainerConfiguration;
 use Lcobucci\DependencyInjection\Config\Package;
 use Lcobucci\DependencyInjection\Generators\Xml as XmlGenerator;
 use Lcobucci\DependencyInjection\Testing\MakeServicesPublic;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use function get_class;
 
-/**
- * @author Luís Otávio Cobucci Oblonczyk <lcobucci@gmail.com>
- */
-final class ContainerBuilderTest extends \PHPUnit\Framework\TestCase
+final class ContainerBuilderTest extends TestCase
 {
     /**
-     * @var Generator|\PHPUnit\Framework\MockObject\MockObject
+     * @var Generator|MockObject
      */
     private $generator;
 
