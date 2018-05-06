@@ -1,6 +1,6 @@
 {
     "name": "lcobucci/di-builder",
-    "description": "Dependency Injection Builder for PHP 7.1+ applications",
+    "description": "Dependency Injection Builder for PHP 7.2+ applications",
     "type": "library",
     "authors": [
         {
@@ -17,7 +17,7 @@
     ],
     "minimum-stability": "dev",
     "require": {
-        "php": "^7.1",
+        "php": "^7.2",
         "symfony/config": "^3.3|^4.0",
         "symfony/dependency-injection": "^3.3|^4.0",
         "symfony/expression-language": "^3.3|^4.0"
