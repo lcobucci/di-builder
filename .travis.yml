@@ -30,8 +30,11 @@ jobs:
       install: travis_retry composer update --prefer-lowest
 
     - stage: Test
-      env: DEPENDENCIES=stable
-      install: travis_retry composer update --prefer-stable
+      env: DEPENDENCIES=dev
+      if: type = cron
+      install:
+        - composer config minimum-stability dev
+        - travis_retry composer update
 
     - stage: Quality
       env: TEST_COVERAGE=1

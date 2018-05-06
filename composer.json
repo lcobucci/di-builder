@@ -15,7 +15,6 @@
     "license": [
         "BSD-3-Clause"
     ],
-    "minimum-stability": "dev",
     "require": {
         "php": "^7.2",
         "symfony/config": "^4.0",
