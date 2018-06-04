@@ -321,7 +321,7 @@ final class ContainerBuilderTest extends TestCase
 
         $config = new ContainerConfiguration();
         $config->addPass($this->parameterBag);
-        $config->addPass(new MakeServicesPublic());
+        $config->addPass(new MakeServicesPublic(), PassConfig::TYPE_BEFORE_REMOVING);
 
         $cacheConfig = new ConfigCache($config->getDumpFile('test_'), true);
 
