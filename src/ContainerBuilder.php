@@ -153,7 +153,7 @@ final class ContainerBuilder implements Builder
     public function getTestContainer(): ContainerInterface
     {
         $config = clone $this->config;
-        $config->addPass(new MakeServicesPublic());
+        $config->addPass(new MakeServicesPublic(), PassConfig::TYPE_BEFORE_REMOVING);
 
         return $this->generator->generate(
             $config,
