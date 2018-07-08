@@ -22,8 +22,6 @@ script:
 jobs:
   allow_failures:
     - php: nightly
-    - env: STATIC_ANALYSIS=1
-    - env: MUTATION=1
 
   include:
     - stage: Test
@@ -59,7 +57,7 @@ jobs:
         - mv ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini{.disabled,}
         - if [[ ! $(php -m | grep -si xdebug) ]]; then echo "xdebug required for mutation"; exit 1; fi
       script:
-        - ./vendor/bin/infection -s --min-msi=95 --min-covered-msi=95 --threads=4
+        - ./vendor/bin/infection -s --min-msi=84 --min-covered-msi=93 --threads=4
 
     - stage: Quality
       env: STATIC_ANALYSIS=1
