@@ -16,6 +16,7 @@ use function assert;
 use function class_exists;
 use function dirname;
 use function is_array;
+use function is_string;
 
 final class Compiler
 {
@@ -116,6 +117,7 @@ final class Compiler
         SymfonyBuilder $container
     ): void {
         $rootCode = array_pop($content);
+        assert(is_string($rootCode));
 
         $filesystem = new Filesystem();
 
