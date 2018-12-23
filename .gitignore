@@ -4,4 +4,4 @@
 /phpstan.neon
 /.phpcs.cache
 composer.lock
-/infection-log.txt
+/infection.log

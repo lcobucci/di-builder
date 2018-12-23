@@ -1,11 +1,15 @@
 {
-    "timeout": 10,
-    "source": {
-        "directories": [
-            "src"
-        ]
-    },
-    "logs": {
-        "text": "infection-log.txt"
-    }
+  "timeout": 10,
+  "source": {
+    "directories": [
+      "src"
+    ]
+  },
+  "logs": {
+    "text": "infection.log"
+  },
+  "mutators": {
+    "@default": true,
+    "@function_signature": true
+  }
 }

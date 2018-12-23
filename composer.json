@@ -23,7 +23,7 @@
     },
     "require-dev": {
         "doctrine/coding-standard": "^4.0",
-        "infection/infection": "^0.9",
+        "infection/infection": "^0.11",
         "mikey179/vfsStream": "^1.6",
         "phpstan/phpstan": "^0.10",
         "phpstan/phpstan-deprecation-rules": "^0.10.2",
