@@ -83,7 +83,7 @@ final class ContainerConfiguration
     {
         if ($this->initializedPackages === null) {
             $this->initializedPackages = array_map(
-                function (array $data): Package {
+                static function (array $data): Package {
                     [$package, $arguments] = $data;
                     return new $package(...$arguments);
                 },
@@ -122,7 +122,7 @@ final class ContainerConfiguration
     {
         return array_filter(
             $this->getPackages(),
-            function (Package $module) use ($moduleType): bool {
+            static function (Package $module) use ($moduleType): bool {
                 return $module instanceof $moduleType;
             }
         );

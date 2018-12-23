@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Lcobucci\DependencyInjection\Config;
 
+use Generator;
 use Lcobucci\DependencyInjection\Compiler\ParameterBag;
 use Lcobucci\DependencyInjection\CompilerPassListProvider;
 use Lcobucci\DependencyInjection\FileListProvider;
@@ -61,7 +62,7 @@ final class ContainerConfigurationTest extends TestCase
     {
         $package = new class implements FileListProvider
         {
-            public function getFiles(): \Generator
+            public function getFiles(): Generator
             {
                 yield 'services2.xml';
             }
@@ -115,7 +116,7 @@ final class ContainerConfigurationTest extends TestCase
     {
         $package = new class implements CompilerPassListProvider
         {
-            public function getCompilerPasses(): \Generator
+            public function getCompilerPasses(): Generator
             {
                 yield [CompilerPassInterface::class, 'beforeOptimization'];
             }
