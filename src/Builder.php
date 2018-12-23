@@ -12,6 +12,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 interface Builder
 {
+    public const DEFAULT_PRIORITY = 0;
+
     /**
      * Changes the generator to handle the files
      */
@@ -28,7 +30,7 @@ interface Builder
     public function addPass(
         CompilerPassInterface $pass,
         string $type = PassConfig::TYPE_BEFORE_OPTIMIZATION,
-        int $priority = 0
+        int $priority = self::DEFAULT_PRIORITY
     ): Builder;
 
     /**
@@ -38,7 +40,7 @@ interface Builder
         string $className,
         array $constructArguments = [],
         string $type = PassConfig::TYPE_BEFORE_OPTIMIZATION,
-        int $priority = 0
+        int $priority = self::DEFAULT_PRIORITY
     ): Builder;
 
     /**

@@ -12,18 +12,6 @@ final class ParameterBagTest extends TestCase
      * @test
      *
      * @covers \Lcobucci\DependencyInjection\Compiler\ParameterBag::__construct
-     */
-    public function constructShouldInitializeTheParameters(): void
-    {
-        $pass = new ParameterBag(['test' => 1]);
-
-        self::assertAttributeEquals(['test' => 1], 'parameters', $pass);
-    }
-
-    /**
-     * @test
-     *
-     * @covers \Lcobucci\DependencyInjection\Compiler\ParameterBag::__construct
      * @covers \Lcobucci\DependencyInjection\Compiler\ParameterBag::set
      */
     public function setShouldConfigureAParameter(): void
@@ -31,15 +19,14 @@ final class ParameterBagTest extends TestCase
         $pass = new ParameterBag();
         $pass->set('test', 1);
 
-        self::assertAttributeEquals(['test' => 1], 'parameters', $pass);
+        self::assertEquals(new ParameterBag(['test' => 1]), $pass);
     }
 
     /**
      * @test
      *
+     * @covers \Lcobucci\DependencyInjection\Compiler\ParameterBag::__construct
      * @covers \Lcobucci\DependencyInjection\Compiler\ParameterBag::get
-     *
-     * @uses \Lcobucci\DependencyInjection\Compiler\ParameterBag::__construct
      */
     public function getShouldReturnTheValueOfTheParameter(): void
     {
