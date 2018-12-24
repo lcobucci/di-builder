@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Lcobucci\DependencyInjection\Config;
 
 use Generator;
+use Lcobucci\DependencyInjection\Builder;
 use Lcobucci\DependencyInjection\CompilerPassListProvider;
 use Lcobucci\DependencyInjection\FileListProvider;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -47,7 +48,7 @@ final class ContainerConfiguration
     private $packages;
 
     /**
-     * @var Package[]
+     * @var Package[]|null
      */
     private $initializedPackages;
 
@@ -82,7 +83,7 @@ final class ContainerConfiguration
     {
         if ($this->initializedPackages === null) {
             $this->initializedPackages = array_map(
-                function (array $data): Package {
+                static function (array $data): Package {
                     [$package, $arguments] = $data;
                     return new $package(...$arguments);
                 },
@@ -121,7 +122,7 @@ final class ContainerConfiguration
     {
         return array_filter(
             $this->getPackages(),
-            function (Package $module) use ($moduleType): bool {
+            static function (Package $module) use ($moduleType): bool {
                 return $module instanceof $moduleType;
             }
         );
@@ -148,7 +149,7 @@ final class ContainerConfiguration
     public function addPass(
         CompilerPassInterface $pass,
         string $type = PassConfig::TYPE_BEFORE_OPTIMIZATION,
-        int $priority = 0
+        int $priority = Builder::DEFAULT_PRIORITY
     ): void {
         $this->passList[] = [$pass, $type, $priority];
     }
@@ -160,7 +161,7 @@ final class ContainerConfiguration
         string $className,
         array $constructArguments,
         string $type = PassConfig::TYPE_BEFORE_OPTIMIZATION,
-        int $priority = 0
+        int $priority = Builder::DEFAULT_PRIORITY
     ): void {
         $this->passList[] = [[$className, $constructArguments], $type, $priority];
     }

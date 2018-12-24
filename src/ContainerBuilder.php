@@ -34,9 +34,9 @@ final class ContainerBuilder implements Builder
         ?Generator $generator = null,
         ?ParameterBag $parameterBag = null
     ) {
-        $this->parameterBag = $parameterBag ?: new ParameterBag();
-        $this->generator    = $generator ?: new XmlGenerator();
-        $this->config       = $config ?: new ContainerConfiguration();
+        $this->parameterBag = $parameterBag ?? new ParameterBag();
+        $this->generator    = $generator ?? new XmlGenerator();
+        $this->config       = $config ?? new ContainerConfiguration();
 
         $this->setDefaultConfiguration();
     }
@@ -69,7 +69,7 @@ final class ContainerBuilder implements Builder
     public function addPass(
         CompilerPassInterface $pass,
         string $type = PassConfig::TYPE_BEFORE_OPTIMIZATION,
-        int $priority = 0
+        int $priority = self::DEFAULT_PRIORITY
     ): Builder {
         $this->config->addPass($pass, $type, $priority);
 
@@ -83,7 +83,7 @@ final class ContainerBuilder implements Builder
         string $className,
         array $constructArguments = [],
         string $type = PassConfig::TYPE_BEFORE_OPTIMIZATION,
-        int $priority = 0
+        int $priority = self::DEFAULT_PRIORITY
     ): Builder {
         $this->config->addDelayedPass($className, $constructArguments, $type, $priority);
 

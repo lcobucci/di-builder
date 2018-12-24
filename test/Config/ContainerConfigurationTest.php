@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Lcobucci\DependencyInjection\Config;
 
+use Generator;
 use Lcobucci\DependencyInjection\Compiler\ParameterBag;
 use Lcobucci\DependencyInjection\CompilerPassListProvider;
 use Lcobucci\DependencyInjection\FileListProvider;
@@ -36,33 +37,10 @@ final class ContainerConfigurationTest extends TestCase
      * @test
      *
      * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
-     */
-    public function constructShouldConfigureTheAttributes(): void
-    {
-        $package = get_class($this->createMock(Package::class));
-
-        $config = new ContainerConfiguration(
-            ['services.xml'],
-            [[$this->pass, 'beforeOptimization']],
-            ['test'],
-            [[$package, []]]
-        );
-
-        self::assertAttributeEquals(['services.xml'], 'files', $config);
-        self::assertAttributeSame([[$this->pass, 'beforeOptimization']], 'passList', $config);
-        self::assertAttributeEquals(['test'], 'paths', $config);
-        self::assertAttributeEquals([[$package, []]], 'packages', $config);
-        self::assertAttributeEquals(sys_get_temp_dir(), 'dumpDir', $config);
-    }
-
-    /**
-     * @test
-     *
      * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getFiles
      * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::filterModules
      *
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getPackages
-     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
      */
     public function getFilesShouldReturnTheFileList(): void
     {
@@ -84,7 +62,7 @@ final class ContainerConfigurationTest extends TestCase
     {
         $package = new class implements FileListProvider
         {
-            public function getFiles(): \Generator
+            public function getFiles(): Generator
             {
                 yield 'services2.xml';
             }
@@ -98,16 +76,15 @@ final class ContainerConfigurationTest extends TestCase
     /**
      * @test
      *
+     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
      * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::addFile
-     *
-     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
      */
     public function addFileShouldAppendANewFileToTheList(): void
     {
         $config = new ContainerConfiguration();
         $config->addFile('services.xml');
 
-        self::assertAttributeEquals(['services.xml'], 'files', $config);
+        self::assertEquals(new ContainerConfiguration(['services.xml']), $config);
     }
 
     /**
@@ -139,7 +116,7 @@ final class ContainerConfigurationTest extends TestCase
     {
         $package = new class implements CompilerPassListProvider
         {
-            public function getCompilerPasses(): \Generator
+            public function getCompilerPasses(): Generator
             {
                 yield [CompilerPassInterface::class, 'beforeOptimization'];
             }
@@ -164,86 +141,99 @@ final class ContainerConfigurationTest extends TestCase
     /**
      * @test
      *
+     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
      * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::addPass
-     *
-     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
      */
     public function addPassShouldAppendANewHandlerToTheList(): void
     {
         $config = new ContainerConfiguration();
         $config->addPass($this->pass);
 
-        self::assertAttributeSame([[$this->pass, PassConfig::TYPE_BEFORE_OPTIMIZATION, 0]], 'passList', $config);
+        $expected = $config = new ContainerConfiguration(
+            [],
+            [[$this->pass, PassConfig::TYPE_BEFORE_OPTIMIZATION, 0]]
+        );
+
+        self::assertEquals($expected, $config);
     }
 
     /**
      * @test
      *
+     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
      * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::addPass
-     *
-     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
      */
     public function addPassCanReceiveTheTypeAndPriority(): void
     {
         $config = new ContainerConfiguration();
         $config->addPass($this->pass, PassConfig::TYPE_AFTER_REMOVING, 1);
 
-        self::assertAttributeSame([[$this->pass, PassConfig::TYPE_AFTER_REMOVING, 1]], 'passList', $config);
+        $expected = $config = new ContainerConfiguration(
+            [],
+            [[$this->pass, PassConfig::TYPE_AFTER_REMOVING, 1]]
+        );
+
+        self::assertEquals($expected, $config);
     }
 
     /**
      * @test
      *
+     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
      * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::addDelayedPass
-     *
-     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
      */
     public function addDelayedPassShouldAppendANewCompilerPassToTheList(): void
     {
         $config = new ContainerConfiguration();
         $config->addDelayedPass(ParameterBag::class, ['a' => 'b']);
 
-        self::assertAttributeSame(
-            [[[ParameterBag::class, ['a' => 'b']], PassConfig::TYPE_BEFORE_OPTIMIZATION, 0]],
-            'passList',
-            $config
+        $expected = $config = new ContainerConfiguration(
+            [],
+            [[[ParameterBag::class, ['a' => 'b']], PassConfig::TYPE_BEFORE_OPTIMIZATION, 0]]
         );
+
+        self::assertEquals($expected, $config);
     }
 
     /**
      * @test
      *
+     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
      * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::addDelayedPass
-     *
-     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
      */
     public function addDelayedPassCanReceiveTheTypeAndPriority(): void
     {
         $config = new ContainerConfiguration();
         $config->addDelayedPass(ParameterBag::class, ['a' => 'b'], PassConfig::TYPE_AFTER_REMOVING, 1);
 
-        self::assertAttributeSame(
-            [[[ParameterBag::class, ['a' => 'b']], PassConfig::TYPE_AFTER_REMOVING, 1]],
-            'passList',
-            $config
+        $expected = $config = new ContainerConfiguration(
+            [],
+            [[[ParameterBag::class, ['a' => 'b']], PassConfig::TYPE_AFTER_REMOVING, 1]]
         );
+
+        self::assertEquals($expected, $config);
     }
 
     /**
      * @test
      *
+     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
      * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::addPackage
-     *
-     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
      */
     public function addPackageShouldAppendThePackageConfigurationToTheList(): void
     {
         $package = get_class($this->createMock(Package::class));
         $config  = new ContainerConfiguration();
-
         $config->addPackage($package, ['a' => 'b']);
 
-        self::assertAttributeSame([[$package, ['a' => 'b']]], 'packages', $config);
+        $expected = $config = new ContainerConfiguration(
+            [],
+            [],
+            [],
+            [[$package, ['a' => 'b']]]
+        );
+
+        self::assertEquals($expected, $config);
     }
 
     /**
@@ -295,45 +285,37 @@ final class ContainerConfigurationTest extends TestCase
     /**
      * @test
      *
+     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
      * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::addPath
-     *
-     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
      */
     public function addPathShouldAppendANewPathToTheList(): void
     {
         $config = new ContainerConfiguration();
         $config->addPath('services');
 
-        self::assertAttributeEquals(['services'], 'paths', $config);
+        $expected = $config = new ContainerConfiguration(
+            [],
+            [],
+            ['services']
+        );
+
+        self::assertEquals($expected, $config);
     }
 
     /**
      * @test
      *
      * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::setBaseClass
+     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getBaseClass
      *
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
      */
-    public function setBaseClassShouldChangeTheAttribute(): ContainerConfiguration
+    public function setBaseClassShouldChangeTheAttribute(): void
     {
         $config = new ContainerConfiguration();
         $config->setBaseClass('Test');
 
-        self::assertAttributeEquals('Test', 'baseClass', $config);
-
-        return $config;
-    }
-
-    /**
-     * @test
-     *
-     * @depends setBaseClassShouldChangeTheAttribute
-     *
-     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getBaseClass
-     */
-    public function getBaseClassShouldReturnTheAttributeValue(ContainerConfiguration $config): void
-    {
-        self::assertEquals('Test', $config->getBaseClass());
+        self::assertSame('Test', $config->getBaseClass());
     }
 
     /**
@@ -356,13 +338,14 @@ final class ContainerConfigurationTest extends TestCase
      * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::setDumpDir
      *
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
+     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getDumpDir
      */
     public function setDumpDirShouldChangeTheAttribute(): void
     {
         $config = new ContainerConfiguration();
         $config->setDumpDir('/test/');
 
-        self::assertAttributeEquals('/test', 'dumpDir', $config);
+        self::assertEquals('/test', $config->getDumpDir());
     }
 
     /**

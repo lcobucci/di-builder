@@ -56,11 +56,9 @@ final class ContainerBuilderTest extends TestCase
      */
     public function constructShouldConfigureTheDefaultAttributes(): void
     {
-        $builder = new ContainerBuilder();
+        $expected = new ContainerBuilder(new ContainerConfiguration(), new XmlGenerator(), new ParameterBag());
 
-        self::assertAttributeInstanceOf(ContainerConfiguration::class, 'config', $builder);
-        self::assertAttributeInstanceOf(ParameterBag::class, 'parameterBag', $builder);
-        self::assertAttributeInstanceOf(XmlGenerator::class, 'generator', $builder);
+        self::assertEquals($expected, new ContainerBuilder());
     }
 
     /**
@@ -74,11 +72,8 @@ final class ContainerBuilderTest extends TestCase
      */
     public function constructShouldReceiveTheDependenciesAsArguments(): void
     {
-        $builder = new ContainerBuilder($this->config, $this->generator, $this->parameterBag);
+        new ContainerBuilder($this->config, $this->generator, $this->parameterBag);
 
-        self::assertAttributeSame($this->config, 'config', $builder);
-        self::assertAttributeSame($this->parameterBag, 'parameterBag', $builder);
-        self::assertAttributeSame($this->generator, 'generator', $builder);
         self::assertNotEmpty($this->config->getPassList());
         self::assertFalse($this->parameterBag->get('app.devmode'));
         self::assertTrue($this->parameterBag->get('container.dumper.inline_class_loader'));
@@ -91,7 +86,6 @@ final class ContainerBuilderTest extends TestCase
      *
      * @uses \Lcobucci\DependencyInjection\ContainerBuilder::__construct
      * @uses \Lcobucci\DependencyInjection\ContainerBuilder::setDefaultConfiguration
-     *
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration
      * @uses \Lcobucci\DependencyInjection\Compiler\ParameterBag
      */
@@ -99,9 +93,10 @@ final class ContainerBuilderTest extends TestCase
     {
         $builder   = new ContainerBuilder($this->config, $this->generator, $this->parameterBag);
         $generator = $this->getMockForAbstractClass(Generator::class, [], '', false);
+        $expected  = new ContainerBuilder($this->config, $generator, $this->parameterBag);
 
         self::assertSame($builder, $builder->setGenerator($generator));
-        self::assertAttributeSame($generator, 'generator', $builder);
+        self::assertEquals($expected, $builder);
     }
 
     /**
@@ -111,7 +106,6 @@ final class ContainerBuilderTest extends TestCase
      *
      * @uses \Lcobucci\DependencyInjection\ContainerBuilder::__construct
      * @uses \Lcobucci\DependencyInjection\ContainerBuilder::setDefaultConfiguration
-     *
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration
      * @uses \Lcobucci\DependencyInjection\Compiler\ParameterBag
      */
@@ -130,7 +124,6 @@ final class ContainerBuilderTest extends TestCase
      *
      * @uses \Lcobucci\DependencyInjection\ContainerBuilder::__construct
      * @uses \Lcobucci\DependencyInjection\ContainerBuilder::setDefaultConfiguration
-     *
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration
      * @uses \Lcobucci\DependencyInjection\Compiler\ParameterBag
      */
@@ -150,7 +143,6 @@ final class ContainerBuilderTest extends TestCase
      *
      * @uses \Lcobucci\DependencyInjection\ContainerBuilder::__construct
      * @uses \Lcobucci\DependencyInjection\ContainerBuilder::setDefaultConfiguration
-     *
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration
      * @uses \Lcobucci\DependencyInjection\Compiler\ParameterBag
      */
@@ -170,7 +162,6 @@ final class ContainerBuilderTest extends TestCase
      *
      * @uses \Lcobucci\DependencyInjection\ContainerBuilder::__construct
      * @uses \Lcobucci\DependencyInjection\ContainerBuilder::setDefaultConfiguration
-     *
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration
      * @uses \Lcobucci\DependencyInjection\Compiler\ParameterBag
      */
@@ -190,7 +181,6 @@ final class ContainerBuilderTest extends TestCase
      *
      * @uses \Lcobucci\DependencyInjection\ContainerBuilder::__construct
      * @uses \Lcobucci\DependencyInjection\ContainerBuilder::setDefaultConfiguration
-     *
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration
      * @uses \Lcobucci\DependencyInjection\Compiler\ParameterBag
      */
@@ -209,7 +199,6 @@ final class ContainerBuilderTest extends TestCase
      *
      * @uses \Lcobucci\DependencyInjection\ContainerBuilder::__construct
      * @uses \Lcobucci\DependencyInjection\ContainerBuilder::setDefaultConfiguration
-     *
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration
      * @uses \Lcobucci\DependencyInjection\Compiler\ParameterBag
      */
@@ -228,7 +217,6 @@ final class ContainerBuilderTest extends TestCase
      *
      * @uses \Lcobucci\DependencyInjection\ContainerBuilder::__construct
      * @uses \Lcobucci\DependencyInjection\ContainerBuilder::setDefaultConfiguration
-     *
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration
      * @uses \Lcobucci\DependencyInjection\Compiler\ParameterBag
      */
@@ -247,7 +235,6 @@ final class ContainerBuilderTest extends TestCase
      *
      * @uses \Lcobucci\DependencyInjection\ContainerBuilder::__construct
      * @uses \Lcobucci\DependencyInjection\ContainerBuilder::setDefaultConfiguration
-     *
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration
      * @uses \Lcobucci\DependencyInjection\Compiler\ParameterBag
      */
@@ -267,7 +254,6 @@ final class ContainerBuilderTest extends TestCase
      *
      * @uses \Lcobucci\DependencyInjection\ContainerBuilder::__construct
      * @uses \Lcobucci\DependencyInjection\ContainerBuilder::setDefaultConfiguration
-     *
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration
      * @uses \Lcobucci\DependencyInjection\Compiler\ParameterBag
      */
@@ -286,7 +272,6 @@ final class ContainerBuilderTest extends TestCase
      *
      * @uses \Lcobucci\DependencyInjection\ContainerBuilder::__construct
      * @uses \Lcobucci\DependencyInjection\ContainerBuilder::setDefaultConfiguration
-     *
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration
      * @uses \Lcobucci\DependencyInjection\Compiler\ParameterBag
      */
@@ -310,7 +295,6 @@ final class ContainerBuilderTest extends TestCase
      *
      * @uses \Lcobucci\DependencyInjection\ContainerBuilder::__construct
      * @uses \Lcobucci\DependencyInjection\ContainerBuilder::setDefaultConfiguration
-     *
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration
      * @uses \Lcobucci\DependencyInjection\Compiler\ParameterBag
      */

@@ -15,6 +15,7 @@ use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use function assert;
 use function count;
+use function file_put_contents;
 use function iterator_to_array;
 use function umask;
 
@@ -90,6 +91,27 @@ final class CompilerTest extends TestCase
             self::assertContains($name, $expectedFiles);
             self::assertSame($expectedPermissions, $file->getPermissions());
         }
+    }
+
+    /**
+     * @test
+     *
+     * @covers \Lcobucci\DependencyInjection\Compiler
+     *
+     * @uses \Lcobucci\DependencyInjection\Compiler\ParameterBag
+     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration
+     * @uses \Lcobucci\DependencyInjection\Generator
+     */
+    public function compilationShouldBeSkippedWhenFileAlreadyExists(): void
+    {
+        file_put_contents(vfsStream::url('tests/container.php'), 'testing');
+
+        $compiler = new Compiler();
+        $compiler->compile($this->config, $this->dump, new Yaml());
+
+        $generatedFiles = iterator_to_array($this->getGeneratedFiles($this->root));
+
+        self::assertCount(1, $generatedFiles);
     }
 
     private function getGeneratedFiles(vfsStreamDirectory $directory): PHPGenerator
