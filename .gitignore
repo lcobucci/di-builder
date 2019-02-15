@@ -5,3 +5,4 @@
 /.phpcs.cache
 composer.lock
 /infection.log
+/.phpunit.result.cache
