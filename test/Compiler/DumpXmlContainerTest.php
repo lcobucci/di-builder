@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Lcobucci\DependencyInjection\Compiler;
 
-use PHPUnit\Framework\Constraint\StringContains;
+use PHPUnit\Framework\Constraint\RegularExpression;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\ConfigCacheInterface;
@@ -69,11 +69,11 @@ final class DumpXmlContainerTest extends TestCase
      */
     public function processShouldDumpTheContainerUsingTheXmlDumper(): void
     {
-        $assertXmlHeader = new StringContains(
-            '<container xmlns="http://symfony.com/schema/dic/services" '
+        $assertXmlHeader = new RegularExpression(
+            '#<container xmlns="http://symfony.com/schema/dic/services" '
             . 'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" '
             . 'xsi:schemaLocation="http://symfony.com/schema/dic/services '
-            . 'http://symfony.com/schema/dic/services/services-1.0.xsd">'
+            . 'https?://symfony.com/schema/dic/services/services-1.0.xsd">#'
         );
 
         $this->configCache->method('isFresh')
