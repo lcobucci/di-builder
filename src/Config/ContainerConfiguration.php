@@ -105,26 +105,24 @@ final class ContainerConfiguration
 
     public function getFiles(): Generator
     {
-        foreach ($this->filterModules(FileListProvider::class) as $module) {
-            assert($module instanceof FileListProvider);
+        foreach ($this->filterPackages(FileListProvider::class) as $package) {
+            assert($package instanceof FileListProvider);
 
-            yield from $module->getFiles();
+            yield from $package->getFiles();
         }
 
-        foreach ($this->files as $file) {
-            yield $file;
-        }
+        yield from $this->files;
     }
 
     /**
      * @return Package[]
      */
-    private function filterModules(string $moduleType): array
+    private function filterPackages(string $packageType): array
     {
         return array_filter(
             $this->getPackages(),
-            static function (Package $module) use ($moduleType): bool {
-                return $module instanceof $moduleType;
+            static function (Package $package) use ($packageType): bool {
+                return $package instanceof $packageType;
             }
         );
     }
@@ -136,15 +134,13 @@ final class ContainerConfiguration
 
     public function getPassList(): Generator
     {
-        foreach ($this->filterModules(CompilerPassListProvider::class) as $module) {
-            assert($module instanceof CompilerPassListProvider);
+        foreach ($this->filterPackages(CompilerPassListProvider::class) as $package) {
+            assert($package instanceof CompilerPassListProvider);
 
-            yield from $module->getCompilerPasses();
+            yield from $package->getCompilerPasses();
         }
 
-        foreach ($this->passList as $compilerPass) {
-            yield $compilerPass;
-        }
+        yield from $this->passList;
     }
 
     public function addPass(

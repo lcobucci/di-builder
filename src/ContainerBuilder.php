@@ -11,6 +11,8 @@ use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use function assert;
+use function is_bool;
 
 final class ContainerBuilder implements Builder
 {
@@ -141,12 +143,12 @@ final class ContainerBuilder implements Builder
 
     public function getContainer(): ContainerInterface
     {
+        $devMode = $this->parameterBag->get('app.devmode');
+        assert(is_bool($devMode));
+
         return $this->generator->generate(
             $this->config,
-            new ConfigCache(
-                $this->config->getDumpFile(),
-                (bool) $this->parameterBag->get('app.devmode')
-            )
+            new ConfigCache($this->config->getDumpFile(), $devMode)
         );
     }
 

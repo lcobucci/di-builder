@@ -38,7 +38,7 @@ final class ContainerConfigurationTest extends TestCase
      *
      * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
      * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getFiles
-     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::filterModules
+     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::filterPackages
      *
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getPackages
      */
@@ -53,14 +53,22 @@ final class ContainerConfigurationTest extends TestCase
      * @test
      *
      * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getFiles
-     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::filterModules
+     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::filterPackages
      *
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getPackages
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
      */
     public function getFilesShouldYieldTheFilesFromPackagesFirst(): void
     {
-        $package = new class implements FileListProvider
+        $package1 = new class implements CompilerPassListProvider
+        {
+            public function getCompilerPasses(): Generator
+            {
+                yield [CompilerPassInterface::class, 'beforeOptimization'];
+            }
+        };
+
+        $package2 = new class implements FileListProvider
         {
             public function getFiles(): Generator
             {
@@ -68,7 +76,12 @@ final class ContainerConfigurationTest extends TestCase
             }
         };
 
-        $config = new ContainerConfiguration(['services.xml'], [], [], [[get_class($package), []]]);
+        $config = new ContainerConfiguration(
+            ['services.xml'],
+            [],
+            [],
+            [[get_class($package1), []], [get_class($package2), []]]
+        );
 
         self::assertSame(['services2.xml', 'services.xml'], iterator_to_array($config->getFiles(), false));
     }
@@ -91,7 +104,7 @@ final class ContainerConfigurationTest extends TestCase
      * @test
      *
      * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getPassList
-     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::filterModules
+     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::filterPackages
      *
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getPackages
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
@@ -107,14 +120,14 @@ final class ContainerConfigurationTest extends TestCase
      * @test
      *
      * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getPassList
-     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::filterModules
+     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::filterPackages
      *
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getPackages
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
      */
     public function getPassListShouldYieldTheCompilerPassesFromPackagesFirst(): void
     {
-        $package = new class implements CompilerPassListProvider
+        $package1 = new class implements CompilerPassListProvider
         {
             public function getCompilerPasses(): Generator
             {
@@ -122,11 +135,19 @@ final class ContainerConfigurationTest extends TestCase
             }
         };
 
+        $package2 = new class implements FileListProvider
+        {
+            public function getFiles(): Generator
+            {
+                yield 'services2.xml';
+            }
+        };
+
         $config = new ContainerConfiguration(
             [],
             [[$this->pass, 'beforeOptimization']],
             [],
-            [[get_class($package), []]]
+            [[get_class($package1), []], [get_class($package2), []]]
         );
 
         self::assertSame(
@@ -149,7 +170,7 @@ final class ContainerConfigurationTest extends TestCase
         $config = new ContainerConfiguration();
         $config->addPass($this->pass);
 
-        $expected = $config = new ContainerConfiguration(
+        $expected = new ContainerConfiguration(
             [],
             [[$this->pass, PassConfig::TYPE_BEFORE_OPTIMIZATION, 0]]
         );
@@ -168,7 +189,7 @@ final class ContainerConfigurationTest extends TestCase
         $config = new ContainerConfiguration();
         $config->addPass($this->pass, PassConfig::TYPE_AFTER_REMOVING, 1);
 
-        $expected = $config = new ContainerConfiguration(
+        $expected = new ContainerConfiguration(
             [],
             [[$this->pass, PassConfig::TYPE_AFTER_REMOVING, 1]]
         );
@@ -187,7 +208,7 @@ final class ContainerConfigurationTest extends TestCase
         $config = new ContainerConfiguration();
         $config->addDelayedPass(ParameterBag::class, ['a' => 'b']);
 
-        $expected = $config = new ContainerConfiguration(
+        $expected = new ContainerConfiguration(
             [],
             [[[ParameterBag::class, ['a' => 'b']], PassConfig::TYPE_BEFORE_OPTIMIZATION, 0]]
         );
@@ -206,7 +227,7 @@ final class ContainerConfigurationTest extends TestCase
         $config = new ContainerConfiguration();
         $config->addDelayedPass(ParameterBag::class, ['a' => 'b'], PassConfig::TYPE_AFTER_REMOVING, 1);
 
-        $expected = $config = new ContainerConfiguration(
+        $expected = new ContainerConfiguration(
             [],
             [[[ParameterBag::class, ['a' => 'b']], PassConfig::TYPE_AFTER_REMOVING, 1]]
         );
@@ -226,7 +247,7 @@ final class ContainerConfigurationTest extends TestCase
         $config  = new ContainerConfiguration();
         $config->addPackage($package, ['a' => 'b']);
 
-        $expected = $config = new ContainerConfiguration(
+        $expected = new ContainerConfiguration(
             [],
             [],
             [],
@@ -293,7 +314,7 @@ final class ContainerConfigurationTest extends TestCase
         $config = new ContainerConfiguration();
         $config->addPath('services');
 
-        $expected = $config = new ContainerConfiguration(
+        $expected = new ContainerConfiguration(
             [],
             [],
             ['services']
