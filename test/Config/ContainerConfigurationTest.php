@@ -149,7 +149,7 @@ final class ContainerConfigurationTest extends TestCase
         $config = new ContainerConfiguration();
         $config->addPass($this->pass);
 
-        $expected = $config = new ContainerConfiguration(
+        $expected = new ContainerConfiguration(
             [],
             [[$this->pass, PassConfig::TYPE_BEFORE_OPTIMIZATION, 0]]
         );
@@ -168,7 +168,7 @@ final class ContainerConfigurationTest extends TestCase
         $config = new ContainerConfiguration();
         $config->addPass($this->pass, PassConfig::TYPE_AFTER_REMOVING, 1);
 
-        $expected = $config = new ContainerConfiguration(
+        $expected = new ContainerConfiguration(
             [],
             [[$this->pass, PassConfig::TYPE_AFTER_REMOVING, 1]]
         );
@@ -187,7 +187,7 @@ final class ContainerConfigurationTest extends TestCase
         $config = new ContainerConfiguration();
         $config->addDelayedPass(ParameterBag::class, ['a' => 'b']);
 
-        $expected = $config = new ContainerConfiguration(
+        $expected = new ContainerConfiguration(
             [],
             [[[ParameterBag::class, ['a' => 'b']], PassConfig::TYPE_BEFORE_OPTIMIZATION, 0]]
         );
@@ -206,7 +206,7 @@ final class ContainerConfigurationTest extends TestCase
         $config = new ContainerConfiguration();
         $config->addDelayedPass(ParameterBag::class, ['a' => 'b'], PassConfig::TYPE_AFTER_REMOVING, 1);
 
-        $expected = $config = new ContainerConfiguration(
+        $expected = new ContainerConfiguration(
             [],
             [[[ParameterBag::class, ['a' => 'b']], PassConfig::TYPE_AFTER_REMOVING, 1]]
         );
@@ -226,7 +226,7 @@ final class ContainerConfigurationTest extends TestCase
         $config  = new ContainerConfiguration();
         $config->addPackage($package, ['a' => 'b']);
 
-        $expected = $config = new ContainerConfiguration(
+        $expected = new ContainerConfiguration(
             [],
             [],
             [],
@@ -293,7 +293,7 @@ final class ContainerConfigurationTest extends TestCase
         $config = new ContainerConfiguration();
         $config->addPath('services');
 
-        $expected = $config = new ContainerConfiguration(
+        $expected = new ContainerConfiguration(
             [],
             [],
             ['services']
