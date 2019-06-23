@@ -60,7 +60,15 @@ final class ContainerConfigurationTest extends TestCase
      */
     public function getFilesShouldYieldTheFilesFromPackagesFirst(): void
     {
-        $package = new class implements FileListProvider
+        $package1 = new class implements CompilerPassListProvider
+        {
+            public function getCompilerPasses(): Generator
+            {
+                yield [CompilerPassInterface::class, 'beforeOptimization'];
+            }
+        };
+
+        $package2 = new class implements FileListProvider
         {
             public function getFiles(): Generator
             {
@@ -68,7 +76,12 @@ final class ContainerConfigurationTest extends TestCase
             }
         };
 
-        $config = new ContainerConfiguration(['services.xml'], [], [], [[get_class($package), []]]);
+        $config = new ContainerConfiguration(
+            ['services.xml'],
+            [],
+            [],
+            [[get_class($package1), []], [get_class($package2), []]]
+        );
 
         self::assertSame(['services2.xml', 'services.xml'], iterator_to_array($config->getFiles(), false));
     }
@@ -114,7 +127,7 @@ final class ContainerConfigurationTest extends TestCase
      */
     public function getPassListShouldYieldTheCompilerPassesFromPackagesFirst(): void
     {
-        $package = new class implements CompilerPassListProvider
+        $package1 = new class implements CompilerPassListProvider
         {
             public function getCompilerPasses(): Generator
             {
@@ -122,11 +135,19 @@ final class ContainerConfigurationTest extends TestCase
             }
         };
 
+        $package2 = new class implements FileListProvider
+        {
+            public function getFiles(): Generator
+            {
+                yield 'services2.xml';
+            }
+        };
+
         $config = new ContainerConfiguration(
             [],
             [[$this->pass, 'beforeOptimization']],
             [],
-            [[get_class($package), []]]
+            [[get_class($package1), []], [get_class($package2), []]]
         );
 
         self::assertSame(
