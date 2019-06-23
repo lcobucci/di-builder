@@ -7,9 +7,5 @@
   },
   "logs": {
     "text": "infection.log"
-  },
-  "mutators": {
-    "@default": true,
-    "@function_signature": true
   }
 }
