@@ -16,9 +16,9 @@ abstract class Generator
      */
     private $compiler;
 
-    public function __construct(?Compiler $compiler = null)
+    public function __construct()
     {
-        $this->compiler = $compiler ?? new Compiler();
+        $this->compiler = new Compiler();
     }
 
     /**

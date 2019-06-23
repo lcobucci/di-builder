@@ -24,17 +24,11 @@ final class GeneratorTest extends TestCase
     private $generator;
 
     /**
-     * @var Compiler
-     */
-    private $compiler;
-
-    /**
      * @before
      */
     public function configureDependencies(): void
     {
-        $this->compiler  = new Compiler();
-        $this->generator = $this->getMockForAbstractClass(Generator::class, [$this->compiler]);
+        $this->generator = $this->getMockForAbstractClass(Generator::class);
     }
 
     /**
