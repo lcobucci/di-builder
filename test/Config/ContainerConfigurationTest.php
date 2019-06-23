@@ -38,7 +38,7 @@ final class ContainerConfigurationTest extends TestCase
      *
      * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
      * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getFiles
-     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::filterModules
+     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::filterPackages
      *
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getPackages
      */
@@ -53,7 +53,7 @@ final class ContainerConfigurationTest extends TestCase
      * @test
      *
      * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getFiles
-     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::filterModules
+     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::filterPackages
      *
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getPackages
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
@@ -91,7 +91,7 @@ final class ContainerConfigurationTest extends TestCase
      * @test
      *
      * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getPassList
-     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::filterModules
+     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::filterPackages
      *
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getPackages
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
@@ -107,7 +107,7 @@ final class ContainerConfigurationTest extends TestCase
      * @test
      *
      * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getPassList
-     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::filterModules
+     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::filterPackages
      *
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getPackages
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
