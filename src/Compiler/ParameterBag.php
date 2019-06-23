@@ -14,12 +14,12 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 final class ParameterBag implements CompilerPassInterface
 {
     /**
-     * @var mixed[]
+     * @var array<string, mixed>
      */
     private $parameters;
 
     /**
-     * @param mixed[] $parameters
+     * @param array<string, mixed> $parameters
      */
     public function __construct(array $parameters = [])
     {

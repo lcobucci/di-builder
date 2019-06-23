@@ -85,6 +85,7 @@ final class ContainerConfiguration
             $this->initializedPackages = array_map(
                 static function (array $data): Package {
                     [$package, $arguments] = $data;
+
                     return new $package(...$arguments);
                 },
                 $this->packages
@@ -216,7 +217,7 @@ final class ContainerConfiguration
     }
 
     /**
-     * @return mixed[]
+     * @return array<string, mixed>
      */
     public function getDumpOptions(): array
     {
