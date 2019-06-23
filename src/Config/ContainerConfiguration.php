@@ -111,9 +111,7 @@ final class ContainerConfiguration
             yield from $module->getFiles();
         }
 
-        foreach ($this->files as $file) {
-            yield $file;
-        }
+        yield from $this->files;
     }
 
     /**
@@ -142,9 +140,7 @@ final class ContainerConfiguration
             yield from $module->getCompilerPasses();
         }
 
-        foreach ($this->passList as $compilerPass) {
-            yield $compilerPass;
-        }
+        yield from $this->passList;
     }
 
     public function addPass(
