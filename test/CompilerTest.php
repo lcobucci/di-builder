@@ -7,6 +7,7 @@ use Generator as PHPGenerator;
 use Lcobucci\DependencyInjection\Compiler\ParameterBag;
 use Lcobucci\DependencyInjection\Config\ContainerConfiguration;
 use Lcobucci\DependencyInjection\Generators\Yaml;
+use Lcobucci\DependencyInjection\Testing\MakeServicesPublic;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
 use org\bovigo\vfs\vfsStreamFile;
@@ -44,13 +45,14 @@ final class CompilerTest extends TestCase
         $this->root = vfsStream::setup(
             'tests',
             null,
-            ['services.yml' => 'services: { testing: { class: stdClass, public: true } }']
+            ['services.yml' => 'services: { testing: { class: stdClass } }']
         );
 
         $this->config = new ContainerConfiguration(
             [vfsStream::url('tests/services.yml')],
             [
                 [new ParameterBag(['app.devmode' => true]), PassConfig::TYPE_BEFORE_OPTIMIZATION],
+                [[MakeServicesPublic::class, []], PassConfig::TYPE_BEFORE_OPTIMIZATION],
             ]
         );
 
@@ -66,6 +68,7 @@ final class CompilerTest extends TestCase
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration
      * @uses \Lcobucci\DependencyInjection\Generator
      * @uses \Lcobucci\DependencyInjection\Generators\Yaml
+     * @uses \Lcobucci\DependencyInjection\Testing\MakeServicesPublic
      */
     public function compileShouldCreateMultipleFiles(): void
     {
@@ -73,7 +76,6 @@ final class CompilerTest extends TestCase
         $compiler->compile($this->config, $this->dump, new Yaml());
 
         $expectedFiles = [
-            'removed-ids.php',
             'getTestingService.php',
             $this->config->getClassName() . '.php',
             'container.php',
