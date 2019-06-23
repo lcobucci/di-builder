@@ -22,6 +22,12 @@ use function umask;
 
 final class CompilerTest extends TestCase
 {
+    private const EXPECTED_FILES = [
+        'getTestingService.php',
+        'container.php',
+        'container.php.meta',
+    ];
+
     /**
      * @var vfsStreamDirectory
      */
@@ -75,12 +81,8 @@ final class CompilerTest extends TestCase
         $compiler = new Compiler();
         $compiler->compile($this->config, $this->dump, new Yaml());
 
-        $expectedFiles = [
-            'getTestingService.php',
-            $this->config->getClassName() . '.php',
-            'container.php',
-            'container.php.meta',
-        ];
+        $expectedFiles   = self::EXPECTED_FILES;
+        $expectedFiles[] = $this->config->getClassName() . '.php';
 
         $expectedPermissions = 0666 & ~umask();
         $generatedFiles      = iterator_to_array($this->getGeneratedFiles($this->root));
@@ -93,6 +95,33 @@ final class CompilerTest extends TestCase
             self::assertContains($name, $expectedFiles);
             self::assertSame($expectedPermissions, $file->getPermissions());
         }
+    }
+
+    /**
+     * @test
+     *
+     * @covers \Lcobucci\DependencyInjection\Compiler
+     *
+     * @uses \Lcobucci\DependencyInjection\Compiler\ParameterBag
+     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration
+     * @uses \Lcobucci\DependencyInjection\Generator
+     * @uses \Lcobucci\DependencyInjection\Generators\Yaml
+     * @uses \Lcobucci\DependencyInjection\Testing\MakeServicesPublic
+     */
+    public function compileShouldAllowForLazyServices(): void
+    {
+        file_put_contents(
+            vfsStream::url('tests/services.yml'),
+            'services: { testing: { class: stdClass, lazy: true } }'
+        );
+
+        $compiler = new Compiler();
+        $compiler->compile($this->config, $this->dump, new Yaml());
+
+        $expectedFiles   = self::EXPECTED_FILES;
+        $expectedFiles[] = $this->config->getClassName() . '.php';
+
+        self::assertCount(count($expectedFiles) + 1, iterator_to_array($this->getGeneratedFiles($this->root)));
     }
 
     /**
