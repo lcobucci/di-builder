@@ -1,6 +1,6 @@
 {
     "name": "lcobucci/di-builder",
-    "description": "Dependency Injection Builder for PHP 7.2+ applications",
+    "description": "Dependency Injection Builder for PHP applications",
     "type": "library",
     "authors": [
         {
