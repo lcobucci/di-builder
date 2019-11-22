@@ -19,7 +19,7 @@
         "php": "^7.3 || ^8.0",
         "symfony/config": "^4.3",
         "symfony/dependency-injection": "^4.3",
-        "symfony/expression-language": "^4.3"
+        "symfony/expression-language": "^5.0"
     },
     "require-dev": {
         "infection/infection": "^0.14",
