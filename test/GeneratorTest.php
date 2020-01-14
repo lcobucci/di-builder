@@ -68,7 +68,7 @@ final class GeneratorTest extends TestCase
         $dump = new ConfigCache(vfsStream::url('tests/container.php'), false);
 
         $this->generator->method('getLoader')->willReturnCallback(
-            static function (SymfonyBuilder $container, array $paths) {
+            static function (SymfonyBuilder $container, array $paths): YamlFileLoader {
                 return new YamlFileLoader(
                     $container,
                     new FileLocator($paths)

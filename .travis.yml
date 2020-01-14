@@ -3,8 +3,7 @@ sudo: false
 language: php
 
 php:
-  - 7.3
-  - 7.4snapshot
+  - 7.4
   - nightly
 
 cache:
@@ -22,7 +21,6 @@ script:
 
 jobs:
   allow_failures:
-    - php: 7.4snapshot
     - php: nightly
 
   include:
@@ -59,7 +57,7 @@ jobs:
         - mv ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini{.disabled,}
         - if [[ ! $(php -m | grep -si xdebug) ]]; then echo "xdebug required for mutation"; exit 1; fi
       script:
-        - ./vendor/bin/infection -s --min-msi=100 --min-covered-msi=100 --threads=$(nproc)
+        - ./vendor/bin/infection -s --min-msi=98 --min-covered-msi=98 --threads=$(nproc)
 
     - stage: Quality
       env: STATIC_ANALYSIS=1
