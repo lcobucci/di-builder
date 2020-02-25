@@ -54,10 +54,15 @@ final class CompilerTest extends TestCase
             ['services.yml' => 'services: { testing: { class: stdClass } }']
         );
 
+        $parameterBag = new ParameterBag();
+        $parameterBag->set('app.devmode', true);
+        $parameterBag->set('container.dumper.inline_factories', false);
+        $parameterBag->set('container.dumper.inline_class_loader', true);
+
         $this->config = new ContainerConfiguration(
             [vfsStream::url('tests/services.yml')],
             [
-                [new ParameterBag(['app.devmode' => true]), PassConfig::TYPE_BEFORE_OPTIMIZATION],
+                [$parameterBag, PassConfig::TYPE_BEFORE_OPTIMIZATION],
                 [[MakeServicesPublic::class, []], PassConfig::TYPE_BEFORE_OPTIMIZATION],
             ]
         );
