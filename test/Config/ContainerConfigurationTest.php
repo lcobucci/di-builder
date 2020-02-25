@@ -11,12 +11,12 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
-use const DIRECTORY_SEPARATOR;
 use function get_class;
 use function implode;
 use function iterator_to_array;
 use function md5;
 use function sys_get_temp_dir;
+use const DIRECTORY_SEPARATOR;
 
 final class ContainerConfigurationTest extends TestCase
 {

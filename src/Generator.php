@@ -11,10 +11,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 abstract class Generator
 {
-    /**
-     * @var Compiler
-     */
-    private $compiler;
+    private Compiler $compiler;
 
     public function __construct()
     {

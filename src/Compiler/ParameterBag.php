@@ -16,7 +16,7 @@ final class ParameterBag implements CompilerPassInterface
     /**
      * @var array<string, mixed>
      */
-    private $parameters;
+    private array $parameters;
 
     /**
      * @param array<string, mixed> $parameters

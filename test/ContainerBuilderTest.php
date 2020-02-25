@@ -23,15 +23,9 @@ final class ContainerBuilderTest extends TestCase
      */
     private $generator;
 
-    /**
-     * @var ContainerConfiguration
-     */
-    private $config;
+    private ContainerConfiguration $config;
 
-    /**
-     * @var ParameterBag
-     */
-    private $parameterBag;
+    private ParameterBag $parameterBag;
 
     /**
      * @before

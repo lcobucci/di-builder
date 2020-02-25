@@ -28,20 +28,11 @@ final class CompilerTest extends TestCase
         'container.php.meta',
     ];
 
-    /**
-     * @var vfsStreamDirectory
-     */
-    private $root;
+    private vfsStreamDirectory $root;
 
-    /**
-     * @var ContainerConfiguration
-     */
-    private $config;
+    private ContainerConfiguration $config;
 
-    /**
-     * @var ConfigCache
-     */
-    private $dump;
+    private ConfigCache $dump;
 
     /**
      * @before
@@ -155,6 +146,7 @@ final class CompilerTest extends TestCase
         foreach ($directory->getChildren() as $child) {
             if ($child instanceof vfsStreamDirectory) {
                 yield from $this->getGeneratedFiles($child);
+
                 continue;
             }
 
