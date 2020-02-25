@@ -21,7 +21,7 @@ final class GeneratorTest extends TestCase
     /**
      * @var Generator|MockObject
      */
-    private $generator;
+    private Generator $generator;
 
     /**
      * @before

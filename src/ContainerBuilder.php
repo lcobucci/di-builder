@@ -16,20 +16,9 @@ use function is_bool;
 
 final class ContainerBuilder implements Builder
 {
-    /**
-     * @var ContainerConfiguration
-     */
-    private $config;
-
-    /**
-     * @var Generator
-     */
-    private $generator;
-
-    /**
-     * @var ParameterBag
-     */
-    private $parameterBag;
+    private ContainerConfiguration $config;
+    private Generator $generator;
+    private ParameterBag $parameterBag;
 
     public function __construct(
         ?ContainerConfiguration $config = null,
@@ -106,7 +95,6 @@ final class ContainerBuilder implements Builder
     public function useDevelopmentMode(): Builder
     {
         $this->parameterBag->set('app.devmode', true);
-        $this->parameterBag->set('container.dumper.inline_factories', false);
         $this->parameterBag->set('container.dumper.inline_class_loader', false);
 
         return $this;
