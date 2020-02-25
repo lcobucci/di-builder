@@ -77,6 +77,7 @@ final class ContainerBuilderTest extends TestCase
         self::assertNotEmpty($this->config->getPassList());
         self::assertFalse($this->parameterBag->get('app.devmode'));
         self::assertTrue($this->parameterBag->get('container.dumper.inline_class_loader'));
+        self::assertFalse($this->parameterBag->get('container.dumper.inline_factories'));
     }
 
     /**
@@ -245,6 +246,7 @@ final class ContainerBuilderTest extends TestCase
         self::assertSame($builder, $builder->useDevelopmentMode());
         self::assertTrue($this->parameterBag->get('app.devmode'));
         self::assertFalse($this->parameterBag->get('container.dumper.inline_class_loader'));
+        self::assertFalse($this->parameterBag->get('container.dumper.inline_factories'));
     }
 
     /**
