@@ -15,6 +15,7 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use function get_class;
+use function iterator_to_array;
 
 final class ContainerBuilderTest extends TestCase
 {
@@ -278,7 +279,7 @@ final class ContainerBuilderTest extends TestCase
 
         $this->generator->expects(self::once())
                         ->method('generate')
-                        ->with($this->config, self::equalTo(new ConfigCache($this->config->getDumpFile(), false)))
+                        ->with($this->config, new ConfigCache($this->config->getDumpFile(), false))
                         ->willReturn($container);
 
         self::assertSame($container, $builder->getContainer());
@@ -307,9 +308,13 @@ final class ContainerBuilderTest extends TestCase
 
         $this->generator->expects(self::once())
                         ->method('generate')
-                        ->with(self::equalTo($config), self::equalTo($cacheConfig))
+                        ->with($config, $cacheConfig)
                         ->willReturn($container);
 
         self::assertSame($container, $builder->getTestContainer());
+
+        $compilerPasses = iterator_to_array($this->config->getPassList());
+        self::assertCount(1, $compilerPasses);
+        self::assertSame($this->parameterBag, $compilerPasses[0][0]);
     }
 }

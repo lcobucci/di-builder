@@ -14,7 +14,6 @@ use org\bovigo\vfs\vfsStreamFile;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
-use function assert;
 use function count;
 use function file_put_contents;
 use function iterator_to_array;
@@ -86,8 +85,6 @@ final class CompilerTest extends TestCase
         self::assertCount(count($expectedFiles), $generatedFiles);
 
         foreach ($generatedFiles as $name => $file) {
-            assert($file instanceof vfsStreamFile);
-
             self::assertContains($name, $expectedFiles);
             self::assertSame($expectedPermissions, $file->getPermissions());
         }
@@ -141,6 +138,9 @@ final class CompilerTest extends TestCase
         self::assertCount(1, $generatedFiles);
     }
 
+    /**
+     * @return PHPGenerator<string, vfsStreamFile>
+     */
     private function getGeneratedFiles(vfsStreamDirectory $directory): PHPGenerator
     {
         foreach ($directory->getChildren() as $child) {
@@ -150,9 +150,11 @@ final class CompilerTest extends TestCase
                 continue;
             }
 
-            if ($child->getName() !== 'services.yml') {
-                yield $child->getName() => $child;
+            if (! $child instanceof vfsStreamFile || $child->getName() === 'services.yml') {
+                continue;
             }
+
+            yield $child->getName() => $child;
         }
     }
 }

@@ -62,6 +62,9 @@ final class ContainerConfigurationTest extends TestCase
     {
         $package1 = new class implements CompilerPassListProvider
         {
+            /**
+             * @return Generator<array<CompilerPassInterface|string|int|array<string|array<mixed>>>>
+             */
             public function getCompilerPasses(): Generator
             {
                 yield [CompilerPassInterface::class, 'beforeOptimization'];
@@ -70,6 +73,9 @@ final class ContainerConfigurationTest extends TestCase
 
         $package2 = new class implements FileListProvider
         {
+            /**
+             * @return Generator<string>
+             */
             public function getFiles(): Generator
             {
                 yield 'services2.xml';

@@ -28,7 +28,7 @@ final class ContainerConfiguration
     private array $files;
 
     /**
-     * @var mixed[]
+     * @var array<int, array<int, CompilerPassInterface|string|int|array<string|array<mixed>>>>
      */
     private array $passList;
 
@@ -97,6 +97,9 @@ final class ContainerConfiguration
         $this->packages[] = [$className, $constructArguments];
     }
 
+    /**
+     * @return Generator<string>
+     */
     public function getFiles(): Generator
     {
         foreach ($this->filterPackages(FileListProvider::class) as $package) {
@@ -126,6 +129,9 @@ final class ContainerConfiguration
         $this->files[] = $file;
     }
 
+    /**
+     * @return Generator<array<CompilerPassInterface|string|int|array<int, string|array<mixed>>>>
+     */
     public function getPassList(): Generator
     {
         foreach ($this->filterPackages(CompilerPassListProvider::class) as $package) {
