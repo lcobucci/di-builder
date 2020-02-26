@@ -16,6 +16,7 @@ use function assert;
 use function class_exists;
 use function dirname;
 use function is_array;
+use function is_int;
 use function is_string;
 
 final class Compiler
@@ -55,13 +56,15 @@ final class Compiler
         ContainerConfiguration $config
     ): void {
         foreach ($config->getPassList() as $passConfig) {
-            assert(is_array($passConfig));
             [$pass, $type, $priority] = $passConfig + self::DEFAULT_PASS_CONFIG;
+            assert(is_string($type));
+            assert(is_int($priority));
 
             if (! $pass instanceof CompilerPassInterface) {
                 [$className, $constructArguments] = $pass;
 
                 $pass = new $className(...$constructArguments);
+                assert($pass instanceof CompilerPassInterface);
             }
 
             $container->addCompilerPass($pass, $type, $priority);

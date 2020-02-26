@@ -8,5 +8,8 @@ use Lcobucci\DependencyInjection\Config\Package;
 
 interface FileListProvider extends Package
 {
+    /**
+     * @return DefaultGenerator<string>
+     */
     public function getFiles(): DefaultGenerator;
 }
