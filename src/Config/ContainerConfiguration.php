@@ -9,6 +9,7 @@ use Lcobucci\DependencyInjection\CompilerPassListProvider;
 use Lcobucci\DependencyInjection\FileListProvider;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
+
 use function array_column;
 use function array_filter;
 use function array_map;
@@ -18,35 +19,26 @@ use function implode;
 use function md5;
 use function rtrim;
 use function sys_get_temp_dir;
+
 use const DIRECTORY_SEPARATOR;
 
 final class ContainerConfiguration
 {
-    /**
-     * @var string[]
-     */
+    /** @var string[] */
     private array $files;
 
-    /**
-     * @var array<int, array<int, CompilerPassInterface|string|int|array<string|array<mixed>>>>
-     */
+    /** @var array<int, array<int, CompilerPassInterface|string|int|array<string|array<mixed>>>> */
     private array $passList;
 
-    /**
-     * @var string[]
-     */
+    /** @var string[] */
     private array $paths;
 
     private ?string $baseClass = null;
 
-    /**
-     * @var mixed[]
-     */
+    /** @var mixed[] */
     private array $packages;
 
-    /**
-     * @var Package[]|null
-     */
+    /** @var Package[]|null */
     private ?array $initializedPackages = null;
 
     private string $dumpDir;
