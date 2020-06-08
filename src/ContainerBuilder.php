@@ -22,15 +22,24 @@ final class ContainerBuilder implements Builder
     private ParameterBag $parameterBag;
 
     public function __construct(
-        ?ContainerConfiguration $config = null,
-        ?Generator $generator = null,
-        ?ParameterBag $parameterBag = null
+        ContainerConfiguration $config,
+        Generator $generator,
+        ParameterBag $parameterBag
     ) {
-        $this->parameterBag = $parameterBag ?? new ParameterBag();
-        $this->generator    = $generator ?? new XmlGenerator();
-        $this->config       = $config ?? new ContainerConfiguration();
+        $this->parameterBag = $parameterBag;
+        $this->generator    = $generator;
+        $this->config       = $config;
 
         $this->setDefaultConfiguration();
+    }
+
+    public static function default(): self
+    {
+        return new self(
+            new ContainerConfiguration(),
+            new XmlGenerator(),
+            new ParameterBag()
+        );
     }
 
     /**

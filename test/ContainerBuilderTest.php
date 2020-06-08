@@ -38,6 +38,7 @@ final class ContainerBuilderTest extends TestCase
     /**
      * @test
      *
+     * @covers \Lcobucci\DependencyInjection\ContainerBuilder::default
      * @covers \Lcobucci\DependencyInjection\ContainerBuilder::__construct
      * @covers \Lcobucci\DependencyInjection\ContainerBuilder::setDefaultConfiguration
      *
@@ -46,11 +47,11 @@ final class ContainerBuilderTest extends TestCase
      * @uses \Lcobucci\DependencyInjection\Generator
      * @uses \Lcobucci\DependencyInjection\Generators\Xml
      */
-    public function constructShouldConfigureTheDefaultAttributes(): void
+    public function defaultShouldSimplifyTheObjectCreation(): void
     {
         $expected = new ContainerBuilder(new ContainerConfiguration(), new XmlGenerator(), new ParameterBag());
 
-        self::assertEquals($expected, new ContainerBuilder());
+        self::assertEquals($expected, ContainerBuilder::default());
     }
 
     /**
