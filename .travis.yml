@@ -1,5 +1,5 @@
-dist: trusty
-sudo: false
+os: linux
+dist: bionic
 language: php
 
 php:
@@ -14,15 +14,18 @@ before_install:
   - mv ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini{,.disabled} || echo "xdebug not available"
   - composer self-update
 
-install: travis_retry composer install
+install:
+  - |
+    if [ $TRAVIS_PHP_VERSION = 'nightly' ]; then
+      travis_retry composer install --ignore-platform-reqs;
+    else
+      travis_retry composer install;
+    fi
 
 script:
   - ./vendor/bin/phpunit
 
 jobs:
-  allow_failures:
-    - php: nightly
-
   include:
     - stage: Test
       env: DEPENDENCIES=low
