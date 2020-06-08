@@ -14,6 +14,7 @@ use org\bovigo\vfs\vfsStreamFile;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
+
 use function count;
 use function file_put_contents;
 use function iterator_to_array;

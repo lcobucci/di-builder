@@ -18,9 +18,7 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 final class GeneratorTest extends TestCase
 {
-    /**
-     * @var Generator|MockObject
-     */
+    /** @var Generator&MockObject */
     private Generator $generator;
 
     /**

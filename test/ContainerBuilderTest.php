@@ -14,18 +14,15 @@ use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+
 use function get_class;
 use function iterator_to_array;
 
 final class ContainerBuilderTest extends TestCase
 {
-    /**
-     * @var Generator|MockObject
-     */
-    private $generator;
-
+    /** @var Generator&MockObject */
+    private Generator $generator;
     private ContainerConfiguration $config;
-
     private ParameterBag $parameterBag;
 
     /**

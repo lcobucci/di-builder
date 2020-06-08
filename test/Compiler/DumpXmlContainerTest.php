@@ -12,10 +12,8 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag as Parameter
 
 final class DumpXmlContainerTest extends TestCase
 {
-    /**
-     * @var ConfigCacheInterface|MockObject
-     */
-    private $configCache;
+    /** @var ConfigCacheInterface&MockObject */
+    private ConfigCacheInterface $configCache;
 
     /**
      * @before

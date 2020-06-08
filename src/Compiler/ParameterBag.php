@@ -13,9 +13,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  */
 final class ParameterBag implements CompilerPassInterface
 {
-    /**
-     * @var array<string, mixed>
-     */
+    /** @var array<string, mixed> */
     private array $parameters;
 
     /**
