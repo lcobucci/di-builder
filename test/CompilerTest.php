@@ -79,7 +79,7 @@ final class CompilerTest extends TestCase
         $compiler->compile($this->config, $this->dump, new Yaml(__FILE__));
 
         $expectedFiles   = self::EXPECTED_FILES;
-        $expectedFiles[] = $this->config->getClassName() . '.php';
+        $expectedFiles[] = 'AppContainer.php';
 
         $expectedPermissions = 0666 & ~umask();
         $generatedFiles      = iterator_to_array($this->getGeneratedFiles($this->root));
@@ -136,7 +136,7 @@ final class CompilerTest extends TestCase
         $compiler->compile($this->config, $this->dump, new Yaml(__FILE__));
 
         $expectedFiles   = self::EXPECTED_FILES;
-        $expectedFiles[] = $this->config->getClassName() . '.php';
+        $expectedFiles[] = 'AppContainer.php';
 
         self::assertCount(count($expectedFiles) + 1, iterator_to_array($this->getGeneratedFiles($this->root)));
     }

@@ -10,13 +10,9 @@ use Lcobucci\DependencyInjection\FileListProvider;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 
-use function array_column;
 use function array_filter;
 use function array_map;
-use function array_merge;
 use function assert;
-use function implode;
-use function md5;
 use function rtrim;
 use function sys_get_temp_dir;
 
@@ -24,6 +20,8 @@ use const DIRECTORY_SEPARATOR;
 
 final class ContainerConfiguration
 {
+    public const CLASS_NAME = 'AppContainer';
+
     /** @var string[] */
     private array $files;
 
@@ -188,20 +186,9 @@ final class ContainerConfiguration
         $this->dumpDir = rtrim($dumpDir, DIRECTORY_SEPARATOR);
     }
 
-    public function getClassName(): string
-    {
-        $relevantData = array_merge(
-            $this->files,
-            $this->paths,
-            array_column($this->packages, 0)
-        );
-
-        return 'Container' . md5(implode(';', $relevantData));
-    }
-
     public function getDumpFile(string $prefix = ''): string
     {
-        return $this->dumpDir . DIRECTORY_SEPARATOR . $prefix . $this->getClassName() . '.php';
+        return $this->dumpDir . DIRECTORY_SEPARATOR . $prefix . self::CLASS_NAME . '.php';
     }
 
     /**
@@ -209,7 +196,7 @@ final class ContainerConfiguration
      */
     public function getDumpOptions(): array
     {
-        $options = ['class' => $this->getClassName()];
+        $options = ['class' => self::CLASS_NAME];
 
         if ($this->baseClass !== null) {
             $options['base_class'] = $this->baseClass;
