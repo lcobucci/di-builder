@@ -3,7 +3,7 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/lcobucci/di-builder.svg?style=flat-square)](https://packagist.org/packages/lcobucci/di-builder)
 [![Latest Stable Version](https://img.shields.io/packagist/v/lcobucci/di-builder.svg?style=flat-square)](https://packagist.org/packages/lcobucci/di-builder)
 
-[![Build Status](https://img.shields.io/travis/lcobucci/di-builder.svg?style=flat-square)](http://travis-ci.org/#!/lcobucci/di-builder)
+[![Build Status](https://img.shields.io/travis/com/lcobucci/di-builder.svg?style=flat-square)](http://travis-ci.com/lcobucci/di-builder)
 [![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/lcobucci/di-builder/master.svg?style=flat-square)](https://scrutinizer-ci.com/g/lcobucci/di-builder/?branch=master)
 [![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/lcobucci/di-builder/master.svg?style=flat-square)](https://scrutinizer-ci.com/g/lcobucci/di-builder/?branch=master)
 
