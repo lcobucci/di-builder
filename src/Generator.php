@@ -40,6 +40,19 @@ abstract class Generator
         return new $className();
     }
 
+    public function initializeContainer(ContainerConfiguration $config): SymfonyBuilder
+    {
+        $container = new SymfonyBuilder();
+
+        $loader = $this->getLoader($container, $config->getPaths());
+
+        foreach ($config->getFiles() as $file) {
+            $loader->load($file);
+        }
+
+        return $container;
+    }
+
     /**
      * @param string[] $paths
      */

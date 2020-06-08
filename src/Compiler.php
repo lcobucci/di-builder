@@ -33,23 +33,10 @@ final class Compiler
             return;
         }
 
-        $container = new SymfonyBuilder();
+        $container = $generator->initializeContainer($config);
 
-        $this->loadFiles($container, $config, $generator);
         $this->configurePassList($container, $config);
         $this->updateDump($container, $config, $dump);
-    }
-
-    private function loadFiles(
-        SymfonyBuilder $container,
-        ContainerConfiguration $config,
-        Generator $generator
-    ): void {
-        $loader = $generator->getLoader($container, $config->getPaths());
-
-        foreach ($config->getFiles() as $file) {
-            $loader->load($file);
-        }
     }
 
     private function configurePassList(

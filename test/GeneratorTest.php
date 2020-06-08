@@ -34,6 +34,7 @@ final class GeneratorTest extends TestCase
      *
      * @covers \Lcobucci\DependencyInjection\Generator::__construct
      * @covers \Lcobucci\DependencyInjection\Generator::generate
+     * @covers \Lcobucci\DependencyInjection\Generator::initializeContainer
      * @covers \Lcobucci\DependencyInjection\Generator::loadContainer
      *
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration
