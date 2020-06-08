@@ -33,11 +33,11 @@ final class ContainerBuilder implements Builder
         $this->setDefaultConfiguration();
     }
 
-    public static function default(): self
+    public static function default(string $configurationFile): self
     {
         return new self(
             new ContainerConfiguration(),
-            new XmlGenerator(),
+            new XmlGenerator($configurationFile),
             new ParameterBag()
         );
     }

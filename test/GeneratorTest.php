@@ -12,6 +12,7 @@ use PHPUnit\Framework\TestCase;
 use stdClass;
 use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\Config\Resource\FileResource;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder as SymfonyBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
@@ -26,7 +27,22 @@ final class GeneratorTest extends TestCase
      */
     public function configureDependencies(): void
     {
-        $this->generator = $this->getMockForAbstractClass(Generator::class);
+        $this->generator = $this->getMockForAbstractClass(Generator::class, [__FILE__]);
+    }
+
+    /**
+     * @test
+     *
+     * @covers \Lcobucci\DependencyInjection\Generator::__construct
+     * @covers \Lcobucci\DependencyInjection\Generator::initializeContainer
+     *
+     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration
+     */
+    public function initializeContainerShouldAddTheConfigurationFileAsAResource(): void
+    {
+        $container = $this->generator->initializeContainer(new ContainerConfiguration());
+
+        self::assertEquals([new FileResource(__FILE__)], $container->getResources());
     }
 
     /**

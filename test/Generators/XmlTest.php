@@ -18,7 +18,7 @@ final class XmlTest extends TestCase
     public function getLoaderShouldReturnAXmlLoader(): void
     {
         $container = $this->createMock(ContainerBuilder::class);
-        $generator = new Xml();
+        $generator = new Xml(__FILE__);
 
         self::assertInstanceOf(XmlFileLoader::class, $generator->getLoader($container, []));
     }

@@ -18,7 +18,7 @@ final class YamlTest extends TestCase
     public function getLoaderShouldReturnAYamlLoader(): void
     {
         $container = $this->createMock(ContainerBuilder::class);
-        $generator = new Yaml();
+        $generator = new Yaml(__FILE__);
 
         self::assertInstanceOf(YamlFileLoader::class, $generator->getLoader($container, []));
     }

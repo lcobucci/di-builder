@@ -64,8 +64,8 @@ use Your\Own\Compiler\DoSomethingPass;
 use Lcobucci\DependencyInjection\ContainerBuilder;
 use Lcobucci\DependencyInjection\Generators\Php as PhpGenerator;
 
-$container = ContainerBuilder::default()
-    ->setGenerator(new PhpGenerator()) // Changes the generator
+$container = ContainerBuilder::default(__FILE__)
+    ->setGenerator(new PhpGenerator(__FILE__)) // Changes the generator
     ->addFile(__DIR__ . '/config/services.php') // Appends a file to create the container
     ->addPath(__DIR__ . '/src/Users/config') // Appends a new path to locate files
     ->addFile('services.php') // Appends a file to create the container (to be used with the configured paths)

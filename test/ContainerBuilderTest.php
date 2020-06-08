@@ -49,9 +49,9 @@ final class ContainerBuilderTest extends TestCase
      */
     public function defaultShouldSimplifyTheObjectCreation(): void
     {
-        $expected = new ContainerBuilder(new ContainerConfiguration(), new XmlGenerator(), new ParameterBag());
+        $expected = new ContainerBuilder(new ContainerConfiguration(), new XmlGenerator(__FILE__), new ParameterBag());
 
-        self::assertEquals($expected, ContainerBuilder::default());
+        self::assertEquals($expected, ContainerBuilder::default(__FILE__));
     }
 
     /**

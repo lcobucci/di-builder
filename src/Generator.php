@@ -6,16 +6,19 @@ namespace Lcobucci\DependencyInjection;
 use Lcobucci\DependencyInjection\Config\ContainerConfiguration;
 use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\Config\Loader\LoaderInterface;
+use Symfony\Component\Config\Resource\FileResource;
 use Symfony\Component\DependencyInjection\ContainerBuilder as SymfonyBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 abstract class Generator
 {
     private Compiler $compiler;
+    private string $configurationFile;
 
-    public function __construct()
+    public function __construct(string $configurationFile)
     {
-        $this->compiler = new Compiler();
+        $this->compiler          = new Compiler();
+        $this->configurationFile = $configurationFile;
     }
 
     /**
@@ -43,6 +46,7 @@ abstract class Generator
     public function initializeContainer(ContainerConfiguration $config): SymfonyBuilder
     {
         $container = new SymfonyBuilder();
+        $container->addResource(new FileResource($this->configurationFile));
 
         $loader = $this->getLoader($container, $config->getPaths());
 
