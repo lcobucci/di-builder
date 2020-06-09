@@ -16,6 +16,7 @@ use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 
 use function count;
+use function file_get_contents;
 use function file_put_contents;
 use function iterator_to_array;
 use function umask;
@@ -75,10 +76,10 @@ final class CompilerTest extends TestCase
     public function compileShouldCreateMultipleFiles(): void
     {
         $compiler = new Compiler();
-        $compiler->compile($this->config, $this->dump, new Yaml());
+        $compiler->compile($this->config, $this->dump, new Yaml(__FILE__));
 
         $expectedFiles   = self::EXPECTED_FILES;
-        $expectedFiles[] = $this->config->getClassName() . '.php';
+        $expectedFiles[] = 'AppContainer.php';
 
         $expectedPermissions = 0666 & ~umask();
         $generatedFiles      = iterator_to_array($this->getGeneratedFiles($this->root));
@@ -102,6 +103,28 @@ final class CompilerTest extends TestCase
      * @uses \Lcobucci\DependencyInjection\Generators\Yaml
      * @uses \Lcobucci\DependencyInjection\Testing\MakeServicesPublic
      */
+    public function compileShouldTrackChangesOnTheConfigurationFile(): void
+    {
+        $compiler = new Compiler();
+        $compiler->compile($this->config, $this->dump, new Yaml(__FILE__));
+
+        self::assertStringContainsString(
+            __FILE__,
+            (string) file_get_contents(vfsStream::url('tests/container.php.meta'))
+        );
+    }
+
+    /**
+     * @test
+     *
+     * @covers \Lcobucci\DependencyInjection\Compiler
+     *
+     * @uses \Lcobucci\DependencyInjection\Compiler\ParameterBag
+     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration
+     * @uses \Lcobucci\DependencyInjection\Generator
+     * @uses \Lcobucci\DependencyInjection\Generators\Yaml
+     * @uses \Lcobucci\DependencyInjection\Testing\MakeServicesPublic
+     */
     public function compileShouldAllowForLazyServices(): void
     {
         file_put_contents(
@@ -110,10 +133,10 @@ final class CompilerTest extends TestCase
         );
 
         $compiler = new Compiler();
-        $compiler->compile($this->config, $this->dump, new Yaml());
+        $compiler->compile($this->config, $this->dump, new Yaml(__FILE__));
 
         $expectedFiles   = self::EXPECTED_FILES;
-        $expectedFiles[] = $this->config->getClassName() . '.php';
+        $expectedFiles[] = 'AppContainer.php';
 
         self::assertCount(count($expectedFiles) + 1, iterator_to_array($this->getGeneratedFiles($this->root)));
     }
@@ -132,7 +155,7 @@ final class CompilerTest extends TestCase
         file_put_contents(vfsStream::url('tests/container.php'), 'testing');
 
         $compiler = new Compiler();
-        $compiler->compile($this->config, $this->dump, new Yaml());
+        $compiler->compile($this->config, $this->dump, new Yaml(__FILE__));
 
         $generatedFiles = iterator_to_array($this->getGeneratedFiles($this->root));
 

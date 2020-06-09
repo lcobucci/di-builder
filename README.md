@@ -64,20 +64,19 @@ use Your\Own\Compiler\DoSomethingPass;
 use Lcobucci\DependencyInjection\ContainerBuilder;
 use Lcobucci\DependencyInjection\Generators\Php as PhpGenerator;
 
-$container = (new ContainerBuilder())->setGenerator(new PhpGenerator()) // Changes the generator
-                                     ->addFile(__DIR__ . '/config/services.php') // Appends a file to create the container
-                                     ->addPath(__DIR__ . '/src/Users/config') // Appends a new path to locate files
-                                     ->addFile('services.php') // Appends a file to create the container (to be used with the configured paths)
-                                     ->useDevelopmentMode() // Enables the development mode (production is the default)
-                                     ->setDumpDir(__DIR__ . '/tmp') // Changes the dump directory
-                                     ->setParameter('app.basedir', __DIR__) // Configures a dynamic parameter
-                                     ->addPass(new DoSomethingPass()) // Appends a new compiler pass
-                                     ->addDelayedPass(DoSomethingPass::class) // Appends a new compiler pass that will only be initialised while building the container
-                                     ->addPackage(MyPackage::class) // Appends a new package that might provide files and compiler passes to be added to the the container
-                                     ->getContainer(); // Retrieves the container =)
+$container = ContainerBuilder::default(__FILE__)
+    ->setGenerator(new PhpGenerator(__FILE__)) // Changes the generator
+    ->addFile(__DIR__ . '/config/services.php') // Appends a file to create the container
+    ->addPath(__DIR__ . '/src/Users/config') // Appends a new path to locate files
+    ->addFile('services.php') // Appends a file to create the container (to be used with the configured paths)
+    ->useDevelopmentMode() // Enables the development mode (production is the default)
+    ->setDumpDir(__DIR__ . '/tmp') // Changes the dump directory
+    ->setParameter('app.basedir', __DIR__) // Configures a dynamic parameter
+    ->addPass(new DoSomethingPass()) // Appends a new compiler pass
+    ->addDelayedPass(DoSomethingPass::class) // Appends a new compiler pass that will only be initialised while building the container
+    ->addPackage(MyPackage::class) // Appends a new package that might provide files and compiler passes to be added to the the container
+    ->getContainer(); // Retrieves the container =)
 ```
-
-Pretty easy, right?
 
 ## Compiler Pass
 

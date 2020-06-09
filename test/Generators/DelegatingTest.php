@@ -19,7 +19,7 @@ final class DelegatingTest extends TestCase
     public function getLoaderShouldReturnADelegatingLoaderWithTheOtherLoaders(): void
     {
         $container = $this->createMock(ContainerBuilder::class);
-        $generator = new Delegating();
+        $generator = new Delegating(__FILE__);
 
         $loader = $generator->getLoader($container, []);
 

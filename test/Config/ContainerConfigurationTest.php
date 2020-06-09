@@ -13,9 +13,7 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 
 use function get_class;
-use function implode;
 use function iterator_to_array;
-use function md5;
 use function sys_get_temp_dir;
 
 use const DIRECTORY_SEPARATOR;
@@ -378,34 +376,16 @@ final class ContainerConfigurationTest extends TestCase
     /**
      * @test
      *
-     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getClassName
-     *
-     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
-     */
-    public function getClassNameShouldCreateAHashFromPackagesFilesAndPaths(): void
-    {
-        $config = new ContainerConfiguration(['services.xml'], [], ['config'], [[FileListProvider::class, []]]);
-
-        self::assertEquals(
-            'Container' . md5(implode(';', ['services.xml', 'config', FileListProvider::class])),
-            $config->getClassName()
-        );
-    }
-
-    /**
-     * @test
-     *
      * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getDumpFile
      *
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
-     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getClassName
      */
     public function getDumpFileShouldReturnTheFullPathOfDumpFile(): void
     {
         $config = new ContainerConfiguration();
 
         self::assertEquals(
-            sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'Container' . md5('') . '.php',
+            sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'AppContainer.php',
             $config->getDumpFile()
         );
     }
@@ -416,14 +396,13 @@ final class ContainerConfigurationTest extends TestCase
      * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getDumpFile
      *
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
-     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getClassName
      */
     public function getDumpFileCanAlsoAddPrefixForTheFile(): void
     {
         $config = new ContainerConfiguration();
 
         self::assertEquals(
-            sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'test_Container' . md5('') . '.php',
+            sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'test_AppContainer.php',
             $config->getDumpFile('test_')
         );
     }
@@ -434,13 +413,12 @@ final class ContainerConfigurationTest extends TestCase
      * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getDumpOptions
      *
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
-     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getClassName
      */
     public function getDumpOptionsShouldReturnTheDumpingInformation(): void
     {
         $config  = new ContainerConfiguration();
         $options = [
-            'class'        => 'Container' . md5(''),
+            'class'        => ContainerConfiguration::CLASS_NAME,
             'hot_path_tag' => 'container.hot_path',
         ];
 
@@ -454,7 +432,6 @@ final class ContainerConfigurationTest extends TestCase
      * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getDumpOptions
      *
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
-     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getClassName
      */
     public function getDumpOptionsShouldIncludeBaseWhenWasConfigured(): void
     {
@@ -462,7 +439,7 @@ final class ContainerConfigurationTest extends TestCase
         $config->setBaseClass('Test');
 
         $options = [
-            'class'        => 'Container' . md5(''),
+            'class'        => ContainerConfiguration::CLASS_NAME,
             'base_class'   => 'Test',
             'hot_path_tag' => 'container.hot_path',
         ];
