@@ -23,7 +23,7 @@
     },
     "require-dev": {
         "infection/infection": "^0.16",
-        "lcobucci/coding-standard": "^5.0",
+        "lcobucci/coding-standard": "^6.0",
         "mikey179/vfsstream": "^1.6.8",
         "phpstan/extension-installer": "^1.0",
         "phpstan/phpstan": "^0.12",
