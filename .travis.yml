@@ -26,6 +26,9 @@ script:
   - ./vendor/bin/phpunit
 
 jobs:
+  allow_failures:
+    - php: nightly
+
   include:
     - stage: Test
       env: DEPENDENCIES=low
