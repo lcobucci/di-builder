@@ -12,24 +12,21 @@ cache:
 
 before_install:
   - mv ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini{,.disabled} || echo "xdebug not available"
-  - composer self-update
 
-install:
-  - |
-    if [ $TRAVIS_PHP_VERSION = 'nightly' ]; then
-      travis_retry composer install --ignore-platform-reqs;
-    else
-      travis_retry composer install;
-    fi
-
-script:
-  - ./vendor/bin/phpunit
+install: travis_retry composer install
+script: vendor/bin/phpunit
 
 jobs:
   allow_failures:
     - php: nightly
 
   include:
+    - stage: Test
+      env: TRAVIS_PHP_VERSION=8.0
+      services: [docker]
+      install: docker build -t di-builder .
+      script: docker run --rm di-builder vendor/bin/phpunit
+
     - stage: Test
       env: DEPENDENCIES=low
       install: travis_retry composer update --prefer-lowest
