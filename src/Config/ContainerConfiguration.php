@@ -60,9 +60,7 @@ final class ContainerConfiguration
         $this->dumpDir  = sys_get_temp_dir();
     }
 
-    /**
-     * @return Package[]
-     */
+    /** @return Package[] */
     public function getPackages(): array
     {
         if ($this->initializedPackages === null) {
@@ -79,17 +77,13 @@ final class ContainerConfiguration
         return $this->initializedPackages;
     }
 
-    /**
-     * @param mixed[] $constructArguments
-     */
+    /** @param mixed[] $constructArguments */
     public function addPackage(string $className, array $constructArguments = []): void
     {
         $this->packages[] = [$className, $constructArguments];
     }
 
-    /**
-     * @return Generator<string>
-     */
+    /** @return Generator<string> */
     public function getFiles(): Generator
     {
         foreach ($this->filterPackages(FileListProvider::class) as $package) {
@@ -101,9 +95,7 @@ final class ContainerConfiguration
         yield from $this->files;
     }
 
-    /**
-     * @return Package[]
-     */
+    /** @return Package[] */
     private function filterPackages(string $packageType): array
     {
         return array_filter(
@@ -119,9 +111,7 @@ final class ContainerConfiguration
         $this->files[] = $file;
     }
 
-    /**
-     * @return Generator<array<CompilerPassInterface|string|int|array<int, string|array<mixed>>>>
-     */
+    /** @return Generator<array<CompilerPassInterface|string|int|array<int, string|array<mixed>>>> */
     public function getPassList(): Generator
     {
         foreach ($this->filterPackages(CompilerPassListProvider::class) as $package) {
@@ -141,9 +131,7 @@ final class ContainerConfiguration
         $this->passList[] = [$pass, $type, $priority];
     }
 
-    /**
-     * @param mixed[] $constructArguments
-     */
+    /** @param mixed[] $constructArguments */
     public function addDelayedPass(
         string $className,
         array $constructArguments,
@@ -153,9 +141,7 @@ final class ContainerConfiguration
         $this->passList[] = [[$className, $constructArguments], $type, $priority];
     }
 
-    /**
-     * @return string[]
-     */
+    /** @return string[] */
     public function getPaths(): array
     {
         return $this->paths;
@@ -191,9 +177,7 @@ final class ContainerConfiguration
         return $this->dumpDir . DIRECTORY_SEPARATOR . $prefix . self::CLASS_NAME . '.php';
     }
 
-    /**
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     public function getDumpOptions(): array
     {
         $options = ['class' => self::CLASS_NAME];

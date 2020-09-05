@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8e3da5e3745a98f3e4de05fe59bcdd64",
+    "content-hash": "553dd27cffe0718e3579cb7f65bd6047",
     "packages": [
         {
             "name": "psr/cache",
@@ -1734,31 +1734,26 @@
         },
         {
             "name": "lcobucci/coding-standard",
-            "version": "5.0.0",
+            "version": "6.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/lcobucci/coding-standard.git",
-                "reference": "59d83596b424f3142e290370775243db92012e24"
+                "reference": "79a4324025f909cb786a21587da75f4c0f40e34b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lcobucci/coding-standard/zipball/59d83596b424f3142e290370775243db92012e24",
-                "reference": "59d83596b424f3142e290370775243db92012e24",
+                "url": "https://api.github.com/repos/lcobucci/coding-standard/zipball/79a4324025f909cb786a21587da75f4c0f40e34b",
+                "reference": "79a4324025f909cb786a21587da75f4c0f40e34b",
                 "shasum": ""
             },
             "require": {
-                "doctrine/coding-standard": "^8.0",
+                "doctrine/coding-standard": "^8.1",
                 "php": "^7.4 || ^8.0"
             },
             "require-dev": {
                 "roave/security-advisories": "dev-master"
             },
             "type": "phpcodesniffer-standard",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "5.0-dev"
-                }
-            },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
@@ -1770,7 +1765,7 @@
                 }
             ],
             "description": "Lcobucci's Coding Standard",
-            "time": "2020-06-08T05:12:50+00:00"
+            "time": "2020-09-05T21:36:16+00:00"
         },
         {
             "name": "mikey179/vfsstream",

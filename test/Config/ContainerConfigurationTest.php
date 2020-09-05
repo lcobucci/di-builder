@@ -23,9 +23,7 @@ final class ContainerConfigurationTest extends TestCase
     /** @var CompilerPassInterface&MockObject */
     private CompilerPassInterface $pass;
 
-    /**
-     * @before
-     */
+    /** @before */
     public function configureDependencies(): void
     {
         $this->pass = $this->createMock(CompilerPassInterface::class);
@@ -60,9 +58,7 @@ final class ContainerConfigurationTest extends TestCase
     {
         $package1 = new class implements CompilerPassListProvider
         {
-            /**
-             * @return Generator<array<CompilerPassInterface|string|int|array<string|array<mixed>>>>
-             */
+            /** @return Generator<array<CompilerPassInterface|string|int|array<string|array<mixed>>>> */
             public function getCompilerPasses(): Generator
             {
                 yield [CompilerPassInterface::class, 'beforeOptimization'];
@@ -71,9 +67,7 @@ final class ContainerConfigurationTest extends TestCase
 
         $package2 = new class implements FileListProvider
         {
-            /**
-             * @return Generator<string>
-             */
+            /** @return Generator<string> */
             public function getFiles(): Generator
             {
                 yield 'services2.xml';

@@ -22,9 +22,7 @@ final class GeneratorTest extends TestCase
     /** @var Generator&MockObject */
     private Generator $generator;
 
-    /**
-     * @before
-     */
+    /** @before */
     public function configureDependencies(): void
     {
         $this->generator = $this->getMockForAbstractClass(Generator::class, [__FILE__]);

@@ -25,9 +25,7 @@ final class ContainerBuilderTest extends TestCase
     private ContainerConfiguration $config;
     private ParameterBag $parameterBag;
 
-    /**
-     * @before
-     */
+    /** @before */
     public function configureDependencies(): void
     {
         $this->generator    = $this->getMockForAbstractClass(Generator::class, [], '', false, true, true, ['generate']);

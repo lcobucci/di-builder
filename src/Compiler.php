@@ -59,9 +59,7 @@ final class Compiler
         }
     }
 
-    /**
-     * @throws RuntimeException
-     */
+    /** @throws RuntimeException */
     private function updateDump(
         SymfonyBuilder $container,
         ContainerConfiguration $config,
@@ -77,9 +75,7 @@ final class Compiler
         );
     }
 
-    /**
-     * @return string[]
-     */
+    /** @return string[] */
     private function getContainerContent(
         SymfonyBuilder $container,
         ContainerConfiguration $config,

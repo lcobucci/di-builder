@@ -33,9 +33,7 @@ interface Builder
         int $priority = self::DEFAULT_PRIORITY
     ): Builder;
 
-    /**
-     * @param mixed[] $constructArguments
-     */
+    /** @param mixed[] $constructArguments */
     public function addDelayedPass(
         string $className,
         array $constructArguments = [],
@@ -43,9 +41,7 @@ interface Builder
         int $priority = self::DEFAULT_PRIORITY
     ): Builder;
 
-    /**
-     * @param mixed[] $constructArguments
-     */
+    /** @param mixed[] $constructArguments */
     public function addPackage(string $className, array $constructArguments = []): Builder;
 
     /**

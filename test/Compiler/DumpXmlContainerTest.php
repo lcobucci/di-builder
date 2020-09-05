@@ -15,9 +15,7 @@ final class DumpXmlContainerTest extends TestCase
     /** @var ConfigCacheInterface&MockObject */
     private ConfigCacheInterface $configCache;
 
-    /**
-     * @before
-     */
+    /** @before */
     public function createConfig(): void
     {
         $this->configCache = $this->createMock(ConfigCacheInterface::class);
