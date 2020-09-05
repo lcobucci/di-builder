@@ -12,7 +12,6 @@ use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 
 use function array_filter;
 use function array_map;
-use function assert;
 use function rtrim;
 use function sys_get_temp_dir;
 
@@ -25,7 +24,7 @@ final class ContainerConfiguration
     /** @var string[] */
     private array $files;
 
-    /** @var array<int, array<int, CompilerPassInterface|string|int|array<string|array<mixed>>>> */
+    /** @var list<array{0: CompilerPassInterface|array{0: class-string<CompilerPassInterface>, 1: mixed[]}, 1?: string, 2?: int}> */
     private array $passList;
 
     /** @var string[] */
@@ -33,7 +32,7 @@ final class ContainerConfiguration
 
     private ?string $baseClass = null;
 
-    /** @var mixed[] */
+    /** @var list<array{0: class-string<Package>, 1: mixed[]}> */
     private array $packages;
 
     /** @var Package[]|null */
@@ -42,10 +41,10 @@ final class ContainerConfiguration
     private string $dumpDir;
 
     /**
-     * @param string[] $files
-     * @param mixed[]  $passList
-     * @param string[] $paths
-     * @param mixed[]  $packages
+     * @param string[]                                          $files
+     * @param mixed[]                                           $passList
+     * @param string[]                                          $paths
+     * @param list<array{0: class-string<Package>, 1: mixed[]}> $packages
      */
     public function __construct(
         array $files = [],
@@ -77,7 +76,10 @@ final class ContainerConfiguration
         return $this->initializedPackages;
     }
 
-    /** @param mixed[] $constructArguments */
+    /**
+     * @param class-string<Package> $className
+     * @param mixed[]               $constructArguments
+     */
     public function addPackage(string $className, array $constructArguments = []): void
     {
         $this->packages[] = [$className, $constructArguments];
@@ -87,15 +89,19 @@ final class ContainerConfiguration
     public function getFiles(): Generator
     {
         foreach ($this->filterPackages(FileListProvider::class) as $package) {
-            assert($package instanceof FileListProvider);
-
             yield from $package->getFiles();
         }
 
         yield from $this->files;
     }
 
-    /** @return Package[] */
+    /**
+     * @template T
+     *
+     * @param class-string<T> $packageType
+     *
+     * @return array<T>
+     */
     private function filterPackages(string $packageType): array
     {
         return array_filter(
@@ -111,12 +117,10 @@ final class ContainerConfiguration
         $this->files[] = $file;
     }
 
-    /** @return Generator<array<CompilerPassInterface|string|int|array<int, string|array<mixed>>>> */
+    /** @return Generator<array{0: CompilerPassInterface|array{0: class-string<CompilerPassInterface>, 1: mixed[]}, 1?: string, 2?: int}> */
     public function getPassList(): Generator
     {
         foreach ($this->filterPackages(CompilerPassListProvider::class) as $package) {
-            assert($package instanceof CompilerPassListProvider);
-
             yield from $package->getCompilerPasses();
         }
 
@@ -131,7 +135,10 @@ final class ContainerConfiguration
         $this->passList[] = [$pass, $type, $priority];
     }
 
-    /** @param mixed[] $constructArguments */
+    /**
+     * @param class-string<CompilerPassInterface> $className
+     * @param mixed[]                             $constructArguments
+     */
     public function addDelayedPass(
         string $className,
         array $constructArguments,

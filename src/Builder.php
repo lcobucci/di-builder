@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Lcobucci\DependencyInjection;
 
+use Lcobucci\DependencyInjection\Config\Package;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -33,7 +34,10 @@ interface Builder
         int $priority = self::DEFAULT_PRIORITY
     ): Builder;
 
-    /** @param mixed[] $constructArguments */
+    /**
+     * @param class-string<CompilerPassInterface> $className
+     * @param mixed[]                             $constructArguments
+     */
     public function addDelayedPass(
         string $className,
         array $constructArguments = [],
@@ -41,7 +45,10 @@ interface Builder
         int $priority = self::DEFAULT_PRIORITY
     ): Builder;
 
-    /** @param mixed[] $constructArguments */
+    /**
+     * @param class-string<Package> $className
+     * @param mixed[]               $constructArguments
+     */
     public function addPackage(string $className, array $constructArguments = []): Builder;
 
     /**
