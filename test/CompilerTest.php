@@ -30,9 +30,7 @@ final class CompilerTest extends TestCase
     ];
 
     private vfsStreamDirectory $root;
-
     private ContainerConfiguration $config;
-
     private ConfigCache $dump;
 
     /** @before */

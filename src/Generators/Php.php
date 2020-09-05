@@ -14,9 +14,7 @@ use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
  */
 final class Php extends Generator
 {
-    /**
-     * {@inheritdoc}
-     */
+    /** @inheritDoc */
     public function getLoader(SymfonyBuilder $container, array $paths): LoaderInterface
     {
         return new PhpFileLoader(
