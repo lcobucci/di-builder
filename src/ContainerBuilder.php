@@ -78,9 +78,7 @@ final class ContainerBuilder implements Builder
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    /** @inheritDoc */
     public function addDelayedPass(
         string $className,
         array $constructArguments = [],
@@ -92,9 +90,7 @@ final class ContainerBuilder implements Builder
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    /** @inheritDoc */
     public function addPackage(string $className, array $constructArguments = []): Builder
     {
         $this->config->addPackage($className, $constructArguments);
@@ -117,9 +113,7 @@ final class ContainerBuilder implements Builder
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    /** @inheritDoc */
     public function setParameter(string $name, $value): Builder
     {
         $this->parameterBag->set($name, $value);

@@ -7,6 +7,7 @@ use Generator;
 use Lcobucci\DependencyInjection\Compiler\ParameterBag;
 use Lcobucci\DependencyInjection\CompilerPassListProvider;
 use Lcobucci\DependencyInjection\FileListProvider;
+use Lcobucci\DependencyInjection\Testing\MakeServicesPublic;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -23,9 +24,7 @@ final class ContainerConfigurationTest extends TestCase
     /** @var CompilerPassInterface&MockObject */
     private CompilerPassInterface $pass;
 
-    /**
-     * @before
-     */
+    /** @before */
     public function configureDependencies(): void
     {
         $this->pass = $this->createMock(CompilerPassInterface::class);
@@ -60,20 +59,14 @@ final class ContainerConfigurationTest extends TestCase
     {
         $package1 = new class implements CompilerPassListProvider
         {
-            /**
-             * @return Generator<array<CompilerPassInterface|string|int|array<string|array<mixed>>>>
-             */
             public function getCompilerPasses(): Generator
             {
-                yield [CompilerPassInterface::class, 'beforeOptimization'];
+                yield [new MakeServicesPublic(), 'beforeOptimization'];
             }
         };
 
         $package2 = new class implements FileListProvider
         {
-            /**
-             * @return Generator<string>
-             */
             public function getFiles(): Generator
             {
                 yield 'services2.xml';
@@ -135,7 +128,7 @@ final class ContainerConfigurationTest extends TestCase
         {
             public function getCompilerPasses(): Generator
             {
-                yield [CompilerPassInterface::class, 'beforeOptimization'];
+                yield [new MakeServicesPublic(), 'beforeOptimization'];
             }
         };
 
@@ -154,9 +147,9 @@ final class ContainerConfigurationTest extends TestCase
             [[get_class($package1), []], [get_class($package2), []]]
         );
 
-        self::assertSame(
+        self::assertEquals(
             [
-                [CompilerPassInterface::class, 'beforeOptimization'],
+                [new MakeServicesPublic(), 'beforeOptimization'],
                 [$this->pass, 'beforeOptimization'],
             ],
             iterator_to_array($config->getPassList(), false)

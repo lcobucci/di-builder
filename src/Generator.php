@@ -55,8 +55,6 @@ abstract class Generator
         return $container;
     }
 
-    /**
-     * @param string[] $paths
-     */
+    /** @param string[] $paths */
     abstract public function getLoader(SymfonyBuilder $container, array $paths): LoaderInterface;
 }

@@ -8,6 +8,7 @@ use RuntimeException;
 use Symfony\Bridge\ProxyManager\LazyProxy\PhpDumper\ProxyDumper;
 use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder as SymfonyBuilder;
 use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
 use Symfony\Component\Filesystem\Filesystem;
@@ -17,12 +18,11 @@ use function assert;
 use function class_exists;
 use function dirname;
 use function is_array;
-use function is_int;
 use function is_string;
 
 final class Compiler
 {
-    private const DEFAULT_PASS_CONFIG = [null, null, 0];
+    private const DEFAULT_PASS_CONFIG = [null, PassConfig::TYPE_BEFORE_OPTIMIZATION, 0];
 
     public function compile(
         ContainerConfiguration $config,
@@ -45,23 +45,18 @@ final class Compiler
     ): void {
         foreach ($config->getPassList() as $passConfig) {
             [$pass, $type, $priority] = $passConfig + self::DEFAULT_PASS_CONFIG;
-            assert(is_string($type));
-            assert(is_int($priority));
 
             if (! $pass instanceof CompilerPassInterface) {
                 [$className, $constructArguments] = $pass;
 
                 $pass = new $className(...$constructArguments);
-                assert($pass instanceof CompilerPassInterface);
             }
 
             $container->addCompilerPass($pass, $type, $priority);
         }
     }
 
-    /**
-     * @throws RuntimeException
-     */
+    /** @throws RuntimeException */
     private function updateDump(
         SymfonyBuilder $container,
         ContainerConfiguration $config,
@@ -77,9 +72,7 @@ final class Compiler
         );
     }
 
-    /**
-     * @return string[]
-     */
+    /** @return string[] */
     private function getContainerContent(
         SymfonyBuilder $container,
         ContainerConfiguration $config,

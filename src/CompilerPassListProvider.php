@@ -9,8 +9,6 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 
 interface CompilerPassListProvider extends Package
 {
-    /**
-     * @return DefaultGenerator<array<CompilerPassInterface|string|int|array<string|array<mixed>>>>
-     */
+    /** @return DefaultGenerator<array{0: CompilerPassInterface, 1?: string, 2?: int}> */
     public function getCompilerPasses(): DefaultGenerator;
 }

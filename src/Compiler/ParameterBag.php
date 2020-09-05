@@ -16,17 +16,13 @@ final class ParameterBag implements CompilerPassInterface
     /** @var array<string, mixed> */
     private array $parameters;
 
-    /**
-     * @param array<string, mixed> $parameters
-     */
+    /** @param array<string, mixed> $parameters */
     public function __construct(array $parameters = [])
     {
         $this->parameters = $parameters;
     }
 
-    /**
-     * @param mixed $value
-     */
+    /** @param mixed $value */
     public function set(string $name, $value): void
     {
         $this->parameters[$name] = $value;

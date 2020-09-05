@@ -14,9 +14,7 @@ use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
  */
 final class Xml extends Generator
 {
-    /**
-     * {@inheritdoc}
-     */
+    /** @inheritDoc */
     public function getLoader(SymfonyBuilder $container, array $paths): LoaderInterface
     {
         return new XmlFileLoader(

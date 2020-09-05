@@ -18,9 +18,7 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
  */
 final class Delegating extends Generator
 {
-    /**
-     * {@inheritdoc}
-     */
+    /** @inheritDoc */
     public function getLoader(SymfonyBuilder $container, array $paths): LoaderInterface
     {
         $locator = new FileLocator($paths);

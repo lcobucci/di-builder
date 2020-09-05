@@ -14,9 +14,7 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
  */
 final class Yaml extends Generator
 {
-    /**
-     * {@inheritdoc}
-     */
+    /** @inheritDoc */
     public function getLoader(SymfonyBuilder $container, array $paths): LoaderInterface
     {
         return new YamlFileLoader(

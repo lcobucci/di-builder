@@ -30,14 +30,10 @@ final class CompilerTest extends TestCase
     ];
 
     private vfsStreamDirectory $root;
-
     private ContainerConfiguration $config;
-
     private ConfigCache $dump;
 
-    /**
-     * @before
-     */
+    /** @before */
     public function configureDependencies(): void
     {
         $this->root = vfsStream::setup(
@@ -162,9 +158,7 @@ final class CompilerTest extends TestCase
         self::assertCount(1, $generatedFiles);
     }
 
-    /**
-     * @return PHPGenerator<string, vfsStreamFile>
-     */
+    /** @return PHPGenerator<string, vfsStreamFile> */
     private function getGeneratedFiles(vfsStreamDirectory $directory): PHPGenerator
     {
         foreach ($directory->getChildren() as $child) {
