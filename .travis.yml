@@ -26,6 +26,9 @@ script:
   - ./vendor/bin/phpunit
 
 jobs:
+  allow_failures:
+    - php: nightly
+
   include:
     - stage: Test
       env: DEPENDENCIES=low
@@ -60,7 +63,8 @@ jobs:
         - mv ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini{.disabled,}
         - if [[ ! $(php -m | grep -si xdebug) ]]; then echo "xdebug required for mutation"; exit 1; fi
       script:
-        - ./vendor/bin/infection -s --min-msi=100 --min-covered-msi=100 --threads=$(nproc)
+        - ./vendor/bin/phpunit --coverage-xml=build/coverage-xml --log-junit=build/junit.xml
+        - ./vendor/bin/infection -s --threads=$(nproc) --coverage=build
 
     - stage: Quality
       env: STATIC_ANALYSIS=1
