@@ -1,0 +1,14 @@
+site_name: lcobucci/di-builder
+theme: readthedocs
+
+nav:
+  - Intro:
+      - 'index.md'
+      - 'installation.md'
+  - Usage:
+      - 'configuration.md'
+      - 'compiler-passes.md'
+      - 'packages.md'
+
+markdown_extensions:
+  - admonition
