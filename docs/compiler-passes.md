@@ -35,7 +35,7 @@ final class EventListenerInjector implements CompilerPassInterface
 ## Type and priority
 
 There are different types of compiler passes.
-You can see the available types on the [`PassConfig`] class.
+You can see the available types on the [`PassConfig`](https://github.com/symfony/dependency-injection/blob/6152c7f22d9d2f367534144a75a54e27f51e6f44/Compiler/PassConfig.php#L25-L29) class.
 
 You may also configure different priorities for the compiler passes.
 
@@ -50,5 +50,4 @@ The default values are `PassConfig::TYPE_BEFORE_OPTIMIZATION` as type and `0` as
     The method `ContainerBuilder#addDelayedPass()` was introduced on [v5.2.0], to avoid the creation of **unnecessary instances**.
     It's recommended to use it because it (possibly) makes your application faster by reducing the number of loaded classes and instantiated objects during the bootstrap.
 
-[`PassConfig`]: https://github.com/symfony/dependency-injection/blob/6152c7f22d9d2f367534144a75a54e27f51e6f44/Compiler/PassConfig.php#L25-L29
 [v5.2.0]: https://github.com/lcobucci/di-builder/releases/tag/5.2.0
