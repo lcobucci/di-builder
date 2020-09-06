@@ -72,7 +72,7 @@ final class Compiler
         );
     }
 
-    /** @return string[] */
+    /** @return array<string, string> */
     private function getContainerContent(
         SymfonyBuilder $container,
         ContainerConfiguration $config,

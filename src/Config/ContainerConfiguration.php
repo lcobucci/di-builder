@@ -41,10 +41,14 @@ final class ContainerConfiguration
     private string $dumpDir;
 
     /**
-     * @param string[]                                          $files
-     * @param mixed[]                                           $passList
-     * @param string[]                                          $paths
-     * @param list<array{0: class-string<Package>, 1: mixed[]}> $packages
+     * phpcs:disable Generic.Files.LineLength
+     *
+     * @param string[]                                                                                                             $files
+     * @param list<array{0: CompilerPassInterface|array{0: class-string<CompilerPassInterface>, 1: mixed[]}, 1?: string, 2?: int}> $passList
+     * @param string[]                                                                                                             $paths
+     * @param list<array{0: class-string<Package>, 1: mixed[]}>                                                                    $packages
+     *
+     * phpcs:enable Generic.Files.LineLength
      */
     public function __construct(
         array $files = [],
