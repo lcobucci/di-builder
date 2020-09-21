@@ -5,8 +5,7 @@
 [![Unstable Version]](https://packagist.org/packages/lcobucci/di-builder)
 
 [![Build Status]](http://travis-ci.com/lcobucci/di-builder)
-[![Scrutinizer Code Quality]](https://scrutinizer-ci.com/g/lcobucci/di-builder/?branch=6.1.x)
-[![Code Coverage]](https://scrutinizer-ci.com/g/lcobucci/di-builder/?branch=6.1.x)
+[![Code Coverage]](https://codecov.io/gh/lcobucci/di-builder)
 
 Library that makes easier the creation of compiled containers using the [Symfony DI Component].
 
@@ -29,9 +28,8 @@ The project is licensed under the BSD-3-Clause license, see [LICENSE] file.
 [Total Downloads]: https://img.shields.io/packagist/dt/lcobucci/di-builder.svg?style=flat-square
 [Latest Stable Version]: https://img.shields.io/packagist/v/lcobucci/di-builder.svg?style=flat-square
 [Unstable Version]: https://img.shields.io/packagist/vpre/lcobucci/di-builder.svg?style=flat-square
-[Build Status]: https://img.shields.io/travis/com/lcobucci/di-builder.svg?style=flat-square
-[Scrutinizer Code Quality]: https://img.shields.io/scrutinizer/g/lcobucci/di-builder/6.1.x.svg?style=flat-square
-[Code Coverage]: https://img.shields.io/scrutinizer/coverage/g/lcobucci/di-builder/6.1.x.svg?style=flat-square
+[Build Status]: https://img.shields.io/github/workflow/status/lcobucci/di-builder/PHPUnit%20tests?style=flat-square
+[Code Coverage]: https://codecov.io/gh/lcobucci/di-builder/branch/6.1.x/graph/badge.svg
 [Symfony DI Component]: http://symfony.com/doc/current/components/dependency_injection/introduction.html
 [Packagist]: http://packagist.org/packages/lcobucci/di-builder
 [Composer]: http://getcomposer.org
