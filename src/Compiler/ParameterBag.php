@@ -35,11 +35,7 @@ final class ParameterBag implements CompilerPassInterface
      */
     public function get(string $name, $default = null)
     {
-        if (! isset($this->parameters[$name])) {
-            return $default;
-        }
-
-        return $this->parameters[$name];
+        return $this->parameters[$name] ?? $default;
     }
 
     public function process(ContainerBuilder $container): void
