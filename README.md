@@ -4,7 +4,7 @@
 [![Latest Stable Version]](https://packagist.org/packages/lcobucci/di-builder)
 [![Unstable Version]](https://packagist.org/packages/lcobucci/di-builder)
 
-[![Build Status]](http://travis-ci.com/lcobucci/di-builder)
+[![Build Status]](https://github.com/lcobucci/di-builder/actions?query=workflow%3A%22PHPUnit%20Tests%22+branch%3A6.1.x)
 [![Code Coverage]](https://codecov.io/gh/lcobucci/di-builder)
 
 Library that makes easier the creation of compiled containers using the [Symfony DI Component].
