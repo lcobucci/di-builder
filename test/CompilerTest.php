@@ -3,23 +3,27 @@ declare(strict_types=1);
 
 namespace Lcobucci\DependencyInjection;
 
+use DirectoryIterator;
 use Generator as PHPGenerator;
 use Lcobucci\DependencyInjection\Compiler\ParameterBag;
 use Lcobucci\DependencyInjection\Config\ContainerConfiguration;
 use Lcobucci\DependencyInjection\Generators\Yaml;
 use Lcobucci\DependencyInjection\Testing\MakeServicesPublic;
 use org\bovigo\vfs\vfsStream;
-use org\bovigo\vfs\vfsStreamDirectory;
-use org\bovigo\vfs\vfsStreamFile;
 use PHPUnit\Framework\TestCase;
+use SplFileInfo;
 use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 
+use function bin2hex;
 use function count;
+use function exec;
 use function file_get_contents;
 use function file_put_contents;
 use function iterator_to_array;
-use function umask;
+use function mkdir;
+use function random_bytes;
+use function realpath;
 
 final class CompilerTest extends TestCase
 {
@@ -29,14 +33,14 @@ final class CompilerTest extends TestCase
         'container.php.meta',
     ];
 
-    private vfsStreamDirectory $root;
     private ContainerConfiguration $config;
     private ConfigCache $dump;
+    private string $dumpDir;
 
     /** @before */
     public function configureDependencies(): void
     {
-        $this->root = vfsStream::setup(
+        vfsStream::setup(
             'tests',
             null,
             ['services.yml' => 'services: { testing: { class: stdClass } }']
@@ -55,7 +59,22 @@ final class CompilerTest extends TestCase
             ]
         );
 
-        $this->dump = new ConfigCache(vfsStream::url('tests/container.php'), false);
+        $this->dumpDir = $this->createDumpDirectory();
+        $this->dump    = new ConfigCache($this->dumpDir . '/container.php', false);
+    }
+
+    private function createDumpDirectory(): string
+    {
+        $dir = __DIR__ . '/../tmp/' . bin2hex(random_bytes(5));
+        mkdir($dir, 0777, true);
+
+        return $dir;
+    }
+
+    /** @after */
+    public function cleanUpDumpDirectory(): void
+    {
+        exec('rm -rf ' . realpath($this->dumpDir . '/../'));
     }
 
     /**
@@ -76,15 +95,14 @@ final class CompilerTest extends TestCase
 
         $expectedFiles   = self::EXPECTED_FILES;
         $expectedFiles[] = 'AppContainer.php';
+        $expectedFiles[] = 'AppContainer.preload.php';
 
-        $expectedPermissions = 0666 & ~umask();
-        $generatedFiles      = iterator_to_array($this->getGeneratedFiles($this->root));
+        $generatedFiles = iterator_to_array($this->getGeneratedFiles());
 
         self::assertCount(count($expectedFiles), $generatedFiles);
 
         foreach ($generatedFiles as $name => $file) {
             self::assertContains($name, $expectedFiles);
-            self::assertSame($expectedPermissions, $file->getPermissions());
         }
     }
 
@@ -106,7 +124,7 @@ final class CompilerTest extends TestCase
 
         self::assertStringContainsString(
             __FILE__,
-            (string) file_get_contents(vfsStream::url('tests/container.php.meta'))
+            (string) file_get_contents($this->dumpDir . '/container.php.meta')
         );
     }
 
@@ -133,8 +151,11 @@ final class CompilerTest extends TestCase
 
         $expectedFiles   = self::EXPECTED_FILES;
         $expectedFiles[] = 'AppContainer.php';
+        $expectedFiles[] = 'AppContainer.preload.php';
 
-        self::assertCount(count($expectedFiles) + 1, iterator_to_array($this->getGeneratedFiles($this->root)));
+        $generatedFiles = iterator_to_array($this->getGeneratedFiles());
+
+        self::assertCount(count($expectedFiles) + 1, $generatedFiles);
     }
 
     /**
@@ -148,31 +169,33 @@ final class CompilerTest extends TestCase
      */
     public function compilationShouldBeSkippedWhenFileAlreadyExists(): void
     {
-        file_put_contents(vfsStream::url('tests/container.php'), 'testing');
+        file_put_contents($this->dumpDir . '/container.php', 'testing');
 
         $compiler = new Compiler();
         $compiler->compile($this->config, $this->dump, new Yaml(__FILE__));
 
-        $generatedFiles = iterator_to_array($this->getGeneratedFiles($this->root));
+        $generatedFiles = iterator_to_array($this->getGeneratedFiles());
 
         self::assertCount(1, $generatedFiles);
     }
 
-    /** @return PHPGenerator<string, vfsStreamFile> */
-    private function getGeneratedFiles(vfsStreamDirectory $directory): PHPGenerator
+    /** @return PHPGenerator<string, SplFileInfo> */
+    private function getGeneratedFiles(?string $dir = null): PHPGenerator
     {
-        foreach ($directory->getChildren() as $child) {
-            if ($child instanceof vfsStreamDirectory) {
-                yield from $this->getGeneratedFiles($child);
+        $dir ??= $this->dumpDir;
+
+        foreach (new DirectoryIterator($dir) as $fileInfo) {
+            if ($fileInfo->isDot()) {
+                continue;
+            }
+
+            if ($fileInfo->isDir()) {
+                yield from $this->getGeneratedFiles($fileInfo->getPathname());
 
                 continue;
             }
 
-            if (! $child instanceof vfsStreamFile || $child->getName() === 'services.yml') {
-                continue;
-            }
-
-            yield $child->getName() => $child;
+            yield $fileInfo->getFilename() => $fileInfo;
         }
     }
 }
