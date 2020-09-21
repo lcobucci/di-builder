@@ -7,6 +7,4 @@
 /*.dist         export-ignore
 /README.md      export-ignore
 /composer.lock  export-ignore
-/Dockerfile     export-ignore
-/.dockerignore  export-ignore
 /mkdocs.yml     export-ignore
