@@ -28,7 +28,7 @@ The project is licensed under the BSD-3-Clause license, see [LICENSE] file.
 [Total Downloads]: https://img.shields.io/packagist/dt/lcobucci/di-builder.svg?style=flat-square
 [Latest Stable Version]: https://img.shields.io/packagist/v/lcobucci/di-builder.svg?style=flat-square
 [Unstable Version]: https://img.shields.io/packagist/vpre/lcobucci/di-builder.svg?style=flat-square
-[Build Status]: https://img.shields.io/github/workflow/status/lcobucci/di-builder/PHPUnit%20tests?style=flat-square
+[Build Status]: https://img.shields.io/github/workflow/status/lcobucci/di-builder/PHPUnit%20tests/6.1.x?style=flat-square
 [Code Coverage]: https://codecov.io/gh/lcobucci/di-builder/branch/6.1.x/graph/badge.svg
 [Symfony DI Component]: http://symfony.com/doc/current/components/dependency_injection/introduction.html
 [Packagist]: http://packagist.org/packages/lcobucci/di-builder
