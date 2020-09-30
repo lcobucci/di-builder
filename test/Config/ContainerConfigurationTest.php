@@ -41,7 +41,7 @@ final class ContainerConfigurationTest extends TestCase
      */
     public function getFilesShouldReturnTheFileList(): void
     {
-        $config = new ContainerConfiguration(['services.xml']);
+        $config = new ContainerConfiguration('Me\\MyApp', ['services.xml']);
 
         self::assertSame(['services.xml'], iterator_to_array($config->getFiles()));
     }
@@ -74,6 +74,7 @@ final class ContainerConfigurationTest extends TestCase
         };
 
         $config = new ContainerConfiguration(
+            'Me\\MyApp',
             ['services.xml'],
             [],
             [],
@@ -91,10 +92,10 @@ final class ContainerConfigurationTest extends TestCase
      */
     public function addFileShouldAppendANewFileToTheList(): void
     {
-        $config = new ContainerConfiguration();
+        $config = new ContainerConfiguration('Me\\MyApp');
         $config->addFile('services.xml');
 
-        self::assertEquals(new ContainerConfiguration(['services.xml']), $config);
+        self::assertEquals(new ContainerConfiguration('Me\\MyApp', ['services.xml']), $config);
     }
 
     /**
@@ -108,7 +109,7 @@ final class ContainerConfigurationTest extends TestCase
      */
     public function getPassListShouldReturnTheHandlersList(): void
     {
-        $config = new ContainerConfiguration([], [[$this->pass, 'beforeOptimization']]);
+        $config = new ContainerConfiguration('Me\\MyApp', [], [[$this->pass, 'beforeOptimization']]);
 
         self::assertSame([[$this->pass, 'beforeOptimization']], iterator_to_array($config->getPassList()));
     }
@@ -141,6 +142,7 @@ final class ContainerConfigurationTest extends TestCase
         };
 
         $config = new ContainerConfiguration(
+            'Me\\MyApp',
             [],
             [[$this->pass, 'beforeOptimization']],
             [],
@@ -164,10 +166,11 @@ final class ContainerConfigurationTest extends TestCase
      */
     public function addPassShouldAppendANewHandlerToTheList(): void
     {
-        $config = new ContainerConfiguration();
+        $config = new ContainerConfiguration('Me\\MyApp');
         $config->addPass($this->pass);
 
         $expected = new ContainerConfiguration(
+            'Me\\MyApp',
             [],
             [[$this->pass, PassConfig::TYPE_BEFORE_OPTIMIZATION, 0]]
         );
@@ -183,10 +186,11 @@ final class ContainerConfigurationTest extends TestCase
      */
     public function addPassCanReceiveTheTypeAndPriority(): void
     {
-        $config = new ContainerConfiguration();
+        $config = new ContainerConfiguration('Me\\MyApp');
         $config->addPass($this->pass, PassConfig::TYPE_AFTER_REMOVING, 1);
 
         $expected = new ContainerConfiguration(
+            'Me\\MyApp',
             [],
             [[$this->pass, PassConfig::TYPE_AFTER_REMOVING, 1]]
         );
@@ -202,10 +206,11 @@ final class ContainerConfigurationTest extends TestCase
      */
     public function addDelayedPassShouldAppendANewCompilerPassToTheList(): void
     {
-        $config = new ContainerConfiguration();
+        $config = new ContainerConfiguration('Me\\MyApp');
         $config->addDelayedPass(ParameterBag::class, ['a' => 'b']);
 
         $expected = new ContainerConfiguration(
+            'Me\\MyApp',
             [],
             [[[ParameterBag::class, ['a' => 'b']], PassConfig::TYPE_BEFORE_OPTIMIZATION, 0]]
         );
@@ -221,10 +226,11 @@ final class ContainerConfigurationTest extends TestCase
      */
     public function addDelayedPassCanReceiveTheTypeAndPriority(): void
     {
-        $config = new ContainerConfiguration();
+        $config = new ContainerConfiguration('Me\\MyApp');
         $config->addDelayedPass(ParameterBag::class, ['a' => 'b'], PassConfig::TYPE_AFTER_REMOVING, 1);
 
         $expected = new ContainerConfiguration(
+            'Me\\MyApp',
             [],
             [[[ParameterBag::class, ['a' => 'b']], PassConfig::TYPE_AFTER_REMOVING, 1]]
         );
@@ -241,10 +247,11 @@ final class ContainerConfigurationTest extends TestCase
     public function addPackageShouldAppendThePackageConfigurationToTheList(): void
     {
         $package = get_class($this->createMock(Package::class));
-        $config  = new ContainerConfiguration();
+        $config  = new ContainerConfiguration('Me\\MyApp');
         $config->addPackage($package, ['a' => 'b']);
 
         $expected = new ContainerConfiguration(
+            'Me\\MyApp',
             [],
             [],
             [],
@@ -264,7 +271,7 @@ final class ContainerConfigurationTest extends TestCase
     public function getPackagesShouldReturnAListOfInstantiatedPackages(): void
     {
         $package = $this->createMock(Package::class);
-        $config  = new ContainerConfiguration([], [], [], [[get_class($package), []]]);
+        $config  = new ContainerConfiguration('Me\\MyApp', [], [], [], [[get_class($package), []]]);
 
         self::assertEquals([$package], $config->getPackages());
     }
@@ -279,7 +286,7 @@ final class ContainerConfigurationTest extends TestCase
     public function getPackagesShouldInstantiateThePackagesOnlyOnce(): void
     {
         $packageName = get_class($this->createMock(Package::class));
-        $config      = new ContainerConfiguration([], [], [], [[$packageName, []]]);
+        $config      = new ContainerConfiguration('Me\\MyApp', [], [], [], [[$packageName, []]]);
 
         $createdPackages = $config->getPackages();
 
@@ -295,7 +302,7 @@ final class ContainerConfigurationTest extends TestCase
      */
     public function getPathsShouldReturnThePathsList(): void
     {
-        $config = new ContainerConfiguration([], [], ['config']);
+        $config = new ContainerConfiguration('Me\\MyApp', [], [], ['config']);
 
         self::assertEquals(['config'], $config->getPaths());
     }
@@ -308,10 +315,11 @@ final class ContainerConfigurationTest extends TestCase
      */
     public function addPathShouldAppendANewPathToTheList(): void
     {
-        $config = new ContainerConfiguration();
+        $config = new ContainerConfiguration('Me\\MyApp');
         $config->addPath('services');
 
         $expected = new ContainerConfiguration(
+            'Me\\MyApp',
             [],
             [],
             ['services']
@@ -330,7 +338,7 @@ final class ContainerConfigurationTest extends TestCase
      */
     public function setBaseClassShouldChangeTheAttribute(): void
     {
-        $config = new ContainerConfiguration();
+        $config = new ContainerConfiguration('Me\\MyApp');
         $config->setBaseClass('Test');
 
         self::assertSame('Test', $config->getBaseClass());
@@ -345,7 +353,7 @@ final class ContainerConfigurationTest extends TestCase
      */
     public function getDumpDirShouldReturnTheAttributeValue(): void
     {
-        $config = new ContainerConfiguration();
+        $config = new ContainerConfiguration('Me\\MyApp');
 
         self::assertEquals(sys_get_temp_dir(), $config->getDumpDir());
     }
@@ -360,7 +368,7 @@ final class ContainerConfigurationTest extends TestCase
      */
     public function setDumpDirShouldChangeTheAttribute(): void
     {
-        $config = new ContainerConfiguration();
+        $config = new ContainerConfiguration('Me\\MyApp');
         $config->setDumpDir('/test/');
 
         self::assertEquals('/test', $config->getDumpDir());
@@ -375,28 +383,11 @@ final class ContainerConfigurationTest extends TestCase
      */
     public function getDumpFileShouldReturnTheFullPathOfDumpFile(): void
     {
-        $config = new ContainerConfiguration();
+        $config = new ContainerConfiguration('Me\\MyApp');
 
         self::assertEquals(
-            sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'AppContainer.php',
+            sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'me_myapp' . DIRECTORY_SEPARATOR . 'AppContainer.php',
             $config->getDumpFile()
-        );
-    }
-
-    /**
-     * @test
-     *
-     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getDumpFile
-     *
-     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
-     */
-    public function getDumpFileCanAlsoAddPrefixForTheFile(): void
-    {
-        $config = new ContainerConfiguration();
-
-        self::assertEquals(
-            sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'test_AppContainer.php',
-            $config->getDumpFile('test_')
         );
     }
 
@@ -409,9 +400,10 @@ final class ContainerConfigurationTest extends TestCase
      */
     public function getDumpOptionsShouldReturnTheDumpingInformation(): void
     {
-        $config  = new ContainerConfiguration();
+        $config  = new ContainerConfiguration('Me\\MyApp');
         $options = [
             'class'        => ContainerConfiguration::CLASS_NAME,
+            'namespace'    => 'Me\\MyApp',
             'hot_path_tag' => 'container.hot_path',
         ];
 
@@ -428,15 +420,33 @@ final class ContainerConfigurationTest extends TestCase
      */
     public function getDumpOptionsShouldIncludeBaseWhenWasConfigured(): void
     {
-        $config = new ContainerConfiguration();
+        $config = new ContainerConfiguration('Me\\MyApp');
         $config->setBaseClass('Test');
 
         $options = [
             'class'        => ContainerConfiguration::CLASS_NAME,
+            'namespace'    => 'Me\\MyApp',
             'base_class'   => 'Test',
             'hot_path_tag' => 'container.hot_path',
         ];
 
         self::assertSame($options, $config->getDumpOptions());
+    }
+
+    /**
+     * @test
+     *
+     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::withSubNamespace
+     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getClassName
+     *
+     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
+     */
+    public function withAddedNamespaceShouldModifyTheNamespaceOfANewInstanceOnly(): void
+    {
+        $config = new ContainerConfiguration('Me\\MyApp');
+        $other  = $config->withSubNamespace('\\Testing');
+
+        self::assertSame('Me\\MyApp\\AppContainer', $config->getClassName());
+        self::assertSame('Me\\MyApp\\Testing\\AppContainer', $other->getClassName());
     }
 }

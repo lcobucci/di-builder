@@ -30,15 +30,15 @@ abstract class Generator
     ): ContainerInterface {
         $this->compiler->compile($config, $dump, $this);
 
-        return $this->loadContainer($dump);
+        return $this->loadContainer($config, $dump);
     }
 
-    private function loadContainer(ConfigCache $dump): ContainerInterface
+    private function loadContainer(ContainerConfiguration $config, ConfigCache $dump): ContainerInterface
     {
         require_once $dump->getPath();
-        $className = '\\' . ContainerConfiguration::CLASS_NAME;
+        $className = $config->getClassName();
 
-        return new $className(); // @phpstan-ignore-line (class loaded dynamically and PHPStan can't evaluate that)
+        return new $className();
     }
 
     public function initializeContainer(ContainerConfiguration $config): SymfonyBuilder
