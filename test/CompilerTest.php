@@ -29,8 +29,9 @@ final class CompilerTest extends TestCase
 {
     private const EXPECTED_FILES = [
         'getTestingService.php',
-        'container.php',
-        'container.php.meta',
+        'AppContainer.php',
+        'AppContainer.preload.php',
+        'AppContainer.php.meta',
     ];
 
     private ContainerConfiguration $config;
@@ -51,7 +52,11 @@ final class CompilerTest extends TestCase
         $parameterBag->set('container.dumper.inline_factories', false);
         $parameterBag->set('container.dumper.inline_class_loader', true);
 
+        $this->dumpDir = $this->createDumpDirectory();
+        $this->dump    = new ConfigCache($this->dumpDir . '/AppContainer.php', false);
+
         $this->config = new ContainerConfiguration(
+            'Me\\MyApp',
             [vfsStream::url('tests/services.yml')],
             [
                 [$parameterBag, PassConfig::TYPE_BEFORE_OPTIMIZATION],
@@ -59,13 +64,12 @@ final class CompilerTest extends TestCase
             ]
         );
 
-        $this->dumpDir = $this->createDumpDirectory();
-        $this->dump    = new ConfigCache($this->dumpDir . '/container.php', false);
+        $this->config->setDumpDir($this->dumpDir);
     }
 
     private function createDumpDirectory(): string
     {
-        $dir = __DIR__ . '/../tmp/' . bin2hex(random_bytes(5));
+        $dir = __DIR__ . '/../tmp/' . bin2hex(random_bytes(5)) . '/me_myapp';
         mkdir($dir, 0777, true);
 
         return $dir;
@@ -74,7 +78,7 @@ final class CompilerTest extends TestCase
     /** @after */
     public function cleanUpDumpDirectory(): void
     {
-        exec('rm -rf ' . realpath($this->dumpDir . '/../'));
+        exec('rm -rf ' . realpath($this->dumpDir . '/../../'));
     }
 
     /**
@@ -93,10 +97,7 @@ final class CompilerTest extends TestCase
         $compiler = new Compiler();
         $compiler->compile($this->config, $this->dump, new Yaml(__FILE__));
 
-        $expectedFiles   = self::EXPECTED_FILES;
-        $expectedFiles[] = 'AppContainer.php';
-        $expectedFiles[] = 'AppContainer.preload.php';
-
+        $expectedFiles  = self::EXPECTED_FILES;
         $generatedFiles = iterator_to_array($this->getGeneratedFiles());
 
         self::assertCount(count($expectedFiles), $generatedFiles);
@@ -124,7 +125,7 @@ final class CompilerTest extends TestCase
 
         self::assertStringContainsString(
             __FILE__,
-            (string) file_get_contents($this->dumpDir . '/container.php.meta')
+            (string) file_get_contents($this->dumpDir . '/AppContainer.php.meta')
         );
     }
 
@@ -149,10 +150,7 @@ final class CompilerTest extends TestCase
         $compiler = new Compiler();
         $compiler->compile($this->config, $this->dump, new Yaml(__FILE__));
 
-        $expectedFiles   = self::EXPECTED_FILES;
-        $expectedFiles[] = 'AppContainer.php';
-        $expectedFiles[] = 'AppContainer.preload.php';
-
+        $expectedFiles  = self::EXPECTED_FILES;
         $generatedFiles = iterator_to_array($this->getGeneratedFiles());
 
         self::assertCount(count($expectedFiles) + 1, $generatedFiles);
@@ -169,7 +167,7 @@ final class CompilerTest extends TestCase
      */
     public function compilationShouldBeSkippedWhenFileAlreadyExists(): void
     {
-        file_put_contents($this->dumpDir . '/container.php', 'testing');
+        file_put_contents($this->dumpDir . '/AppContainer.php', 'testing');
 
         $compiler = new Compiler();
         $compiler->compile($this->config, $this->dump, new Yaml(__FILE__));

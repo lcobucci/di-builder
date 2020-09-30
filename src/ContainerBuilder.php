@@ -33,10 +33,12 @@ final class ContainerBuilder implements Builder
         $this->setDefaultConfiguration();
     }
 
-    public static function default(string $configurationFile): self
-    {
+    public static function default(
+        string $configurationFile,
+        string $namespace
+    ): self {
         return new self(
-            new ContainerConfiguration(),
+            new ContainerConfiguration($namespace),
             new XmlGenerator($configurationFile),
             new ParameterBag()
         );
@@ -148,12 +150,12 @@ final class ContainerBuilder implements Builder
 
     public function getTestContainer(): ContainerInterface
     {
-        $config = clone $this->config;
+        $config = $this->config->withSubNamespace('Tests');
         $config->addPass(new MakeServicesPublic(), PassConfig::TYPE_BEFORE_REMOVING);
 
         return $this->generator->generate(
             $config,
-            new ConfigCache($config->getDumpFile('test_'), true)
+            new ConfigCache($config->getDumpFile(), true)
         );
     }
 }

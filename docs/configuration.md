@@ -10,11 +10,13 @@ Once everything is configured, the builder gives you a fully functional containe
 <?php
 declare(strict_types=1);
 
+namespace Me\MyApplication\DI;
+
 use Lcobucci\DependencyInjection\ContainerBuilder;
 
 // The path to the current file is passed so we can track changes
 // to it and refresh the cache (for development mode)
-$builder = ContainerBuilder::default(__FILE__);
+$builder = ContainerBuilder::default(__FILE__, __NAMESPACE__);
 
 $container = $builder->getContainer();
 
@@ -45,7 +47,7 @@ You may use the following configuration file as inspiration for your projects (u
 <?php
 declare(strict_types=1);
 
-namespace Me\MyApplication;
+namespace Me\MyApplication\DI;
 
 use Lcobucci\DependencyInjection\ContainerBuilder;
 
@@ -54,7 +56,7 @@ use function getenv;
 
 require __DIR__ . '/../vendor/autoload.php';
 
-$builder     = ContainerBuilder::default(__FILE__);
+$builder     = ContainerBuilder::default(__FILE__, __NAMESPACE__);
 $projectRoot = dirname(__DIR__);
 
 if (getenv('APPLICATION_MODE', true) === 'development') {

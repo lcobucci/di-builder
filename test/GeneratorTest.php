@@ -38,7 +38,7 @@ final class GeneratorTest extends TestCase
      */
     public function initializeContainerShouldAddTheConfigurationFileAsAResource(): void
     {
-        $container = $this->generator->initializeContainer(new ContainerConfiguration());
+        $container = $this->generator->initializeContainer(new ContainerConfiguration('Me\\MyApp'));
 
         self::assertEquals([new FileResource(__FILE__)], $container->getResources());
     }
@@ -65,6 +65,7 @@ final class GeneratorTest extends TestCase
         );
 
         $config = new ContainerConfiguration(
+            'Me\\MyApp',
             [vfsStream::url('tests/services.yml')],
             [
                 [new ParameterBag(['app.devmode' => true]), PassConfig::TYPE_BEFORE_OPTIMIZATION],

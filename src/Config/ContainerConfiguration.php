@@ -12,7 +12,10 @@ use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 
 use function array_filter;
 use function array_map;
+use function ltrim;
 use function rtrim;
+use function str_replace;
+use function strtolower;
 use function sys_get_temp_dir;
 
 use const DIRECTORY_SEPARATOR;
@@ -39,6 +42,7 @@ final class ContainerConfiguration
     private ?array $initializedPackages = null;
 
     private string $dumpDir;
+    private string $namespace;
 
     /**
      * phpcs:disable Generic.Files.LineLength
@@ -51,16 +55,18 @@ final class ContainerConfiguration
      * phpcs:enable Generic.Files.LineLength
      */
     public function __construct(
+        string $namespace,
         array $files = [],
         array $passList = [],
         array $paths = [],
         array $packages = []
     ) {
-        $this->files    = $files;
-        $this->passList = $passList;
-        $this->paths    = $paths;
-        $this->packages = $packages;
-        $this->dumpDir  = sys_get_temp_dir();
+        $this->namespace = $namespace;
+        $this->files     = $files;
+        $this->passList  = $passList;
+        $this->paths     = $paths;
+        $this->packages  = $packages;
+        $this->dumpDir   = sys_get_temp_dir();
     }
 
     /** @return Package[] */
@@ -173,6 +179,14 @@ final class ContainerConfiguration
         $this->baseClass = $baseClass;
     }
 
+    public function withSubNamespace(string $namespace): self
+    {
+        $config             = clone $this;
+        $config->namespace .= '\\' . ltrim($namespace, '\\');
+
+        return $config;
+    }
+
     public function getDumpDir(): string
     {
         return $this->dumpDir;
@@ -183,15 +197,25 @@ final class ContainerConfiguration
         $this->dumpDir = rtrim($dumpDir, DIRECTORY_SEPARATOR);
     }
 
-    public function getDumpFile(string $prefix = ''): string
+    public function getDumpFile(): string
     {
-        return $this->dumpDir . DIRECTORY_SEPARATOR . $prefix . self::CLASS_NAME . '.php';
+        return $this->dumpDir . DIRECTORY_SEPARATOR
+             . strtolower(str_replace('\\', '_', $this->namespace)) . DIRECTORY_SEPARATOR
+             . self::CLASS_NAME . '.php';
+    }
+
+    public function getClassName(): string
+    {
+        return $this->namespace . '\\' . self::CLASS_NAME;
     }
 
     /** @return array<string, mixed> */
     public function getDumpOptions(): array
     {
-        $options = ['class' => self::CLASS_NAME];
+        $options = [
+            'class' => self::CLASS_NAME,
+            'namespace' => $this->namespace,
+        ];
 
         if ($this->baseClass !== null) {
             $options['base_class'] = $this->baseClass;

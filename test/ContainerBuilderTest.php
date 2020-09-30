@@ -29,7 +29,7 @@ final class ContainerBuilderTest extends TestCase
     public function configureDependencies(): void
     {
         $this->generator    = $this->getMockForAbstractClass(Generator::class, [], '', false, true, true, ['generate']);
-        $this->config       = new ContainerConfiguration();
+        $this->config       = new ContainerConfiguration('Me\\MyApp');
         $this->parameterBag = new ParameterBag();
     }
 
@@ -47,9 +47,13 @@ final class ContainerBuilderTest extends TestCase
      */
     public function defaultShouldSimplifyTheObjectCreation(): void
     {
-        $expected = new ContainerBuilder(new ContainerConfiguration(), new XmlGenerator(__FILE__), new ParameterBag());
+        $expected = new ContainerBuilder(
+            new ContainerConfiguration('Lcobucci\\DependencyInjection'),
+            new XmlGenerator(__FILE__),
+            new ParameterBag()
+        );
 
-        self::assertEquals($expected, ContainerBuilder::default(__FILE__));
+        self::assertEquals($expected, ContainerBuilder::default(__FILE__, __NAMESPACE__));
     }
 
     /**
@@ -296,11 +300,11 @@ final class ContainerBuilderTest extends TestCase
         $builder   = new ContainerBuilder($this->config, $this->generator, $this->parameterBag);
         $container = $this->createMock(ContainerInterface::class);
 
-        $config = new ContainerConfiguration();
+        $config = new ContainerConfiguration('Me\\MyApp\\Tests');
         $config->addPass($this->parameterBag);
         $config->addPass(new MakeServicesPublic(), PassConfig::TYPE_BEFORE_REMOVING);
 
-        $cacheConfig = new ConfigCache($config->getDumpFile('test_'), true);
+        $cacheConfig = new ConfigCache($config->getDumpFile(), true);
 
         $this->generator->expects(self::once())
                         ->method('generate')
