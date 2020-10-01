@@ -52,5 +52,5 @@ jobs:
         if: ${{ matrix.dependencies == 'locked' }}
         run: "composer install --no-interaction --no-progress --no-suggest"
 
-      - name: "Infection"
-        run: "./vendor/bin/phpstan analyse"
+      - name: "PHPStan"
+        run: "make phpstan"

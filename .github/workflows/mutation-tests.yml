@@ -52,11 +52,8 @@ jobs:
         if: ${{ matrix.dependencies == 'locked' }}
         run: "composer install --no-interaction --no-progress --no-suggest"
 
-      - name: "Coverage report"
-        run: "./vendor/bin/phpunit --coverage-xml=build/coverage-xml --log-junit=build/junit.xml --coverage-clover=coverage.xml"
-
       - name: "Infection"
-        run: "./vendor/bin/infection -s --threads=$(nproc) --coverage=build"
+        run: "make infection PHPUNIT_FLAGS=--coverage-clover=coverage.xml"
 
       - name: "Upload Code Coverage"
         uses: "codecov/codecov-action@v1"
