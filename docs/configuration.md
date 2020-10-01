@@ -10,7 +10,7 @@ Once everything is configured, the builder gives you a fully functional containe
 <?php
 declare(strict_types=1);
 
-namespace Me\MyApplication\DI;
+namespace Me\MyApplication\Config;
 
 use Lcobucci\DependencyInjection\ContainerBuilder;
 
@@ -47,7 +47,7 @@ You may use the following configuration file as inspiration for your projects (u
 <?php
 declare(strict_types=1);
 
-namespace Me\MyApplication\DI;
+namespace Me\MyApplication\Config;
 
 use Lcobucci\DependencyInjection\ContainerBuilder;
 
