@@ -10,6 +10,7 @@ use Symfony\Component\Config\ConfigCacheInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag as Parameters;
 
+/** @coversDefaultClass \Lcobucci\DependencyInjection\Compiler\DumpXmlContainer */
 final class DumpXmlContainerTest extends TestCase
 {
     /** @var ConfigCacheInterface&MockObject */
@@ -24,8 +25,8 @@ final class DumpXmlContainerTest extends TestCase
     /**
      * @test
      *
-     * @covers \Lcobucci\DependencyInjection\Compiler\DumpXmlContainer::__construct
-     * @covers \Lcobucci\DependencyInjection\Compiler\DumpXmlContainer::process
+     * @covers ::__construct
+     * @covers ::process
      */
     public function processShouldBeSkippedWhenDevModeIsNotEnabled(): void
     {
@@ -42,8 +43,8 @@ final class DumpXmlContainerTest extends TestCase
     /**
      * @test
      *
-     * @covers \Lcobucci\DependencyInjection\Compiler\DumpXmlContainer::__construct
-     * @covers \Lcobucci\DependencyInjection\Compiler\DumpXmlContainer::process
+     * @covers ::__construct
+     * @covers ::process
      */
     public function processShouldBeSkippedWhenCacheIsFresh(): void
     {
@@ -60,8 +61,8 @@ final class DumpXmlContainerTest extends TestCase
     /**
      * @test
      *
-     * @covers \Lcobucci\DependencyInjection\Compiler\DumpXmlContainer::__construct
-     * @covers \Lcobucci\DependencyInjection\Compiler\DumpXmlContainer::process
+     * @covers ::__construct
+     * @covers ::process
      */
     public function processShouldDumpTheContainerUsingTheXmlDumper(): void
     {

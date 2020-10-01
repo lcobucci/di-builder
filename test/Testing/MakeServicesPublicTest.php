@@ -8,13 +8,10 @@ use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 
+/** @covers \Lcobucci\DependencyInjection\Testing\MakeServicesPublic */
 final class MakeServicesPublicTest extends TestCase
 {
-    /**
-     * @test
-     *
-     * @covers \Lcobucci\DependencyInjection\Testing\MakeServicesPublic
-     */
+    /** @test */
     public function processShouldMakeAllDefinedServicesPublic(): void
     {
         $service1 = new Definition('resource');
@@ -33,11 +30,7 @@ final class MakeServicesPublicTest extends TestCase
         self::assertTrue($service2->isPublic());
     }
 
-    /**
-     * @test
-     *
-     * @covers \Lcobucci\DependencyInjection\Testing\MakeServicesPublic
-     */
+    /** @test */
     public function processShouldMakeAllDefinedAliasesPublic(): void
     {
         $service = new Definition('resource');

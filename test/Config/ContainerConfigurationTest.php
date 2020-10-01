@@ -19,6 +19,7 @@ use function sys_get_temp_dir;
 
 use const DIRECTORY_SEPARATOR;
 
+/** @coversDefaultClass \Lcobucci\DependencyInjection\Config\ContainerConfiguration */
 final class ContainerConfigurationTest extends TestCase
 {
     /** @var CompilerPassInterface&MockObject */
@@ -33,9 +34,9 @@ final class ContainerConfigurationTest extends TestCase
     /**
      * @test
      *
-     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
-     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getFiles
-     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::filterPackages
+     * @covers ::__construct
+     * @covers ::getFiles
+     * @covers ::filterPackages
      *
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getPackages
      */
@@ -49,8 +50,8 @@ final class ContainerConfigurationTest extends TestCase
     /**
      * @test
      *
-     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getFiles
-     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::filterPackages
+     * @covers ::getFiles
+     * @covers ::filterPackages
      *
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getPackages
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
@@ -87,8 +88,8 @@ final class ContainerConfigurationTest extends TestCase
     /**
      * @test
      *
-     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
-     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::addFile
+     * @covers ::__construct
+     * @covers ::addFile
      */
     public function addFileShouldAppendANewFileToTheList(): void
     {
@@ -101,8 +102,8 @@ final class ContainerConfigurationTest extends TestCase
     /**
      * @test
      *
-     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getPassList
-     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::filterPackages
+     * @covers ::getPassList
+     * @covers ::filterPackages
      *
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getPackages
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
@@ -117,8 +118,8 @@ final class ContainerConfigurationTest extends TestCase
     /**
      * @test
      *
-     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getPassList
-     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::filterPackages
+     * @covers ::getPassList
+     * @covers ::filterPackages
      *
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getPackages
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
@@ -161,8 +162,8 @@ final class ContainerConfigurationTest extends TestCase
     /**
      * @test
      *
-     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
-     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::addPass
+     * @covers ::__construct
+     * @covers ::addPass
      */
     public function addPassShouldAppendANewHandlerToTheList(): void
     {
@@ -181,8 +182,8 @@ final class ContainerConfigurationTest extends TestCase
     /**
      * @test
      *
-     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
-     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::addPass
+     * @covers ::__construct
+     * @covers ::addPass
      */
     public function addPassCanReceiveTheTypeAndPriority(): void
     {
@@ -201,8 +202,8 @@ final class ContainerConfigurationTest extends TestCase
     /**
      * @test
      *
-     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
-     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::addDelayedPass
+     * @covers ::__construct
+     * @covers ::addDelayedPass
      */
     public function addDelayedPassShouldAppendANewCompilerPassToTheList(): void
     {
@@ -221,8 +222,8 @@ final class ContainerConfigurationTest extends TestCase
     /**
      * @test
      *
-     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
-     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::addDelayedPass
+     * @covers ::__construct
+     * @covers ::addDelayedPass
      */
     public function addDelayedPassCanReceiveTheTypeAndPriority(): void
     {
@@ -241,8 +242,8 @@ final class ContainerConfigurationTest extends TestCase
     /**
      * @test
      *
-     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
-     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::addPackage
+     * @covers ::__construct
+     * @covers ::addPackage
      */
     public function addPackageShouldAppendThePackageConfigurationToTheList(): void
     {
@@ -264,7 +265,7 @@ final class ContainerConfigurationTest extends TestCase
     /**
      * @test
      *
-     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getPackages
+     * @covers ::getPackages
      *
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
      */
@@ -279,7 +280,7 @@ final class ContainerConfigurationTest extends TestCase
     /**
      * @test
      *
-     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getPackages
+     * @covers ::getPackages
      *
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
      */
@@ -296,7 +297,7 @@ final class ContainerConfigurationTest extends TestCase
     /**
      * @test
      *
-     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getPaths
+     * @covers ::getPaths
      *
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
      */
@@ -310,8 +311,8 @@ final class ContainerConfigurationTest extends TestCase
     /**
      * @test
      *
-     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
-     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::addPath
+     * @covers ::__construct
+     * @covers ::addPath
      */
     public function addPathShouldAppendANewPathToTheList(): void
     {
@@ -331,8 +332,8 @@ final class ContainerConfigurationTest extends TestCase
     /**
      * @test
      *
-     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::setBaseClass
-     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getBaseClass
+     * @covers ::setBaseClass
+     * @covers ::getBaseClass
      *
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
      */
@@ -347,7 +348,7 @@ final class ContainerConfigurationTest extends TestCase
     /**
      * @test
      *
-     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getDumpDir
+     * @covers ::getDumpDir
      *
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
      */
@@ -361,7 +362,7 @@ final class ContainerConfigurationTest extends TestCase
     /**
      * @test
      *
-     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::setDumpDir
+     * @covers ::setDumpDir
      *
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getDumpDir
@@ -377,7 +378,7 @@ final class ContainerConfigurationTest extends TestCase
     /**
      * @test
      *
-     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getDumpFile
+     * @covers ::getDumpFile
      *
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
      */
@@ -394,7 +395,7 @@ final class ContainerConfigurationTest extends TestCase
     /**
      * @test
      *
-     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getDumpOptions
+     * @covers ::getDumpOptions
      *
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
      */
@@ -413,8 +414,8 @@ final class ContainerConfigurationTest extends TestCase
     /**
      * @test
      *
-     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::setBaseClass
-     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getDumpOptions
+     * @covers ::setBaseClass
+     * @covers ::getDumpOptions
      *
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
      */
@@ -436,8 +437,8 @@ final class ContainerConfigurationTest extends TestCase
     /**
      * @test
      *
-     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::withSubNamespace
-     * @covers \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getClassName
+     * @covers ::withSubNamespace
+     * @covers ::getClassName
      *
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
      */

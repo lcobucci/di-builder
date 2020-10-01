@@ -18,6 +18,14 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use function get_class;
 use function iterator_to_array;
 
+/**
+ * @coversDefaultClass \Lcobucci\DependencyInjection\ContainerBuilder
+ *
+ * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration
+ * @uses \Lcobucci\DependencyInjection\Compiler\ParameterBag
+ * @uses \Lcobucci\DependencyInjection\Generator
+ * @uses \Lcobucci\DependencyInjection\Generators\Xml
+ */
 final class ContainerBuilderTest extends TestCase
 {
     /** @var Generator&MockObject */
@@ -36,14 +44,9 @@ final class ContainerBuilderTest extends TestCase
     /**
      * @test
      *
-     * @covers \Lcobucci\DependencyInjection\ContainerBuilder::default
-     * @covers \Lcobucci\DependencyInjection\ContainerBuilder::__construct
-     * @covers \Lcobucci\DependencyInjection\ContainerBuilder::setDefaultConfiguration
-     *
-     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration
-     * @uses \Lcobucci\DependencyInjection\Compiler\ParameterBag
-     * @uses \Lcobucci\DependencyInjection\Generator
-     * @uses \Lcobucci\DependencyInjection\Generators\Xml
+     * @covers ::default
+     * @covers ::__construct
+     * @covers ::setDefaultConfiguration
      */
     public function defaultShouldSimplifyTheObjectCreation(): void
     {
@@ -59,8 +62,8 @@ final class ContainerBuilderTest extends TestCase
     /**
      * @test
      *
-     * @covers \Lcobucci\DependencyInjection\ContainerBuilder::__construct
-     * @covers \Lcobucci\DependencyInjection\ContainerBuilder::setDefaultConfiguration
+     * @covers ::__construct
+     * @covers ::setDefaultConfiguration
      *
      * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration
      * @uses \Lcobucci\DependencyInjection\Compiler\ParameterBag
@@ -78,12 +81,10 @@ final class ContainerBuilderTest extends TestCase
     /**
      * @test
      *
-     * @covers \Lcobucci\DependencyInjection\ContainerBuilder::setGenerator
+     * @covers ::setGenerator
      *
      * @uses \Lcobucci\DependencyInjection\ContainerBuilder::__construct
      * @uses \Lcobucci\DependencyInjection\ContainerBuilder::setDefaultConfiguration
-     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration
-     * @uses \Lcobucci\DependencyInjection\Compiler\ParameterBag
      */
     public function setGeneratorShouldChangeTheAttributeAndReturnSelf(): void
     {
@@ -98,12 +99,10 @@ final class ContainerBuilderTest extends TestCase
     /**
      * @test
      *
-     * @covers \Lcobucci\DependencyInjection\ContainerBuilder::addFile
+     * @covers ::addFile
      *
      * @uses \Lcobucci\DependencyInjection\ContainerBuilder::__construct
      * @uses \Lcobucci\DependencyInjection\ContainerBuilder::setDefaultConfiguration
-     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration
-     * @uses \Lcobucci\DependencyInjection\Compiler\ParameterBag
      */
     public function addFileShouldAppendANewFileOnTheListAndReturnSelf(): void
     {
@@ -116,12 +115,10 @@ final class ContainerBuilderTest extends TestCase
     /**
      * @test
      *
-     * @covers \Lcobucci\DependencyInjection\ContainerBuilder::addPass
+     * @covers ::addPass
      *
      * @uses \Lcobucci\DependencyInjection\ContainerBuilder::__construct
      * @uses \Lcobucci\DependencyInjection\ContainerBuilder::setDefaultConfiguration
-     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration
-     * @uses \Lcobucci\DependencyInjection\Compiler\ParameterBag
      */
     public function addPassShouldAppendANewHandlerOnTheListAndReturnSelf(): void
     {
@@ -135,12 +132,10 @@ final class ContainerBuilderTest extends TestCase
     /**
      * @test
      *
-     * @covers \Lcobucci\DependencyInjection\ContainerBuilder::addDelayedPass
+     * @covers ::addDelayedPass
      *
      * @uses \Lcobucci\DependencyInjection\ContainerBuilder::__construct
      * @uses \Lcobucci\DependencyInjection\ContainerBuilder::setDefaultConfiguration
-     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration
-     * @uses \Lcobucci\DependencyInjection\Compiler\ParameterBag
      */
     public function addDelayedPassShouldAppendANewHandlerOnTheListAndReturnSelf(): void
     {
@@ -154,12 +149,10 @@ final class ContainerBuilderTest extends TestCase
     /**
      * @test
      *
-     * @covers \Lcobucci\DependencyInjection\ContainerBuilder::addPackage
+     * @covers ::addPackage
      *
      * @uses \Lcobucci\DependencyInjection\ContainerBuilder::__construct
      * @uses \Lcobucci\DependencyInjection\ContainerBuilder::setDefaultConfiguration
-     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration
-     * @uses \Lcobucci\DependencyInjection\Compiler\ParameterBag
      */
     public function addPackageShouldAppendANewHandlerOnTheListAndReturnSelf(): void
     {
@@ -173,12 +166,10 @@ final class ContainerBuilderTest extends TestCase
     /**
      * @test
      *
-     * @covers \Lcobucci\DependencyInjection\ContainerBuilder::setDumpDir
+     * @covers ::setDumpDir
      *
      * @uses \Lcobucci\DependencyInjection\ContainerBuilder::__construct
      * @uses \Lcobucci\DependencyInjection\ContainerBuilder::setDefaultConfiguration
-     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration
-     * @uses \Lcobucci\DependencyInjection\Compiler\ParameterBag
      */
     public function setDumpDirShouldChangeTheConfigureAndReturnSelf(): void
     {
@@ -191,12 +182,10 @@ final class ContainerBuilderTest extends TestCase
     /**
      * @test
      *
-     * @covers \Lcobucci\DependencyInjection\ContainerBuilder::addPath
+     * @covers ::addPath
      *
      * @uses \Lcobucci\DependencyInjection\ContainerBuilder::__construct
      * @uses \Lcobucci\DependencyInjection\ContainerBuilder::setDefaultConfiguration
-     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration
-     * @uses \Lcobucci\DependencyInjection\Compiler\ParameterBag
      */
     public function addPathShouldAppendANewPathOnTheListAndReturnSelf(): void
     {
@@ -209,12 +198,10 @@ final class ContainerBuilderTest extends TestCase
     /**
      * @test
      *
-     * @covers \Lcobucci\DependencyInjection\ContainerBuilder::setBaseClass
+     * @covers ::setBaseClass
      *
      * @uses \Lcobucci\DependencyInjection\ContainerBuilder::__construct
      * @uses \Lcobucci\DependencyInjection\ContainerBuilder::setDefaultConfiguration
-     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration
-     * @uses \Lcobucci\DependencyInjection\Compiler\ParameterBag
      */
     public function setBaseClassShouldConfigureTheBaseClassAndReturnSelf(): void
     {
@@ -227,12 +214,10 @@ final class ContainerBuilderTest extends TestCase
     /**
      * @test
      *
-     * @covers \Lcobucci\DependencyInjection\ContainerBuilder::useDevelopmentMode
+     * @covers ::useDevelopmentMode
      *
      * @uses \Lcobucci\DependencyInjection\ContainerBuilder::__construct
      * @uses \Lcobucci\DependencyInjection\ContainerBuilder::setDefaultConfiguration
-     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration
-     * @uses \Lcobucci\DependencyInjection\Compiler\ParameterBag
      */
     public function useDevelopmentModeShouldChangeTheParameterAndReturnSelf(): void
     {
@@ -247,12 +232,10 @@ final class ContainerBuilderTest extends TestCase
     /**
      * @test
      *
-     * @covers \Lcobucci\DependencyInjection\ContainerBuilder::setParameter
+     * @covers ::setParameter
      *
      * @uses \Lcobucci\DependencyInjection\ContainerBuilder::__construct
      * @uses \Lcobucci\DependencyInjection\ContainerBuilder::setDefaultConfiguration
-     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration
-     * @uses \Lcobucci\DependencyInjection\Compiler\ParameterBag
      */
     public function setParameterShouldConfigureTheParameterAndReturnSelf(): void
     {
@@ -265,12 +248,10 @@ final class ContainerBuilderTest extends TestCase
     /**
      * @test
      *
-     * @covers \Lcobucci\DependencyInjection\ContainerBuilder::getContainer
+     * @covers ::getContainer
      *
      * @uses \Lcobucci\DependencyInjection\ContainerBuilder::__construct
      * @uses \Lcobucci\DependencyInjection\ContainerBuilder::setDefaultConfiguration
-     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration
-     * @uses \Lcobucci\DependencyInjection\Compiler\ParameterBag
      */
     public function getContainerShouldGenerateAndReturnTheContainer(): void
     {
@@ -288,12 +269,10 @@ final class ContainerBuilderTest extends TestCase
     /**
      * @test
      *
-     * @covers \Lcobucci\DependencyInjection\ContainerBuilder::getTestContainer
+     * @covers ::getTestContainer
      *
      * @uses \Lcobucci\DependencyInjection\ContainerBuilder::__construct
      * @uses \Lcobucci\DependencyInjection\ContainerBuilder::setDefaultConfiguration
-     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration
-     * @uses \Lcobucci\DependencyInjection\Compiler\ParameterBag
      */
     public function getTestContainerShouldGenerateAndReturnTheContainer(): void
     {

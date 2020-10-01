@@ -6,13 +6,14 @@ namespace Lcobucci\DependencyInjection\Compiler;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
+/** @coversDefaultClass \Lcobucci\DependencyInjection\Compiler\ParameterBag */
 final class ParameterBagTest extends TestCase
 {
     /**
      * @test
      *
-     * @covers \Lcobucci\DependencyInjection\Compiler\ParameterBag::__construct
-     * @covers \Lcobucci\DependencyInjection\Compiler\ParameterBag::set
+     * @covers ::__construct
+     * @covers ::set
      */
     public function setShouldConfigureAParameter(): void
     {
@@ -25,20 +26,20 @@ final class ParameterBagTest extends TestCase
     /**
      * @test
      *
-     * @covers \Lcobucci\DependencyInjection\Compiler\ParameterBag::__construct
-     * @covers \Lcobucci\DependencyInjection\Compiler\ParameterBag::get
+     * @covers ::__construct
+     * @covers ::get
      */
     public function getShouldReturnTheValueOfTheParameter(): void
     {
         $pass = new ParameterBag(['test' => 1]);
 
-        self::assertEquals(1, $pass->get('test'));
+        self::assertSame(1, $pass->get('test'));
     }
 
     /**
      * @test
      *
-     * @covers \Lcobucci\DependencyInjection\Compiler\ParameterBag::get
+     * @covers ::get
      *
      * @uses \Lcobucci\DependencyInjection\Compiler\ParameterBag::__construct
      */
@@ -46,13 +47,13 @@ final class ParameterBagTest extends TestCase
     {
         $pass = new ParameterBag();
 
-        self::assertEquals(1, $pass->get('test', 1));
+        self::assertSame(1, $pass->get('test', 1));
     }
 
     /**
      * @test
      *
-     * @covers \Lcobucci\DependencyInjection\Compiler\ParameterBag::process
+     * @covers ::process
      *
      * @uses \Lcobucci\DependencyInjection\Compiler\ParameterBag::__construct
      */
@@ -62,6 +63,6 @@ final class ParameterBagTest extends TestCase
         $pass    = new ParameterBag(['test' => 1]);
 
         $pass->process($builder);
-        self::assertEquals(1, $builder->getParameter('test'));
+        self::assertSame(1, $builder->getParameter('test'));
     }
 }
