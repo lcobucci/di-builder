@@ -25,6 +25,15 @@ use function mkdir;
 use function random_bytes;
 use function realpath;
 
+/**
+ * @covers \Lcobucci\DependencyInjection\Compiler
+ *
+ * @uses \Lcobucci\DependencyInjection\Compiler\ParameterBag
+ * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration
+ * @uses \Lcobucci\DependencyInjection\Generator
+ * @uses \Lcobucci\DependencyInjection\Generators\Yaml
+ * @uses \Lcobucci\DependencyInjection\Testing\MakeServicesPublic
+ */
 final class CompilerTest extends TestCase
 {
     private const EXPECTED_FILES = [
@@ -81,17 +90,7 @@ final class CompilerTest extends TestCase
         exec('rm -rf ' . realpath($this->dumpDir . '/../../'));
     }
 
-    /**
-     * @test
-     *
-     * @covers \Lcobucci\DependencyInjection\Compiler
-     *
-     * @uses \Lcobucci\DependencyInjection\Compiler\ParameterBag
-     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration
-     * @uses \Lcobucci\DependencyInjection\Generator
-     * @uses \Lcobucci\DependencyInjection\Generators\Yaml
-     * @uses \Lcobucci\DependencyInjection\Testing\MakeServicesPublic
-     */
+    /** @test */
     public function compileShouldCreateMultipleFiles(): void
     {
         $compiler = new Compiler();
@@ -107,17 +106,7 @@ final class CompilerTest extends TestCase
         }
     }
 
-    /**
-     * @test
-     *
-     * @covers \Lcobucci\DependencyInjection\Compiler
-     *
-     * @uses \Lcobucci\DependencyInjection\Compiler\ParameterBag
-     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration
-     * @uses \Lcobucci\DependencyInjection\Generator
-     * @uses \Lcobucci\DependencyInjection\Generators\Yaml
-     * @uses \Lcobucci\DependencyInjection\Testing\MakeServicesPublic
-     */
+    /** @test */
     public function compileShouldTrackChangesOnTheConfigurationFile(): void
     {
         $compiler = new Compiler();
@@ -129,17 +118,7 @@ final class CompilerTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     *
-     * @covers \Lcobucci\DependencyInjection\Compiler
-     *
-     * @uses \Lcobucci\DependencyInjection\Compiler\ParameterBag
-     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration
-     * @uses \Lcobucci\DependencyInjection\Generator
-     * @uses \Lcobucci\DependencyInjection\Generators\Yaml
-     * @uses \Lcobucci\DependencyInjection\Testing\MakeServicesPublic
-     */
+    /** @test */
     public function compileShouldAllowForLazyServices(): void
     {
         file_put_contents(
@@ -156,15 +135,7 @@ final class CompilerTest extends TestCase
         self::assertCount(count($expectedFiles) + 1, $generatedFiles);
     }
 
-    /**
-     * @test
-     *
-     * @covers \Lcobucci\DependencyInjection\Compiler
-     *
-     * @uses \Lcobucci\DependencyInjection\Compiler\ParameterBag
-     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration
-     * @uses \Lcobucci\DependencyInjection\Generator
-     */
+    /** @test */
     public function compilationShouldBeSkippedWhenFileAlreadyExists(): void
     {
         file_put_contents($this->dumpDir . '/AppContainer.php', 'testing');

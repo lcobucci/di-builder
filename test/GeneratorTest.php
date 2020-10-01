@@ -17,6 +17,14 @@ use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder as SymfonyBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
+/**
+ * @coversDefaultClass \Lcobucci\DependencyInjection\Generator
+ *
+ * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration
+ * @uses \Lcobucci\DependencyInjection\Compiler
+ * @uses \Lcobucci\DependencyInjection\Compiler\ParameterBag
+ * @uses \Lcobucci\DependencyInjection\Compiler\DumpXmlContainer
+ */
 final class GeneratorTest extends TestCase
 {
     /** @var Generator&MockObject */
@@ -31,10 +39,8 @@ final class GeneratorTest extends TestCase
     /**
      * @test
      *
-     * @covers \Lcobucci\DependencyInjection\Generator::__construct
-     * @covers \Lcobucci\DependencyInjection\Generator::initializeContainer
-     *
-     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration
+     * @covers ::__construct
+     * @covers ::initializeContainer
      */
     public function initializeContainerShouldAddTheConfigurationFileAsAResource(): void
     {
@@ -46,15 +52,10 @@ final class GeneratorTest extends TestCase
     /**
      * @test
      *
-     * @covers \Lcobucci\DependencyInjection\Generator::__construct
-     * @covers \Lcobucci\DependencyInjection\Generator::generate
-     * @covers \Lcobucci\DependencyInjection\Generator::initializeContainer
-     * @covers \Lcobucci\DependencyInjection\Generator::loadContainer
-     *
-     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration
-     * @uses \Lcobucci\DependencyInjection\Compiler
-     * @uses \Lcobucci\DependencyInjection\Compiler\ParameterBag
-     * @uses \Lcobucci\DependencyInjection\Compiler\DumpXmlContainer
+     * @covers ::__construct
+     * @covers ::generate
+     * @covers ::initializeContainer
+     * @covers ::loadContainer
      */
     public function generateShouldCompileAndLoadTheContainer(): void
     {
