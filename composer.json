@@ -25,7 +25,7 @@
         "infection/infection": "^0.17",
         "lcobucci/coding-standard": "^6.0",
         "mikey179/vfsstream": "^1.6.8",
-        "phpstan/extension-installer": "^1.0",
+        "phpstan/extension-installer": "^1.1",
         "phpstan/phpstan": "^0.12",
         "phpstan/phpstan-deprecation-rules": "^0.12",
         "phpstan/phpstan-phpunit": "^0.12",
