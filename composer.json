@@ -32,7 +32,7 @@
         "phpstan/phpstan-strict-rules": "^0.12",
         "phpunit/phpunit": "^9.3",
         "squizlabs/php_codesniffer": "^3.5",
-        "symfony/proxy-manager-bridge": "^5.1",
+        "symfony/proxy-manager-bridge": "^5.2",
         "symfony/yaml": "^5.1"
     },
     "suggest": {
