@@ -29,5 +29,5 @@ phpcs:
 
 .PHONY: phpstan
 phpstan:
-	@vendor/bin/phpstan analyse
+	@vendor/bin/phpstan analyse --memory-limit=-1
 
