@@ -18,7 +18,7 @@ jobs:
           - "locked"
           - "development"
         php-version:
-          - "7.4"
+          - "8.0"
         operating-system:
           - "ubuntu-latest"
 
@@ -62,7 +62,7 @@ jobs:
         run: "make phpunit"
 
   phpunit-rc:
-    name: "PHPUnit tests on PHP 8"
+    name: "PHPUnit tests on php-dev"
 
     runs-on: ${{ matrix.operating-system }}
 
@@ -71,7 +71,7 @@ jobs:
         dependencies:
           - "locked"
         php-version:
-          - "8.0"
+          - "8.1"
         operating-system:
           - "ubuntu-latest"
 

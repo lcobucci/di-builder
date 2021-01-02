@@ -16,7 +16,7 @@
         "BSD-3-Clause"
     ],
     "require": {
-        "php": "^7.4 || ^8.0",
+        "php": "^8.0",
         "symfony/config": "^5.2",
         "symfony/dependency-injection": "^5.2",
         "symfony/expression-language": "^5.2"
@@ -37,6 +37,13 @@
     },
     "suggest": {
         "symfony/proxy-manager-bridge": "Allows the creation of lazy services"
+    },
+    "replace": {
+        "symfony/polyfill-php71": "*",
+        "symfony/polyfill-php72": "*",
+        "symfony/polyfill-php73": "*",
+        "symfony/polyfill-php74": "*",
+        "symfony/polyfill-php80": "*"
     },
     "autoload": {
         "psr-4": {
