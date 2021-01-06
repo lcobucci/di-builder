@@ -1,19 +1,19 @@
-name: "Mutation tests"
+name: "Lint composer.json"
 
 on:
   pull_request:
   push:
 
 jobs:
-  mutation-tests:
-    name: "Mutation tests"
+  coding-standards:
+    name: "Lint composer.json"
 
     runs-on: ${{ matrix.operating-system }}
 
     strategy:
       matrix:
         dependencies:
-          - "locked"
+          - "highest"
         php-version:
           - "8.0"
         operating-system:
@@ -26,10 +26,10 @@ jobs:
       - name: "Install PHP"
         uses: "shivammathur/setup-php@v2"
         with:
-          coverage: "xdebug"
+          coverage: "none"
           php-version: "${{ matrix.php-version }}"
           ini-values: memory_limit=-1
-          tools: composer:v2, cs2pr
+          tools: composer:v2, composer-normalize, composer-require-checker, composer-unused
 
       - name: Get composer cache directory
         id: composer-cache
@@ -54,8 +54,16 @@ jobs:
         if: ${{ matrix.dependencies == 'locked' }}
         run: "composer install --no-interaction --no-progress"
 
-      - name: "Infection"
-        run: "make infection PHPUNIT_FLAGS=--coverage-clover=coverage.xml INFECTION_FLAGS=--logger-github"
+      - name: "Validate composer.json"
+        run: "composer validate --strict"
 
-      - name: "Upload Code Coverage"
-        uses: "codecov/codecov-action@v1"
+      - name: "Normalize composer.json"
+        run: "composer-normalize --dry-run"
+
+      # Disabling it for now (doesn't run on PHP 8)
+      #
+      #- name: "Check composer.json explicit dependencies"
+      #  run: "composer-require-checker check --config-file=$(realpath composer-require-checker.json)"
+
+      - name: "Check composer.json unused dependencies"
+        run: "composer-unused"
