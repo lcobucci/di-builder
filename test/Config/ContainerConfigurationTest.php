@@ -13,7 +13,6 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 
-use function get_class;
 use function iterator_to_array;
 use function sys_get_temp_dir;
 
@@ -79,7 +78,7 @@ final class ContainerConfigurationTest extends TestCase
             ['services.xml'],
             [],
             [],
-            [[get_class($package1), []], [get_class($package2), []]]
+            [[$package1::class, []], [$package2::class, []]]
         );
 
         self::assertSame(['services2.xml', 'services.xml'], iterator_to_array($config->getFiles(), false));
@@ -147,7 +146,7 @@ final class ContainerConfigurationTest extends TestCase
             [],
             [[$this->pass, 'beforeOptimization']],
             [],
-            [[get_class($package1), []], [get_class($package2), []]]
+            [[$package1::class, []], [$package2::class, []]]
         );
 
         self::assertEquals(
@@ -247,7 +246,7 @@ final class ContainerConfigurationTest extends TestCase
      */
     public function addPackageShouldAppendThePackageConfigurationToTheList(): void
     {
-        $package = get_class($this->createMock(Package::class));
+        $package = $this->createMock(Package::class)::class;
         $config  = new ContainerConfiguration('Me\\MyApp');
         $config->addPackage($package, ['a' => 'b']);
 
@@ -272,7 +271,7 @@ final class ContainerConfigurationTest extends TestCase
     public function getPackagesShouldReturnAListOfInstantiatedPackages(): void
     {
         $package = $this->createMock(Package::class);
-        $config  = new ContainerConfiguration('Me\\MyApp', [], [], [], [[get_class($package), []]]);
+        $config  = new ContainerConfiguration('Me\\MyApp', [], [], [], [[$package::class, []]]);
 
         self::assertEquals([$package], $config->getPackages());
     }
@@ -286,7 +285,7 @@ final class ContainerConfigurationTest extends TestCase
      */
     public function getPackagesShouldInstantiateThePackagesOnlyOnce(): void
     {
-        $packageName = get_class($this->createMock(Package::class));
+        $packageName = $this->createMock(Package::class)::class;
         $config      = new ContainerConfiguration('Me\\MyApp', [], [], [], [[$packageName, []]]);
 
         $createdPackages = $config->getPackages();

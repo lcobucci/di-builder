@@ -63,10 +63,8 @@ interface Builder
 
     /**
      * Adds a default parameter
-     *
-     * @param mixed $value
      */
-    public function setParameter(string $name, $value): Builder;
+    public function setParameter(string $name, mixed $value): Builder;
 
     /**
      * Adds a path to load the files

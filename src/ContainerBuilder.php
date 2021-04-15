@@ -115,8 +115,7 @@ final class ContainerBuilder implements Builder
         return $this;
     }
 
-    /** @inheritDoc */
-    public function setParameter(string $name, $value): Builder
+    public function setParameter(string $name, mixed $value): Builder
     {
         $this->parameterBag->set($name, $value);
 

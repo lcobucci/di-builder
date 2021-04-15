@@ -22,18 +22,12 @@ final class ParameterBag implements CompilerPassInterface
         $this->parameters = $parameters;
     }
 
-    /** @param mixed $value */
-    public function set(string $name, $value): void
+    public function set(string $name, mixed $value): void
     {
         $this->parameters[$name] = $value;
     }
 
-    /**
-     * @param mixed|null $default
-     *
-     * @return mixed|null
-     */
-    public function get(string $name, $default = null)
+    public function get(string $name, mixed $default = null): mixed
     {
         return $this->parameters[$name] ?? $default;
     }
