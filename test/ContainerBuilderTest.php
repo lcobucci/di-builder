@@ -159,7 +159,7 @@ final class ContainerBuilderTest extends TestCase
         $builder = new ContainerBuilder($this->config, $this->generator, $this->parameterBag);
         $module  = $this->createMock(Package::class);
 
-        self::assertSame($builder, $builder->addPackage(get_class($module)));
+        self::assertSame($builder, $builder->addPackage($module::class));
         self::assertEquals([$module], $this->config->getPackages());
     }
 

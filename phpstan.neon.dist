@@ -3,3 +3,5 @@ parameters:
     paths:
         - src
         - test
+    ignoreErrors:
+        - '#\|class-string<PHPUnit\\Framework\\MockObject\\MockObject>#'
