@@ -29,7 +29,7 @@
         "symfony/polyfill-php80": "*"
     },
     "require-dev": {
-        "infection/infection": "^0.21",
+        "infection/infection": "^0.22",
         "lcobucci/coding-standard": "^7.0",
         "mikey179/vfsstream": "^1.6.8",
         "phpstan/extension-installer": "^1.1",
