@@ -16,8 +16,5 @@ updates:
   schedule:
     interval: daily
     time: "06:00"
-  versioning-strategy: increase
   open-pull-requests-limit: 20
-  allow:
-    - dependency-type: all
   labels: ["Dependencies"]
