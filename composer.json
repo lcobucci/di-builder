@@ -31,7 +31,7 @@
     "require-dev": {
         "infection/infection": "^0.23",
         "lcobucci/coding-standard": "^7.0",
-        "mikey179/vfsstream": "^1.6.8",
+        "mikey179/vfsstream": "^1.6.9",
         "phpstan/extension-installer": "^1.1",
         "phpstan/phpstan": "^0.12",
         "phpstan/phpstan-deprecation-rules": "^0.12",
