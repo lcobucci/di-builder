@@ -24,25 +24,12 @@ final class ContainerConfiguration
 {
     public const CLASS_NAME = 'AppContainer';
 
-    /** @var string[] */
-    private array $files;
-
-    /** @var list<array{0: CompilerPassInterface|array{0: class-string<CompilerPassInterface>, 1: mixed[]}, 1?: string, 2?: int}> */
-    private array $passList;
-
-    /** @var string[] */
-    private array $paths;
-
     private ?string $baseClass = null;
-
-    /** @var list<array{0: class-string<Package>, 1: mixed[]}> */
-    private array $packages;
 
     /** @var Package[]|null */
     private ?array $initializedPackages = null;
 
     private string $dumpDir;
-    private string $namespace;
 
     /**
      * phpcs:disable Generic.Files.LineLength
@@ -55,18 +42,13 @@ final class ContainerConfiguration
      * phpcs:enable Generic.Files.LineLength
      */
     public function __construct(
-        string $namespace,
-        array $files = [],
-        array $passList = [],
-        array $paths = [],
-        array $packages = []
+        private string $namespace,
+        private array $files = [],
+        private array $passList = [],
+        private array $paths = [],
+        private array $packages = [],
     ) {
-        $this->namespace = $namespace;
-        $this->files     = $files;
-        $this->passList  = $passList;
-        $this->paths     = $paths;
-        $this->packages  = $packages;
-        $this->dumpDir   = sys_get_temp_dir();
+        $this->dumpDir = sys_get_temp_dir();
     }
 
     /** @return Package[] */
@@ -79,7 +61,7 @@ final class ContainerConfiguration
 
                     return new $package(...$arguments);
                 },
-                $this->packages
+                $this->packages,
             );
         }
 
@@ -118,7 +100,7 @@ final class ContainerConfiguration
             $this->getPackages(),
             static function (Package $package) use ($packageType): bool {
                 return $package instanceof $packageType;
-            }
+            },
         );
     }
 
@@ -140,7 +122,7 @@ final class ContainerConfiguration
     public function addPass(
         CompilerPassInterface $pass,
         string $type = PassConfig::TYPE_BEFORE_OPTIMIZATION,
-        int $priority = Builder::DEFAULT_PRIORITY
+        int $priority = Builder::DEFAULT_PRIORITY,
     ): void {
         $this->passList[] = [$pass, $type, $priority];
     }
@@ -153,7 +135,7 @@ final class ContainerConfiguration
         string $className,
         array $constructArguments,
         string $type = PassConfig::TYPE_BEFORE_OPTIMIZATION,
-        int $priority = Builder::DEFAULT_PRIORITY
+        int $priority = Builder::DEFAULT_PRIORITY,
     ): void {
         $this->passList[] = [[$className, $constructArguments], $type, $priority];
     }

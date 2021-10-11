@@ -19,7 +19,7 @@ final class Yaml extends Generator
     {
         return new YamlFileLoader(
             $container,
-            new FileLocator($paths)
+            new FileLocator($paths),
         );
     }
 }

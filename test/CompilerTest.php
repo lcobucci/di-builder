@@ -53,7 +53,7 @@ final class CompilerTest extends TestCase
         vfsStream::setup(
             'tests',
             null,
-            ['services.yml' => 'services: { testing: { class: stdClass } }']
+            ['services.yml' => 'services: { testing: { class: stdClass } }'],
         );
 
         $parameterBag = new ParameterBag();
@@ -70,7 +70,7 @@ final class CompilerTest extends TestCase
             [
                 [$parameterBag, PassConfig::TYPE_BEFORE_OPTIMIZATION],
                 [[MakeServicesPublic::class, []], PassConfig::TYPE_BEFORE_OPTIMIZATION],
-            ]
+            ],
         );
 
         $this->config->setDumpDir($this->dumpDir);
@@ -114,7 +114,7 @@ final class CompilerTest extends TestCase
 
         self::assertStringContainsString(
             __FILE__,
-            (string) file_get_contents($this->dumpDir . '/AppContainer.php.meta')
+            (string) file_get_contents($this->dumpDir . '/AppContainer.php.meta'),
         );
     }
 
@@ -123,7 +123,7 @@ final class CompilerTest extends TestCase
     {
         file_put_contents(
             vfsStream::url('tests/services.yml'),
-            'services: { testing: { class: stdClass, lazy: true } }'
+            'services: { testing: { class: stdClass, lazy: true } }',
         );
 
         $compiler = new Compiler();

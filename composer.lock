@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "188afe4ba2d2300a94822fdee852d9ab",
+    "content-hash": "0156451e7c2ee9bfed6644dbcf66928d",
     "packages": [
         {
             "name": "psr/cache",
@@ -1846,16 +1846,16 @@
         },
         {
             "name": "lcobucci/coding-standard",
-            "version": "7.0.0",
+            "version": "8.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/lcobucci/coding-standard.git",
-                "reference": "4324eea0af6e43b7a1944f3e8cdaff44eb62d49e"
+                "reference": "060bf65affbde2a4da148fb10c20ea1d2e3a2ecd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lcobucci/coding-standard/zipball/4324eea0af6e43b7a1944f3e8cdaff44eb62d49e",
-                "reference": "4324eea0af6e43b7a1944f3e8cdaff44eb62d49e",
+                "url": "https://api.github.com/repos/lcobucci/coding-standard/zipball/060bf65affbde2a4da148fb10c20ea1d2e3a2ecd",
+                "reference": "060bf65affbde2a4da148fb10c20ea1d2e3a2ecd",
                 "shasum": ""
             },
             "require": {
@@ -1879,7 +1879,7 @@
             "description": "Lcobucci's Coding Standard",
             "support": {
                 "issues": "https://github.com/lcobucci/coding-standard/issues",
-                "source": "https://github.com/lcobucci/coding-standard/tree/7.0.0"
+                "source": "https://github.com/lcobucci/coding-standard/tree/8.0.0"
             },
             "funding": [
                 {
@@ -1891,7 +1891,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2021-04-13T21:13:14+00:00"
+            "time": "2021-10-11T21:46:38+00:00"
         },
         {
             "name": "mikey179/vfsstream",

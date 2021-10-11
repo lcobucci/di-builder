@@ -29,8 +29,8 @@ final class Delegating extends Generator
                     new XmlFileLoader($container, $locator),
                     new YamlFileLoader($container, $locator),
                     new PhpFileLoader($container, $locator),
-                ]
-            )
+                ],
+            ),
         );
     }
 }

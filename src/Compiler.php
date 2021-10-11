@@ -27,7 +27,7 @@ final class Compiler
     public function compile(
         ContainerConfiguration $config,
         ConfigCache $dump,
-        Generator $generator
+        Generator $generator,
     ): void {
         if ($dump->isFresh()) {
             return;
@@ -41,7 +41,7 @@ final class Compiler
 
     private function configurePassList(
         SymfonyBuilder $container,
-        ContainerConfiguration $config
+        ContainerConfiguration $config,
     ): void {
         foreach ($config->getPassList() as $passConfig) {
             [$pass, $type, $priority] = $passConfig + self::DEFAULT_PASS_CONFIG;
@@ -60,7 +60,7 @@ final class Compiler
     private function updateDump(
         SymfonyBuilder $container,
         ContainerConfiguration $config,
-        ConfigCache $dump
+        ConfigCache $dump,
     ): void {
         $container->compile();
 
@@ -68,7 +68,7 @@ final class Compiler
             $this->getContainerContent($container, $config, $dump),
             dirname($dump->getPath()) . '/',
             $dump,
-            $container
+            $container,
         );
     }
 
@@ -76,7 +76,7 @@ final class Compiler
     private function getContainerContent(
         SymfonyBuilder $container,
         ContainerConfiguration $config,
-        ConfigCache $dump
+        ConfigCache $dump,
     ): array {
         $options             = $config->getDumpOptions();
         $options['file']     = $dump->getPath();
@@ -98,7 +98,7 @@ final class Compiler
         array $content,
         string $baseDir,
         ConfigCache $dump,
-        SymfonyBuilder $container
+        SymfonyBuilder $container,
     ): void {
         $rootCode = array_pop($content);
         assert(is_string($rootCode));

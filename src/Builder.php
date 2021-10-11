@@ -31,7 +31,7 @@ interface Builder
     public function addPass(
         CompilerPassInterface $pass,
         string $type = PassConfig::TYPE_BEFORE_OPTIMIZATION,
-        int $priority = self::DEFAULT_PRIORITY
+        int $priority = self::DEFAULT_PRIORITY,
     ): Builder;
 
     /**
@@ -42,7 +42,7 @@ interface Builder
         string $className,
         array $constructArguments = [],
         string $type = PassConfig::TYPE_BEFORE_OPTIMIZATION,
-        int $priority = self::DEFAULT_PRIORITY
+        int $priority = self::DEFAULT_PRIORITY,
     ): Builder;
 
     /**
