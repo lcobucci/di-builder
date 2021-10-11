@@ -17,6 +17,8 @@ interface Builder
 
     /**
      * Changes the generator to handle the files
+     *
+     * @deprecated This is deprecated in favour of using the correct naming constructor.
      */
     public function setGenerator(Generator $generator): Builder;
 
