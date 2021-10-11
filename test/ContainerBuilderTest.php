@@ -6,7 +6,6 @@ namespace Lcobucci\DependencyInjection;
 use Lcobucci\DependencyInjection\Compiler\ParameterBag;
 use Lcobucci\DependencyInjection\Config\ContainerConfiguration;
 use Lcobucci\DependencyInjection\Config\Package;
-use Lcobucci\DependencyInjection\Generators\Xml as XmlGenerator;
 use Lcobucci\DependencyInjection\Testing\MakeServicesPublic;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -43,20 +42,36 @@ final class ContainerBuilderTest extends TestCase
 
     /**
      * @test
+     * @dataProvider supportedFormats
      *
      * @covers ::default
+     * @covers ::xml
+     * @covers ::delegating
+     * @covers ::php
+     * @covers ::yaml
      * @covers ::__construct
      * @covers ::setDefaultConfiguration
      */
-    public function defaultShouldSimplifyTheObjectCreation(): void
+    public function namedConstructorsShouldSimplifyTheObjectCreation(string $method, Generator $generator): void
     {
         $expected = new ContainerBuilder(
             new ContainerConfiguration('Lcobucci\\DependencyInjection'),
-            new XmlGenerator(__FILE__),
+            $generator,
             new ParameterBag(),
         );
 
-        self::assertEquals($expected, ContainerBuilder::default(__FILE__, __NAMESPACE__));
+        // @phpstan-ignore-next-line
+        self::assertEquals($expected, ContainerBuilder::$method(__FILE__, __NAMESPACE__));
+    }
+
+    /** @return iterable<string, array{string, Generator}> */
+    public function supportedFormats(): iterable
+    {
+        yield 'default' => ['default', new Generators\Xml(__FILE__)];
+        yield 'xml' => ['xml', new Generators\Xml(__FILE__)];
+        yield 'yaml' => ['yaml', new Generators\Yaml(__FILE__)];
+        yield 'php' => ['php', new Generators\Php(__FILE__)];
+        yield 'delegating' => ['delegating', new Generators\Delegating(__FILE__)];
     }
 
     /**

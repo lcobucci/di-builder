@@ -5,7 +5,6 @@ namespace Lcobucci\DependencyInjection;
 
 use Lcobucci\DependencyInjection\Compiler\ParameterBag;
 use Lcobucci\DependencyInjection\Config\ContainerConfiguration;
-use Lcobucci\DependencyInjection\Generators\Xml as XmlGenerator;
 use Lcobucci\DependencyInjection\Testing\MakeServicesPublic;
 use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -25,13 +24,51 @@ final class ContainerBuilder implements Builder
         $this->setDefaultConfiguration();
     }
 
-    public static function default(
-        string $configurationFile,
-        string $namespace,
-    ): self {
+    /**
+     * @deprecated Use the named constructor according to the generator
+     *
+     * @see ContainerBuilder::xml()
+     * @see ContainerBuilder::yaml()
+     * @see ContainerBuilder::php()
+     * @see ContainerBuilder::delegating()
+     */
+    public static function default(string $configurationFile, string $namespace): self
+    {
+        return self::xml($configurationFile, $namespace);
+    }
+
+    public static function xml(string $configurationFile, string $namespace): self
+    {
         return new self(
             new ContainerConfiguration($namespace),
-            new XmlGenerator($configurationFile),
+            new Generators\Xml($configurationFile),
+            new ParameterBag(),
+        );
+    }
+
+    public static function php(string $configurationFile, string $namespace): self
+    {
+        return new self(
+            new ContainerConfiguration($namespace),
+            new Generators\Php($configurationFile),
+            new ParameterBag(),
+        );
+    }
+
+    public static function yaml(string $configurationFile, string $namespace): self
+    {
+        return new self(
+            new ContainerConfiguration($namespace),
+            new Generators\Yaml($configurationFile),
+            new ParameterBag(),
+        );
+    }
+
+    public static function delegating(string $configurationFile, string $namespace): self
+    {
+        return new self(
+            new ContainerConfiguration($namespace),
+            new Generators\Delegating($configurationFile),
             new ParameterBag(),
         );
     }
