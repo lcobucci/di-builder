@@ -13,12 +13,10 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 abstract class Generator
 {
     private Compiler $compiler;
-    private string $configurationFile;
 
-    public function __construct(string $configurationFile)
+    public function __construct(private string $configurationFile)
     {
-        $this->compiler          = new Compiler();
-        $this->configurationFile = $configurationFile;
+        $this->compiler = new Compiler();
     }
 
     /**
@@ -26,7 +24,7 @@ abstract class Generator
      */
     public function generate(
         ContainerConfiguration $config,
-        ConfigCache $dump
+        ConfigCache $dump,
     ): ContainerInterface {
         $this->compiler->compile($config, $dump, $this);
 

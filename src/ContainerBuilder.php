@@ -17,30 +17,22 @@ use function is_bool;
 
 final class ContainerBuilder implements Builder
 {
-    private ContainerConfiguration $config;
-    private Generator $generator;
-    private ParameterBag $parameterBag;
-
     public function __construct(
-        ContainerConfiguration $config,
-        Generator $generator,
-        ParameterBag $parameterBag
+        private ContainerConfiguration $config,
+        private Generator $generator,
+        private ParameterBag $parameterBag,
     ) {
-        $this->parameterBag = $parameterBag;
-        $this->generator    = $generator;
-        $this->config       = $config;
-
         $this->setDefaultConfiguration();
     }
 
     public static function default(
         string $configurationFile,
-        string $namespace
+        string $namespace,
     ): self {
         return new self(
             new ContainerConfiguration($namespace),
             new XmlGenerator($configurationFile),
-            new ParameterBag()
+            new ParameterBag(),
         );
     }
 
@@ -73,7 +65,7 @@ final class ContainerBuilder implements Builder
     public function addPass(
         CompilerPassInterface $pass,
         string $type = PassConfig::TYPE_BEFORE_OPTIMIZATION,
-        int $priority = self::DEFAULT_PRIORITY
+        int $priority = self::DEFAULT_PRIORITY,
     ): Builder {
         $this->config->addPass($pass, $type, $priority);
 
@@ -85,7 +77,7 @@ final class ContainerBuilder implements Builder
         string $className,
         array $constructArguments = [],
         string $type = PassConfig::TYPE_BEFORE_OPTIMIZATION,
-        int $priority = self::DEFAULT_PRIORITY
+        int $priority = self::DEFAULT_PRIORITY,
     ): Builder {
         $this->config->addDelayedPass($className, $constructArguments, $type, $priority);
 
@@ -143,7 +135,7 @@ final class ContainerBuilder implements Builder
 
         return $this->generator->generate(
             $this->config,
-            new ConfigCache($this->config->getDumpFile(), $devMode)
+            new ConfigCache($this->config->getDumpFile(), $devMode),
         );
     }
 
@@ -154,7 +146,7 @@ final class ContainerBuilder implements Builder
 
         return $this->generator->generate(
             $config,
-            new ConfigCache($config->getDumpFile(), true)
+            new ConfigCache($config->getDumpFile(), true),
         );
     }
 }

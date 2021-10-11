@@ -78,7 +78,7 @@ final class ContainerConfigurationTest extends TestCase
             ['services.xml'],
             [],
             [],
-            [[$package1::class, []], [$package2::class, []]]
+            [[$package1::class, []], [$package2::class, []]],
         );
 
         self::assertSame(['services2.xml', 'services.xml'], iterator_to_array($config->getFiles(), false));
@@ -146,7 +146,7 @@ final class ContainerConfigurationTest extends TestCase
             [],
             [[$this->pass, 'beforeOptimization']],
             [],
-            [[$package1::class, []], [$package2::class, []]]
+            [[$package1::class, []], [$package2::class, []]],
         );
 
         self::assertEquals(
@@ -154,7 +154,7 @@ final class ContainerConfigurationTest extends TestCase
                 [new MakeServicesPublic(), 'beforeOptimization'],
                 [$this->pass, 'beforeOptimization'],
             ],
-            iterator_to_array($config->getPassList(), false)
+            iterator_to_array($config->getPassList(), false),
         );
     }
 
@@ -172,7 +172,7 @@ final class ContainerConfigurationTest extends TestCase
         $expected = new ContainerConfiguration(
             'Me\\MyApp',
             [],
-            [[$this->pass, PassConfig::TYPE_BEFORE_OPTIMIZATION, 0]]
+            [[$this->pass, PassConfig::TYPE_BEFORE_OPTIMIZATION, 0]],
         );
 
         self::assertEquals($expected, $config);
@@ -192,7 +192,7 @@ final class ContainerConfigurationTest extends TestCase
         $expected = new ContainerConfiguration(
             'Me\\MyApp',
             [],
-            [[$this->pass, PassConfig::TYPE_AFTER_REMOVING, 1]]
+            [[$this->pass, PassConfig::TYPE_AFTER_REMOVING, 1]],
         );
 
         self::assertEquals($expected, $config);
@@ -212,7 +212,7 @@ final class ContainerConfigurationTest extends TestCase
         $expected = new ContainerConfiguration(
             'Me\\MyApp',
             [],
-            [[[ParameterBag::class, ['a' => 'b']], PassConfig::TYPE_BEFORE_OPTIMIZATION, 0]]
+            [[[ParameterBag::class, ['a' => 'b']], PassConfig::TYPE_BEFORE_OPTIMIZATION, 0]],
         );
 
         self::assertEquals($expected, $config);
@@ -232,7 +232,7 @@ final class ContainerConfigurationTest extends TestCase
         $expected = new ContainerConfiguration(
             'Me\\MyApp',
             [],
-            [[[ParameterBag::class, ['a' => 'b']], PassConfig::TYPE_AFTER_REMOVING, 1]]
+            [[[ParameterBag::class, ['a' => 'b']], PassConfig::TYPE_AFTER_REMOVING, 1]],
         );
 
         self::assertEquals($expected, $config);
@@ -255,7 +255,7 @@ final class ContainerConfigurationTest extends TestCase
             [],
             [],
             [],
-            [[$package, ['a' => 'b']]]
+            [[$package, ['a' => 'b']]],
         );
 
         self::assertEquals($expected, $config);
@@ -322,7 +322,7 @@ final class ContainerConfigurationTest extends TestCase
             'Me\\MyApp',
             [],
             [],
-            ['services']
+            ['services'],
         );
 
         self::assertEquals($expected, $config);
@@ -387,7 +387,7 @@ final class ContainerConfigurationTest extends TestCase
 
         self::assertEquals(
             sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'me_myapp' . DIRECTORY_SEPARATOR . 'AppContainer.php',
-            $config->getDumpFile()
+            $config->getDumpFile(),
         );
     }
 

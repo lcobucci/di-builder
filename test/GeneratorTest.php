@@ -62,7 +62,7 @@ final class GeneratorTest extends TestCase
         vfsStream::setup(
             'tests',
             null,
-            ['services.yml' => 'services: { testing: { class: stdClass, public: true } }']
+            ['services.yml' => 'services: { testing: { class: stdClass, public: true } }'],
         );
 
         $config = new ContainerConfiguration(
@@ -72,12 +72,12 @@ final class GeneratorTest extends TestCase
                 [new ParameterBag(['app.devmode' => true]), PassConfig::TYPE_BEFORE_OPTIMIZATION],
                 [
                     new DumpXmlContainer(
-                        new ConfigCache(vfsStream::url('tests/dump.xml'), true)
+                        new ConfigCache(vfsStream::url('tests/dump.xml'), true),
                     ),
                     PassConfig::TYPE_AFTER_REMOVING,
                     -255,
                 ],
-            ]
+            ],
         );
 
         $dump = new ConfigCache(vfsStream::url('tests/container.php'), false);
@@ -86,9 +86,9 @@ final class GeneratorTest extends TestCase
             static function (SymfonyBuilder $container, array $paths): YamlFileLoader {
                 return new YamlFileLoader(
                     $container,
-                    new FileLocator($paths)
+                    new FileLocator($paths),
                 );
-            }
+            },
         );
 
         $container = $this->generator->generate($config, $dump);

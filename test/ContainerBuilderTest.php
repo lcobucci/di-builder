@@ -53,7 +53,7 @@ final class ContainerBuilderTest extends TestCase
         $expected = new ContainerBuilder(
             new ContainerConfiguration('Lcobucci\\DependencyInjection'),
             new XmlGenerator(__FILE__),
-            new ParameterBag()
+            new ParameterBag(),
         );
 
         self::assertEquals($expected, ContainerBuilder::default(__FILE__, __NAMESPACE__));
