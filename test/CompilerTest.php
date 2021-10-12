@@ -46,6 +46,7 @@ final class CompilerTest extends TestCase
     private ContainerConfiguration $config;
     private ConfigCache $dump;
     private string $dumpDir;
+    private ParameterBag $parameters;
 
     /** @before */
     public function configureDependencies(): void
@@ -56,10 +57,10 @@ final class CompilerTest extends TestCase
             ['services.yml' => 'services: { testing: { class: stdClass } }'],
         );
 
-        $parameterBag = new ParameterBag();
-        $parameterBag->set('app.devmode', true);
-        $parameterBag->set('container.dumper.inline_factories', false);
-        $parameterBag->set('container.dumper.inline_class_loader', true);
+        $this->parameters = new ParameterBag();
+        $this->parameters->set('app.devmode', true);
+        $this->parameters->set('container.dumper.inline_factories', false);
+        $this->parameters->set('container.dumper.inline_class_loader', true);
 
         $this->dumpDir = $this->createDumpDirectory();
         $this->dump    = new ConfigCache($this->dumpDir . '/AppContainer.php', false);
@@ -68,7 +69,7 @@ final class CompilerTest extends TestCase
             'Me\\MyApp',
             [vfsStream::url('tests/services.yml')],
             [
-                [$parameterBag, PassConfig::TYPE_BEFORE_OPTIMIZATION],
+                [$this->parameters, PassConfig::TYPE_BEFORE_OPTIMIZATION],
                 [[MakeServicesPublic::class, []], PassConfig::TYPE_BEFORE_OPTIMIZATION],
             ],
         );
@@ -91,7 +92,7 @@ final class CompilerTest extends TestCase
     }
 
     /** @test */
-    public function compileShouldCreateMultipleFiles(): void
+    public function compileShouldCreateMultipleFilesForDevelopmentMode(): void
     {
         $compiler = new Compiler();
         $compiler->compile($this->config, $this->dump, new Yaml(__FILE__));
@@ -100,6 +101,25 @@ final class CompilerTest extends TestCase
         $generatedFiles = iterator_to_array($this->getGeneratedFiles());
 
         self::assertCount(count($expectedFiles), $generatedFiles);
+
+        foreach ($generatedFiles as $name => $file) {
+            self::assertContains($name, $expectedFiles);
+        }
+    }
+
+    /** @test */
+    public function compileShouldInlineFactoriesForProductionMode(): void
+    {
+        $this->parameters->set('app.devmode', false);
+        $this->parameters->set('container.dumper.inline_factories', true);
+
+        $compiler = new Compiler();
+        $compiler->compile($this->config, $this->dump, new Yaml(__FILE__));
+
+        $expectedFiles  = self::EXPECTED_FILES;
+        $generatedFiles = iterator_to_array($this->getGeneratedFiles());
+
+        self::assertCount(count($expectedFiles) - 1, $generatedFiles);
 
         foreach ($generatedFiles as $name => $file) {
             self::assertContains($name, $expectedFiles);
