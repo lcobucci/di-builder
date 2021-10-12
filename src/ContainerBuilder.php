@@ -79,7 +79,7 @@ final class ContainerBuilder implements Builder
     private function setDefaultConfiguration(): void
     {
         $this->parameterBag->set('app.devmode', false);
-        $this->parameterBag->set('container.dumper.inline_factories', false);
+        $this->parameterBag->set('container.dumper.inline_factories', true);
         $this->parameterBag->set('container.dumper.inline_class_loader', true);
 
         $this->config->addPass($this->parameterBag);
@@ -132,6 +132,7 @@ final class ContainerBuilder implements Builder
     public function useDevelopmentMode(): Builder
     {
         $this->parameterBag->set('app.devmode', true);
+        $this->parameterBag->set('container.dumper.inline_factories', false);
         $this->parameterBag->set('container.dumper.inline_class_loader', false);
 
         return $this;
