@@ -52,8 +52,11 @@ final class ContainerBuilderTest extends TestCase
      * @covers ::__construct
      * @covers ::setDefaultConfiguration
      */
-    public function namedConstructorsShouldSimplifyTheObjectCreation(string $method, Generator $generator): void
-    {
+    public function namedConstructorsShouldSimplifyTheObjectCreation(
+        string $method,
+        Generator $generator,
+        ?string $builderClass = null,
+    ): void {
         $expected = new ContainerBuilder(
             new ContainerConfiguration('Lcobucci\\DependencyInjection'),
             $generator,
@@ -61,10 +64,10 @@ final class ContainerBuilderTest extends TestCase
         );
 
         // @phpstan-ignore-next-line
-        self::assertEquals($expected, ContainerBuilder::$method(__FILE__, __NAMESPACE__));
+        self::assertEquals($expected, ContainerBuilder::$method(__FILE__, __NAMESPACE__, $builderClass));
     }
 
-    /** @return iterable<string, array{string, Generator}> */
+    /** @return iterable<string, array{string, Generator, 2?: class-string<\Symfony\Component\DependencyInjection\ContainerBuilder>}> */
     public function supportedFormats(): iterable
     {
         yield 'default' => ['default', new Generators\Xml(__FILE__)];
@@ -72,6 +75,30 @@ final class ContainerBuilderTest extends TestCase
         yield 'yaml' => ['yaml', new Generators\Yaml(__FILE__)];
         yield 'php' => ['php', new Generators\Php(__FILE__)];
         yield 'delegating' => ['delegating', new Generators\Delegating(__FILE__)];
+
+        yield 'xml with custom builder' => [
+            'xml',
+            new Generators\Xml(__FILE__, CustomContainerBuilderForTests::class),
+            CustomContainerBuilderForTests::class,
+        ];
+
+        yield 'yaml with custom builder' => [
+            'yaml',
+            new Generators\Yaml(__FILE__, CustomContainerBuilderForTests::class),
+            CustomContainerBuilderForTests::class,
+        ];
+
+        yield 'php with custom builder' => [
+            'php',
+            new Generators\Php(__FILE__, CustomContainerBuilderForTests::class),
+            CustomContainerBuilderForTests::class,
+        ];
+
+        yield 'delegating with custom builder' => [
+            'delegating',
+            new Generators\Delegating(__FILE__, CustomContainerBuilderForTests::class),
+            CustomContainerBuilderForTests::class,
+        ];
     }
 
     /**

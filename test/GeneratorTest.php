@@ -53,6 +53,25 @@ final class GeneratorTest extends TestCase
      * @test
      *
      * @covers ::__construct
+     * @covers ::initializeContainer
+     */
+    public function initializeContainerCanOptionallyUseACustomClass(): void
+    {
+        $generator = $this->getMockForAbstractClass(
+            Generator::class,
+            [__FILE__, CustomContainerBuilderForTests::class],
+        );
+
+        self::assertInstanceOf(
+            CustomContainerBuilderForTests::class,
+            $generator->initializeContainer(new ContainerConfiguration('Me\\MyApp')),
+        );
+    }
+
+    /**
+     * @test
+     *
+     * @covers ::__construct
      * @covers ::generate
      * @covers ::initializeContainer
      * @covers ::loadContainer

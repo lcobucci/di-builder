@@ -9,6 +9,7 @@ use Lcobucci\DependencyInjection\Testing\MakeServicesPublic;
 use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
+use Symfony\Component\DependencyInjection\ContainerBuilder as SymfonyBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 use function assert;
@@ -37,38 +38,54 @@ final class ContainerBuilder implements Builder
         return self::xml($configurationFile, $namespace);
     }
 
-    public static function xml(string $configurationFile, string $namespace): self
-    {
+    /** @param class-string<SymfonyBuilder>|null $builderClass */
+    public static function xml(
+        string $configurationFile,
+        string $namespace,
+        ?string $builderClass = null,
+    ): self {
         return new self(
             new ContainerConfiguration($namespace),
-            new Generators\Xml($configurationFile),
+            new Generators\Xml($configurationFile, $builderClass),
             new ParameterBag(),
         );
     }
 
-    public static function php(string $configurationFile, string $namespace): self
-    {
+    /** @param class-string<SymfonyBuilder>|null $builderClass */
+    public static function php(
+        string $configurationFile,
+        string $namespace,
+        ?string $builderClass = null,
+    ): self {
         return new self(
             new ContainerConfiguration($namespace),
-            new Generators\Php($configurationFile),
+            new Generators\Php($configurationFile, $builderClass),
             new ParameterBag(),
         );
     }
 
-    public static function yaml(string $configurationFile, string $namespace): self
-    {
+    /** @param class-string<SymfonyBuilder>|null $builderClass */
+    public static function yaml(
+        string $configurationFile,
+        string $namespace,
+        ?string $builderClass = null,
+    ): self {
         return new self(
             new ContainerConfiguration($namespace),
-            new Generators\Yaml($configurationFile),
+            new Generators\Yaml($configurationFile, $builderClass),
             new ParameterBag(),
         );
     }
 
-    public static function delegating(string $configurationFile, string $namespace): self
-    {
+    /** @param class-string<SymfonyBuilder>|null $builderClass */
+    public static function delegating(
+        string $configurationFile,
+        string $namespace,
+        ?string $builderClass = null,
+    ): self {
         return new self(
             new ContainerConfiguration($namespace),
-            new Generators\Delegating($configurationFile),
+            new Generators\Delegating($configurationFile, $builderClass),
             new ParameterBag(),
         );
     }

@@ -14,6 +14,7 @@ use PHPUnit\Framework\TestCase;
 use SplFileInfo;
 use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
+use Symfony\Component\DependencyInjection\Container;
 
 use function bin2hex;
 use function count;
@@ -166,6 +167,23 @@ final class CompilerTest extends TestCase
         $generatedFiles = iterator_to_array($this->getGeneratedFiles());
 
         self::assertCount(1, $generatedFiles);
+    }
+
+    /** @test */
+    public function compileShouldUseCustomContainerBuilders(): void
+    {
+        $compiler = new Compiler();
+        $compiler->compile(
+            $this->config,
+            $this->dump,
+            new Yaml(__FILE__, CustomContainerBuilderForTests::class),
+        );
+
+        $container = include $this->dumpDir . '/AppContainer.php';
+
+        self::assertInstanceOf(Container::class, $container);
+        self::assertTrue($container->hasParameter('built-with-very-special-builder'));
+        self::assertTrue($container->getParameter('built-with-very-special-builder'));
     }
 
     /** @return PHPGenerator<string, SplFileInfo> */
