@@ -16,15 +16,11 @@ use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\Container;
 
-use function bin2hex;
 use function count;
-use function exec;
 use function file_get_contents;
 use function file_put_contents;
 use function iterator_to_array;
 use function mkdir;
-use function random_bytes;
-use function realpath;
 
 /**
  * @covers \Lcobucci\DependencyInjection\Compiler
@@ -53,7 +49,7 @@ final class CompilerTest extends TestCase
     public function configureDependencies(): void
     {
         vfsStream::setup(
-            'tests',
+            'tests-compilation',
             null,
             ['services.yml' => 'services: { testing: { class: stdClass } }'],
         );
@@ -67,8 +63,8 @@ final class CompilerTest extends TestCase
         $this->dump    = new ConfigCache($this->dumpDir . '/AppContainer.php', false);
 
         $this->config = new ContainerConfiguration(
-            'Me\\MyApp',
-            [vfsStream::url('tests/services.yml')],
+            'Me\\CompilationTest',
+            [vfsStream::url('tests-compilation/services.yml')],
             [
                 [$this->parameters, PassConfig::TYPE_BEFORE_OPTIMIZATION],
                 [[MakeServicesPublic::class, []], PassConfig::TYPE_BEFORE_OPTIMIZATION],
@@ -80,16 +76,10 @@ final class CompilerTest extends TestCase
 
     private function createDumpDirectory(): string
     {
-        $dir = __DIR__ . '/../tmp/' . bin2hex(random_bytes(5)) . '/me_myapp';
+        $dir = vfsStream::url('tests-compilation/tmp/me_myapp');
         mkdir($dir, 0777, true);
 
         return $dir;
-    }
-
-    /** @after */
-    public function cleanUpDumpDirectory(): void
-    {
-        exec('rm -rf ' . realpath($this->dumpDir . '/../../'));
     }
 
     /** @test */
@@ -143,7 +133,7 @@ final class CompilerTest extends TestCase
     public function compileShouldAllowForLazyServices(): void
     {
         file_put_contents(
-            vfsStream::url('tests/services.yml'),
+            vfsStream::url('tests-compilation/services.yml'),
             'services: { testing: { class: stdClass, lazy: true } }',
         );
 

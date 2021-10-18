@@ -79,19 +79,19 @@ final class GeneratorTest extends TestCase
     public function generateShouldCompileAndLoadTheContainer(): void
     {
         vfsStream::setup(
-            'tests',
+            'tests-generation',
             null,
             ['services.yml' => 'services: { testing: { class: stdClass, public: true } }'],
         );
 
         $config = new ContainerConfiguration(
-            'Me\\MyApp',
-            [vfsStream::url('tests/services.yml')],
+            'Me\\GenerationTest',
+            [vfsStream::url('tests-generation/services.yml')],
             [
                 [new ParameterBag(['app.devmode' => true]), PassConfig::TYPE_BEFORE_OPTIMIZATION],
                 [
                     new DumpXmlContainer(
-                        new ConfigCache(vfsStream::url('tests/dump.xml'), true),
+                        new ConfigCache(vfsStream::url('tests-generation/dump.xml'), true),
                     ),
                     PassConfig::TYPE_AFTER_REMOVING,
                     -255,
@@ -99,7 +99,7 @@ final class GeneratorTest extends TestCase
             ],
         );
 
-        $dump = new ConfigCache(vfsStream::url('tests/container.php'), false);
+        $dump = new ConfigCache(vfsStream::url('tests-generation/container.php'), false);
 
         $this->generator->method('getLoader')->willReturnCallback(
             static function (SymfonyBuilder $container, array $paths): YamlFileLoader {
@@ -113,6 +113,6 @@ final class GeneratorTest extends TestCase
         $container = $this->generator->generate($config, $dump);
 
         self::assertInstanceOf(stdClass::class, $container->get('testing'));
-        self::assertFileExists(vfsStream::url('tests/dump.xml'));
+        self::assertFileExists(vfsStream::url('tests-generation/dump.xml'));
     }
 }
