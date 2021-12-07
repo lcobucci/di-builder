@@ -1,13 +1,12 @@
 {
     "name": "lcobucci/di-builder",
-    "type": "library",
     "description": "Dependency Injection Builder for PHP applications",
-    "keywords": [
-        "dependency-injection"
-    ],
-    "homepage": "https://github.com/lcobucci/di-builder",
     "license": [
         "BSD-3-Clause"
+    ],
+    "type": "library",
+    "keywords": [
+        "dependency-injection"
     ],
     "authors": [
         {
@@ -15,18 +14,12 @@
             "email": "lcobucci@gmail.com"
         }
     ],
+    "homepage": "https://github.com/lcobucci/di-builder",
     "require": {
         "php": "^8.0",
         "symfony/config": "^5.4",
         "symfony/dependency-injection": "^5.3",
         "symfony/expression-language": "^5.4"
-    },
-    "replace": {
-        "symfony/polyfill-php71": "*",
-        "symfony/polyfill-php72": "*",
-        "symfony/polyfill-php73": "*",
-        "symfony/polyfill-php74": "*",
-        "symfony/polyfill-php80": "*"
     },
     "require-dev": {
         "infection/infection": "^0.25",
@@ -42,12 +35,15 @@
         "symfony/proxy-manager-bridge": "^5.4",
         "symfony/yaml": "^5.4"
     },
+    "replace": {
+        "symfony/polyfill-php71": "*",
+        "symfony/polyfill-php72": "*",
+        "symfony/polyfill-php73": "*",
+        "symfony/polyfill-php74": "*",
+        "symfony/polyfill-php80": "*"
+    },
     "suggest": {
         "symfony/proxy-manager-bridge": "Allows the creation of lazy services"
-    },
-    "config": {
-        "preferred-install": "dist",
-        "sort-packages": true
     },
     "autoload": {
         "psr-4": {
@@ -58,5 +54,9 @@
         "psr-4": {
             "Lcobucci\\DependencyInjection\\": "test"
         }
+    },
+    "config": {
+        "preferred-install": "dist",
+        "sort-packages": true
     }
 }
