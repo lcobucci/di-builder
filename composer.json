@@ -22,7 +22,7 @@
         "symfony/expression-language": "^5.4"
     },
     "require-dev": {
-        "infection/infection": "^0.25",
+        "infection/infection": "^0.26",
         "lcobucci/coding-standard": "^8.0",
         "mikey179/vfsstream": "^1.6.10",
         "phpstan/extension-installer": "^1.1",
