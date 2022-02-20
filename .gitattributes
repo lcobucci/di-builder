@@ -9,3 +9,4 @@
 /composer.lock  export-ignore
 /mkdocs.yml     export-ignore
 /Makefile       export-ignore
+/composer-unused.php export-ignore
