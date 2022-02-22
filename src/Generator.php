@@ -44,7 +44,7 @@ abstract class Generator
     {
         require_once $dump->getPath();
         $className = $config->getClassName();
-        assert(is_a($className, ContainerInterface::class));
+        assert(is_a($className, ContainerInterface::class, true));
 
         return new $className();
     }
