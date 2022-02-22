@@ -12,7 +12,7 @@ vendor/composer/installed.json: composer.json composer.lock
 
 .PHONY: phpunit
 phpunit:
-	@vendor/bin/phpunit
+	@php -dzend.assertions=1 vendor/bin/phpunit
 
 .PHONY: infection
 infection:
