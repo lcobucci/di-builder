@@ -15,7 +15,7 @@ jobs:
         dependencies:
           - "highest"
         php-version:
-          - "8.0"
+          - "8.1"
         operating-system:
           - "ubuntu-latest"
 
@@ -60,10 +60,8 @@ jobs:
       - name: "Normalize composer.json"
         run: "composer-normalize --dry-run"
 
-      # Disabling it for now (doesn't run on PHP 8)
-      #
-      #- name: "Check composer.json explicit dependencies"
-      #  run: "composer-require-checker check --config-file=$(realpath composer-require-checker.json)"
+      - name: "Check composer.json explicit dependencies"
+        run: "composer-require-checker check --config-file=$(realpath composer-require-checker.json)"
 
       - name: "Check composer.json unused dependencies"
         run: "composer-unused"
