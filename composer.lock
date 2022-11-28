@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e8c50f45af76acb7ff2c4f978733664e",
+    "content-hash": "49562d40acbdd76394d76faea95a94cb",
     "packages": [
         {
             "name": "psr/cache",
@@ -412,16 +412,16 @@
         },
         {
             "name": "symfony/dependency-injection",
-            "version": "v6.1.5",
+            "version": "v6.1.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/dependency-injection.git",
-                "reference": "b9c797c9d56afc290d4265854bafd01b4e379240"
+                "reference": "11e33ed84db0ced77511a23b35168db127909f0e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/dependency-injection/zipball/b9c797c9d56afc290d4265854bafd01b4e379240",
-                "reference": "b9c797c9d56afc290d4265854bafd01b4e379240",
+                "url": "https://api.github.com/repos/symfony/dependency-injection/zipball/11e33ed84db0ced77511a23b35168db127909f0e",
+                "reference": "11e33ed84db0ced77511a23b35168db127909f0e",
                 "shasum": ""
             },
             "require": {
@@ -479,7 +479,7 @@
             "description": "Allows you to standardize and centralize the way objects are constructed in your application",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/dependency-injection/tree/v6.1.5"
+                "source": "https://github.com/symfony/dependency-injection/tree/v6.1.8"
             },
             "funding": [
                 {
@@ -495,7 +495,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-09-28T16:00:52+00:00"
+            "time": "2022-11-25T07:34:52+00:00"
         },
         {
             "name": "symfony/deprecation-contracts",
@@ -4832,16 +4832,16 @@
         },
         {
             "name": "symfony/yaml",
-            "version": "v6.1.6",
+            "version": "v6.1.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
-                "reference": "66c6b0cf52b00f74614a2cf7ae7db08ea1095931"
+                "reference": "20e9985d3fc6a77289102c47b6a110b6fbd24585"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/yaml/zipball/66c6b0cf52b00f74614a2cf7ae7db08ea1095931",
-                "reference": "66c6b0cf52b00f74614a2cf7ae7db08ea1095931",
+                "url": "https://api.github.com/repos/symfony/yaml/zipball/20e9985d3fc6a77289102c47b6a110b6fbd24585",
+                "reference": "20e9985d3fc6a77289102c47b6a110b6fbd24585",
                 "shasum": ""
             },
             "require": {
@@ -4886,7 +4886,7 @@
             "description": "Loads and dumps YAML files",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/yaml/tree/v6.1.6"
+                "source": "https://github.com/symfony/yaml/tree/v6.1.8"
             },
             "funding": [
                 {
@@ -4902,7 +4902,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-10-07T08:04:03+00:00"
+            "time": "2022-11-25T18:59:16+00:00"
         },
         {
             "name": "thecodingmachine/safe",
