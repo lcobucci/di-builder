@@ -3,15 +3,16 @@ declare(strict_types=1);
 
 namespace Lcobucci\DependencyInjection\Testing;
 
+use PHPUnit\Framework\Attributes as PHPUnit;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 
-/** @covers \Lcobucci\DependencyInjection\Testing\MakeServicesPublic */
+#[PHPUnit\CoversClass(MakeServicesPublic::class)]
 final class MakeServicesPublicTest extends TestCase
 {
-    /** @test */
+    #[PHPUnit\Test]
     public function processShouldMakeAllDefinedServicesPublic(): void
     {
         $service1 = new Definition('resource');
@@ -30,7 +31,7 @@ final class MakeServicesPublicTest extends TestCase
         self::assertTrue($service2->isPublic());
     }
 
-    /** @test */
+    #[PHPUnit\Test]
     public function processShouldMakeAllDefinedAliasesPublic(): void
     {
         $service = new Definition('resource');

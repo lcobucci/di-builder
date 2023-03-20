@@ -8,6 +8,7 @@ use Lcobucci\DependencyInjection\Compiler\ParameterBag;
 use Lcobucci\DependencyInjection\CompilerPassListProvider;
 use Lcobucci\DependencyInjection\FileListProvider;
 use Lcobucci\DependencyInjection\Testing\MakeServicesPublic;
+use PHPUnit\Framework\Attributes as PHPUnit;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -18,27 +19,18 @@ use function sys_get_temp_dir;
 
 use const DIRECTORY_SEPARATOR;
 
-/** @coversDefaultClass \Lcobucci\DependencyInjection\Config\ContainerConfiguration */
+#[PHPUnit\CoversClass(ContainerConfiguration::class)]
 final class ContainerConfigurationTest extends TestCase
 {
-    /** @var CompilerPassInterface&MockObject */
-    private CompilerPassInterface $pass;
+    private CompilerPassInterface&MockObject $pass;
 
-    /** @before */
+    #[PHPUnit\Before]
     public function configureDependencies(): void
     {
         $this->pass = $this->createMock(CompilerPassInterface::class);
     }
 
-    /**
-     * @test
-     *
-     * @covers ::__construct
-     * @covers ::getFiles
-     * @covers ::filterPackages
-     *
-     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getPackages
-     */
+    #[PHPUnit\Test]
     public function getFilesShouldReturnTheFileList(): void
     {
         $config = new ContainerConfiguration('Me\\MyApp', ['services.xml']);
@@ -46,15 +38,7 @@ final class ContainerConfigurationTest extends TestCase
         self::assertSame(['services.xml'], iterator_to_array($config->getFiles()));
     }
 
-    /**
-     * @test
-     *
-     * @covers ::getFiles
-     * @covers ::filterPackages
-     *
-     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getPackages
-     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
-     */
+    #[PHPUnit\Test]
     public function getFilesShouldYieldTheFilesFromPackagesFirst(): void
     {
         $package1 = new class implements CompilerPassListProvider
@@ -84,12 +68,7 @@ final class ContainerConfigurationTest extends TestCase
         self::assertSame(['services2.xml', 'services.xml'], iterator_to_array($config->getFiles(), false));
     }
 
-    /**
-     * @test
-     *
-     * @covers ::__construct
-     * @covers ::addFile
-     */
+    #[PHPUnit\Test]
     public function addFileShouldAppendANewFileToTheList(): void
     {
         $config = new ContainerConfiguration('Me\\MyApp');
@@ -98,15 +77,7 @@ final class ContainerConfigurationTest extends TestCase
         self::assertEquals(new ContainerConfiguration('Me\\MyApp', ['services.xml']), $config);
     }
 
-    /**
-     * @test
-     *
-     * @covers ::getPassList
-     * @covers ::filterPackages
-     *
-     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getPackages
-     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
-     */
+    #[PHPUnit\Test]
     public function getPassListShouldReturnTheHandlersList(): void
     {
         $config = new ContainerConfiguration('Me\\MyApp', [], [[$this->pass, 'beforeOptimization']]);
@@ -114,15 +85,7 @@ final class ContainerConfigurationTest extends TestCase
         self::assertSame([[$this->pass, 'beforeOptimization']], iterator_to_array($config->getPassList()));
     }
 
-    /**
-     * @test
-     *
-     * @covers ::getPassList
-     * @covers ::filterPackages
-     *
-     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getPackages
-     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
-     */
+    #[PHPUnit\Test]
     public function getPassListShouldYieldTheCompilerPassesFromPackagesFirst(): void
     {
         $package1 = new class implements CompilerPassListProvider
@@ -158,12 +121,7 @@ final class ContainerConfigurationTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     *
-     * @covers ::__construct
-     * @covers ::addPass
-     */
+    #[PHPUnit\Test]
     public function addPassShouldAppendANewHandlerToTheList(): void
     {
         $config = new ContainerConfiguration('Me\\MyApp');
@@ -178,12 +136,7 @@ final class ContainerConfigurationTest extends TestCase
         self::assertEquals($expected, $config);
     }
 
-    /**
-     * @test
-     *
-     * @covers ::__construct
-     * @covers ::addPass
-     */
+    #[PHPUnit\Test]
     public function addPassCanReceiveTheTypeAndPriority(): void
     {
         $config = new ContainerConfiguration('Me\\MyApp');
@@ -198,12 +151,7 @@ final class ContainerConfigurationTest extends TestCase
         self::assertEquals($expected, $config);
     }
 
-    /**
-     * @test
-     *
-     * @covers ::__construct
-     * @covers ::addDelayedPass
-     */
+    #[PHPUnit\Test]
     public function addDelayedPassShouldAppendANewCompilerPassToTheList(): void
     {
         $config = new ContainerConfiguration('Me\\MyApp');
@@ -218,12 +166,7 @@ final class ContainerConfigurationTest extends TestCase
         self::assertEquals($expected, $config);
     }
 
-    /**
-     * @test
-     *
-     * @covers ::__construct
-     * @covers ::addDelayedPass
-     */
+    #[PHPUnit\Test]
     public function addDelayedPassCanReceiveTheTypeAndPriority(): void
     {
         $config = new ContainerConfiguration('Me\\MyApp');
@@ -238,12 +181,7 @@ final class ContainerConfigurationTest extends TestCase
         self::assertEquals($expected, $config);
     }
 
-    /**
-     * @test
-     *
-     * @covers ::__construct
-     * @covers ::addPackage
-     */
+    #[PHPUnit\Test]
     public function addPackageShouldAppendThePackageConfigurationToTheList(): void
     {
         $package = $this->createMock(Package::class)::class;
@@ -261,13 +199,7 @@ final class ContainerConfigurationTest extends TestCase
         self::assertEquals($expected, $config);
     }
 
-    /**
-     * @test
-     *
-     * @covers ::getPackages
-     *
-     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
-     */
+    #[PHPUnit\Test]
     public function getPackagesShouldReturnAListOfInstantiatedPackages(): void
     {
         $package = $this->createMock(Package::class);
@@ -276,13 +208,7 @@ final class ContainerConfigurationTest extends TestCase
         self::assertEquals([$package], $config->getPackages());
     }
 
-    /**
-     * @test
-     *
-     * @covers ::getPackages
-     *
-     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
-     */
+    #[PHPUnit\Test]
     public function getPackagesShouldInstantiateThePackagesOnlyOnce(): void
     {
         $packageName = $this->createMock(Package::class)::class;
@@ -293,13 +219,7 @@ final class ContainerConfigurationTest extends TestCase
         self::assertSame($createdPackages, $config->getPackages());
     }
 
-    /**
-     * @test
-     *
-     * @covers ::getPaths
-     *
-     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
-     */
+    #[PHPUnit\Test]
     public function getPathsShouldReturnThePathsList(): void
     {
         $config = new ContainerConfiguration('Me\\MyApp', [], [], ['config']);
@@ -307,12 +227,7 @@ final class ContainerConfigurationTest extends TestCase
         self::assertEquals(['config'], $config->getPaths());
     }
 
-    /**
-     * @test
-     *
-     * @covers ::__construct
-     * @covers ::addPath
-     */
+    #[PHPUnit\Test]
     public function addPathShouldAppendANewPathToTheList(): void
     {
         $config = new ContainerConfiguration('Me\\MyApp');
@@ -328,14 +243,7 @@ final class ContainerConfigurationTest extends TestCase
         self::assertEquals($expected, $config);
     }
 
-    /**
-     * @test
-     *
-     * @covers ::setBaseClass
-     * @covers ::getBaseClass
-     *
-     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
-     */
+    #[PHPUnit\Test]
     public function setBaseClassShouldChangeTheAttribute(): void
     {
         $config = new ContainerConfiguration('Me\\MyApp');
@@ -344,13 +252,7 @@ final class ContainerConfigurationTest extends TestCase
         self::assertSame('Test', $config->getBaseClass());
     }
 
-    /**
-     * @test
-     *
-     * @covers ::getDumpDir
-     *
-     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
-     */
+    #[PHPUnit\Test]
     public function getDumpDirShouldReturnTheAttributeValue(): void
     {
         $config = new ContainerConfiguration('Me\\MyApp');
@@ -358,14 +260,7 @@ final class ContainerConfigurationTest extends TestCase
         self::assertEquals(sys_get_temp_dir(), $config->getDumpDir());
     }
 
-    /**
-     * @test
-     *
-     * @covers ::setDumpDir
-     *
-     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
-     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::getDumpDir
-     */
+    #[PHPUnit\Test]
     public function setDumpDirShouldChangeTheAttribute(): void
     {
         $config = new ContainerConfiguration('Me\\MyApp');
@@ -374,13 +269,7 @@ final class ContainerConfigurationTest extends TestCase
         self::assertEquals('/test', $config->getDumpDir());
     }
 
-    /**
-     * @test
-     *
-     * @covers ::getDumpFile
-     *
-     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
-     */
+    #[PHPUnit\Test]
     public function getDumpFileShouldReturnTheFullPathOfDumpFile(): void
     {
         $config = new ContainerConfiguration('Me\\MyApp');
@@ -391,13 +280,7 @@ final class ContainerConfigurationTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     *
-     * @covers ::getDumpOptions
-     *
-     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
-     */
+    #[PHPUnit\Test]
     public function getDumpOptionsShouldReturnTheDumpingInformation(): void
     {
         $config  = new ContainerConfiguration('Me\\MyApp');
@@ -410,14 +293,7 @@ final class ContainerConfigurationTest extends TestCase
         self::assertSame($options, $config->getDumpOptions());
     }
 
-    /**
-     * @test
-     *
-     * @covers ::setBaseClass
-     * @covers ::getDumpOptions
-     *
-     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
-     */
+    #[PHPUnit\Test]
     public function getDumpOptionsShouldIncludeBaseWhenWasConfigured(): void
     {
         $config = new ContainerConfiguration('Me\\MyApp');
@@ -433,14 +309,7 @@ final class ContainerConfigurationTest extends TestCase
         self::assertSame($options, $config->getDumpOptions());
     }
 
-    /**
-     * @test
-     *
-     * @covers ::withSubNamespace
-     * @covers ::getClassName
-     *
-     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
-     */
+    #[PHPUnit\Test]
     public function withAddedNamespaceShouldModifyTheNamespaceOfANewInstanceOnly(): void
     {
         $config = new ContainerConfiguration('Me\\MyApp');
