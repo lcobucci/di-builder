@@ -16,7 +16,7 @@
     ],
     "homepage": "https://github.com/lcobucci/di-builder",
     "require": {
-        "php": "~8.2.0",
+        "php": "~8.2.4",
         "symfony/config": "^6.2.7",
         "symfony/dependency-injection": "^6.2.7",
         "symfony/expression-language": "^6.2.7",
