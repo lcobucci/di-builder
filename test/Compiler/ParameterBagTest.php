@@ -3,18 +3,14 @@ declare(strict_types=1);
 
 namespace Lcobucci\DependencyInjection\Compiler;
 
+use PHPUnit\Framework\Attributes as PHPUnit;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-/** @coversDefaultClass \Lcobucci\DependencyInjection\Compiler\ParameterBag */
+#[PHPUnit\CoversClass(ParameterBag::class)]
 final class ParameterBagTest extends TestCase
 {
-    /**
-     * @test
-     *
-     * @covers ::__construct
-     * @covers ::set
-     */
+    #[PHPUnit\Test]
     public function setShouldConfigureAParameter(): void
     {
         $pass = new ParameterBag();
@@ -23,12 +19,7 @@ final class ParameterBagTest extends TestCase
         self::assertEquals(new ParameterBag(['test' => 1]), $pass);
     }
 
-    /**
-     * @test
-     *
-     * @covers ::__construct
-     * @covers ::get
-     */
+    #[PHPUnit\Test]
     public function getShouldReturnTheValueOfTheParameter(): void
     {
         $pass = new ParameterBag(['test' => 1]);
@@ -36,13 +27,7 @@ final class ParameterBagTest extends TestCase
         self::assertSame(1, $pass->get('test', 2));
     }
 
-    /**
-     * @test
-     *
-     * @covers ::get
-     *
-     * @uses \Lcobucci\DependencyInjection\Compiler\ParameterBag::__construct
-     */
+    #[PHPUnit\Test]
     public function getShouldReturnTheDefaultValueWhenParameterDoesNotExist(): void
     {
         $pass = new ParameterBag();
@@ -50,13 +35,7 @@ final class ParameterBagTest extends TestCase
         self::assertSame(1, $pass->get('test', 1));
     }
 
-    /**
-     * @test
-     *
-     * @covers ::process
-     *
-     * @uses \Lcobucci\DependencyInjection\Compiler\ParameterBag::__construct
-     */
+    #[PHPUnit\Test]
     public function invokeShouldAppendAllConfiguredParametersOnTheBuilder(): void
     {
         $builder = new ContainerBuilder();

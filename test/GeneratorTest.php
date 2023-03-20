@@ -7,6 +7,7 @@ use Lcobucci\DependencyInjection\Compiler\DumpXmlContainer;
 use Lcobucci\DependencyInjection\Compiler\ParameterBag;
 use Lcobucci\DependencyInjection\Config\ContainerConfiguration;
 use org\bovigo\vfs\vfsStream;
+use PHPUnit\Framework\Attributes as PHPUnit;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use stdClass;
@@ -17,31 +18,22 @@ use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder as SymfonyBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
-/**
- * @coversDefaultClass \Lcobucci\DependencyInjection\Generator
- *
- * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration
- * @uses \Lcobucci\DependencyInjection\Compiler
- * @uses \Lcobucci\DependencyInjection\Compiler\ParameterBag
- * @uses \Lcobucci\DependencyInjection\Compiler\DumpXmlContainer
- */
+#[PHPUnit\CoversClass(Generator::class)]
+#[PHPUnit\UsesClass(ParameterBag::class)]
+#[PHPUnit\UsesClass(ContainerConfiguration::class)]
+#[PHPUnit\UsesClass(DumpXmlContainer::class)]
+#[PHPUnit\UsesClass(Compiler::class)]
 final class GeneratorTest extends TestCase
 {
-    /** @var Generator&MockObject */
-    private Generator $generator;
+    private Generator&MockObject $generator;
 
-    /** @before */
+    #[PHPUnit\Before]
     public function configureDependencies(): void
     {
         $this->generator = $this->getMockForAbstractClass(Generator::class, [__FILE__]);
     }
 
-    /**
-     * @test
-     *
-     * @covers ::__construct
-     * @covers ::initializeContainer
-     */
+    #[PHPUnit\Test]
     public function initializeContainerShouldAddTheConfigurationFileAsAResource(): void
     {
         $container = $this->generator->initializeContainer(new ContainerConfiguration('Me\\MyApp'));
@@ -49,12 +41,7 @@ final class GeneratorTest extends TestCase
         self::assertEquals([new FileResource(__FILE__)], $container->getResources());
     }
 
-    /**
-     * @test
-     *
-     * @covers ::__construct
-     * @covers ::initializeContainer
-     */
+    #[PHPUnit\Test]
     public function initializeContainerCanOptionallyUseACustomClass(): void
     {
         $generator = $this->getMockForAbstractClass(
@@ -68,14 +55,7 @@ final class GeneratorTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     *
-     * @covers ::__construct
-     * @covers ::generate
-     * @covers ::initializeContainer
-     * @covers ::loadContainer
-     */
+    #[PHPUnit\Test]
     public function generateShouldCompileAndLoadTheContainer(): void
     {
         vfsStream::setup(

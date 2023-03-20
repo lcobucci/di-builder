@@ -4,5 +4,5 @@
 /phpstan.neon
 /.phpcs.cache
 /infection.log
-/.phpunit.result.cache
+/.phpunit.cache
 /build
