@@ -18,7 +18,7 @@
     "require": {
         "php": "~8.2.0",
         "symfony/config": "^6.2.7",
-        "symfony/dependency-injection": "^6.2.7",
+        "symfony/dependency-injection": "^6.2.8",
         "symfony/expression-language": "^6.2.7",
         "symfony/filesystem": "^6.2.7"
     },
