@@ -15,15 +15,10 @@ use SplFileInfo;
 use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 
-use function bin2hex;
 use function count;
-use function exec;
 use function file_get_contents;
 use function file_put_contents;
 use function iterator_to_array;
-use function mkdir;
-use function random_bytes;
-use function realpath;
 
 /**
  * @covers \Lcobucci\DependencyInjection\Compiler
@@ -36,6 +31,8 @@ use function realpath;
  */
 final class CompilerTest extends TestCase
 {
+    use GeneratesDumpDirectory;
+
     private const EXPECTED_FILES = [
         'getTestingService.php',
         'AppContainer.php',
@@ -45,7 +42,6 @@ final class CompilerTest extends TestCase
 
     private ContainerConfiguration $config;
     private ConfigCache $dump;
-    private string $dumpDir;
 
     /** @before */
     public function configureDependencies(): void
@@ -61,8 +57,7 @@ final class CompilerTest extends TestCase
         $parameterBag->set('container.dumper.inline_factories', false);
         $parameterBag->set('container.dumper.inline_class_loader', true);
 
-        $this->dumpDir = $this->createDumpDirectory();
-        $this->dump    = new ConfigCache($this->dumpDir . '/AppContainer.php', false);
+        $this->dump = new ConfigCache($this->dumpDirectory . '/AppContainer.php', false);
 
         $this->config = new ContainerConfiguration(
             'Me\\MyApp',
@@ -73,21 +68,7 @@ final class CompilerTest extends TestCase
             ]
         );
 
-        $this->config->setDumpDir($this->dumpDir);
-    }
-
-    private function createDumpDirectory(): string
-    {
-        $dir = __DIR__ . '/../tmp/' . bin2hex(random_bytes(5)) . '/me_myapp';
-        mkdir($dir, 0777, true);
-
-        return $dir;
-    }
-
-    /** @after */
-    public function cleanUpDumpDirectory(): void
-    {
-        exec('rm -rf ' . realpath($this->dumpDir . '/../../'));
+        $this->config->setDumpDir($this->dumpDirectory);
     }
 
     /** @test */
@@ -114,7 +95,7 @@ final class CompilerTest extends TestCase
 
         self::assertStringContainsString(
             __FILE__,
-            (string) file_get_contents($this->dumpDir . '/AppContainer.php.meta')
+            (string) file_get_contents($this->dumpDirectory . '/AppContainer.php.meta')
         );
     }
 
@@ -138,7 +119,7 @@ final class CompilerTest extends TestCase
     /** @test */
     public function compilationShouldBeSkippedWhenFileAlreadyExists(): void
     {
-        file_put_contents($this->dumpDir . '/AppContainer.php', 'testing');
+        file_put_contents($this->dumpDirectory . '/AppContainer.php', 'testing');
 
         $compiler = new Compiler();
         $compiler->compile($this->config, $this->dump, new Yaml(__FILE__));
@@ -151,7 +132,7 @@ final class CompilerTest extends TestCase
     /** @return PHPGenerator<string, SplFileInfo> */
     private function getGeneratedFiles(?string $dir = null): PHPGenerator
     {
-        $dir ??= $this->dumpDir;
+        $dir ??= $this->dumpDirectory;
 
         foreach (new DirectoryIterator($dir) as $fileInfo) {
             if ($fileInfo->isDot()) {
