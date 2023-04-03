@@ -3,7 +3,9 @@
 Setting up the container can be a complicated task.
 In order to make the it easier, we provide a builder. 
 
-The builder is initialised via a named constructor using XML as the default format.
+The builder is initialised via a named constructors, which represent the format of files to be parsed (php, xml, yaml).
+You may use `ContainerBuilder::delegating()` to allow all formats to be used.
+
 Once everything is configured, the builder gives you a fully functional container:
 
 ```php
@@ -16,7 +18,7 @@ use Lcobucci\DependencyInjection\ContainerBuilder;
 
 // The path to the current file is passed so we can track changes
 // to it and refresh the cache (for development mode)
-$builder = ContainerBuilder::default(__FILE__, __NAMESPACE__);
+$builder = ContainerBuilder::xml(__FILE__, __NAMESPACE__);
 
 $container = $builder->getContainer();
 
@@ -27,8 +29,6 @@ $testContainer = $builder->getTestContainer();
 
 ## Available methods
 
-* `ContainerBuilder#setGenerator()`: Modifies the generator to be used.
-    We support the `XML`, `Yaml`, `PHP`, and `Delegating` generators (the latter allows to use all formats together)
 * `ContainerBuilder#addPath()`: Add a base path to find files
 * `ContainerBuilder#addFile()`: Adds a container source file
 * `ContainerBuilder#addPass()`: Adds an instance of a [Compiler Pass](compiler-passes.md) to be processed
@@ -56,7 +56,7 @@ use function getenv;
 
 require __DIR__ . '/../vendor/autoload.php';
 
-$builder     = ContainerBuilder::default(__FILE__, __NAMESPACE__);
+$builder     = ContainerBuilder::xml(__FILE__, __NAMESPACE__);
 $projectRoot = dirname(__DIR__);
 
 if (getenv('APPLICATION_MODE', true) === 'development') {

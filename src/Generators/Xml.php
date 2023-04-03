@@ -19,7 +19,7 @@ final class Xml extends Generator
     {
         return new XmlFileLoader(
             $container,
-            new FileLocator($paths)
+            new FileLocator($paths),
         );
     }
 }

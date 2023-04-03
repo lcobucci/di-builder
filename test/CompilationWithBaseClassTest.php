@@ -23,7 +23,7 @@ final class CompilationWithBaseClassTest extends TestCase
     /** @test */
     public function containerCanHaveACustomBaseClass(): void
     {
-        $container = ContainerBuilder::default(__FILE__, self::DI_NAMESPACE)
+        $container = ContainerBuilder::xml(__FILE__, self::DI_NAMESPACE)
             ->setBaseClass(ContainerForTests::class)
             ->setDumpDir($this->dumpDirectory)
             ->getContainer();

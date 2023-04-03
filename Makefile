@@ -17,7 +17,7 @@ phpunit:
 .PHONY: infection
 infection:
 	@vendor/bin/phpunit --coverage-xml=build/coverage-xml --log-junit=build/junit.xml $(PHPUNIT_FLAGS)
-	@vendor/bin/infection -s --threads=$(PARALLELISM) --coverage=build
+	@vendor/bin/infection -s --threads=$(PARALLELISM) --coverage=build $(INFECTION_FLAGS)
 
 .PHONY: phpcbf
 phpcbf:
@@ -29,5 +29,5 @@ phpcs:
 
 .PHONY: phpstan
 phpstan:
-	@vendor/bin/phpstan analyse
+	@vendor/bin/phpstan analyse --memory-limit=-1
 

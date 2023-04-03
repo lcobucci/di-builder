@@ -10,11 +10,8 @@ use Symfony\Component\DependencyInjection\Dumper\XmlDumper;
 
 final class DumpXmlContainer implements CompilerPassInterface
 {
-    private ConfigCacheInterface $configCache;
-
-    public function __construct(ConfigCacheInterface $configCache)
+    public function __construct(private ConfigCacheInterface $configCache)
     {
-        $this->configCache = $configCache;
     }
 
     public function process(ContainerBuilder $container): void

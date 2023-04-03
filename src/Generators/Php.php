@@ -19,7 +19,7 @@ final class Php extends Generator
     {
         return new PhpFileLoader(
             $container,
-            new FileLocator($paths)
+            new FileLocator($paths),
         );
     }
 }

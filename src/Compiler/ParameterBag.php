@@ -13,27 +13,17 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  */
 final class ParameterBag implements CompilerPassInterface
 {
-    /** @var array<string, mixed> */
-    private array $parameters;
-
     /** @param array<string, mixed> $parameters */
-    public function __construct(array $parameters = [])
+    public function __construct(private array $parameters = [])
     {
-        $this->parameters = $parameters;
     }
 
-    /** @param mixed $value */
-    public function set(string $name, $value): void
+    public function set(string $name, mixed $value): void
     {
         $this->parameters[$name] = $value;
     }
 
-    /**
-     * @param mixed|null $default
-     *
-     * @return mixed|null
-     */
-    public function get(string $name, $default = null)
+    public function get(string $name, mixed $default = null): mixed
     {
         return $this->parameters[$name] ?? $default;
     }

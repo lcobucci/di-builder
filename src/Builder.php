@@ -17,6 +17,8 @@ interface Builder
 
     /**
      * Changes the generator to handle the files
+     *
+     * @deprecated This is deprecated in favour of using the correct naming constructor.
      */
     public function setGenerator(Generator $generator): Builder;
 
@@ -31,7 +33,7 @@ interface Builder
     public function addPass(
         CompilerPassInterface $pass,
         string $type = PassConfig::TYPE_BEFORE_OPTIMIZATION,
-        int $priority = self::DEFAULT_PRIORITY
+        int $priority = self::DEFAULT_PRIORITY,
     ): Builder;
 
     /**
@@ -42,7 +44,7 @@ interface Builder
         string $className,
         array $constructArguments = [],
         string $type = PassConfig::TYPE_BEFORE_OPTIMIZATION,
-        int $priority = self::DEFAULT_PRIORITY
+        int $priority = self::DEFAULT_PRIORITY,
     ): Builder;
 
     /**
@@ -63,10 +65,8 @@ interface Builder
 
     /**
      * Adds a default parameter
-     *
-     * @param mixed $value
      */
-    public function setParameter(string $name, $value): Builder;
+    public function setParameter(string $name, mixed $value): Builder;
 
     /**
      * Adds a path to load the files

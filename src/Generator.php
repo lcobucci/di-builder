@@ -13,12 +13,16 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 abstract class Generator
 {
     private Compiler $compiler;
-    private string $configurationFile;
+    /** @var class-string<SymfonyBuilder> */
+    private string $builderClass;
 
-    public function __construct(string $configurationFile)
-    {
-        $this->compiler          = new Compiler();
-        $this->configurationFile = $configurationFile;
+    /** @param class-string<SymfonyBuilder>|null $builderClass */
+    public function __construct(
+        private string $configurationFile,
+        ?string $builderClass = null,
+    ) {
+        $this->compiler     = new Compiler();
+        $this->builderClass = $builderClass ?? SymfonyBuilder::class;
     }
 
     /**
@@ -26,7 +30,7 @@ abstract class Generator
      */
     public function generate(
         ContainerConfiguration $config,
-        ConfigCache $dump
+        ConfigCache $dump,
     ): ContainerInterface {
         $this->compiler->compile($config, $dump, $this);
 
@@ -43,7 +47,7 @@ abstract class Generator
 
     public function initializeContainer(ContainerConfiguration $config): SymfonyBuilder
     {
-        $container = new SymfonyBuilder();
+        $container = new $this->builderClass();
         $container->addResource(new FileResource($this->configurationFile));
 
         $loader = $this->getLoader($container, $config->getPaths());

@@ -33,7 +33,7 @@ final class ParameterBagTest extends TestCase
     {
         $pass = new ParameterBag(['test' => 1]);
 
-        self::assertSame(1, $pass->get('test'));
+        self::assertSame(1, $pass->get('test', 2));
     }
 
     /**

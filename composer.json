@@ -1,39 +1,46 @@
 {
     "name": "lcobucci/di-builder",
     "description": "Dependency Injection Builder for PHP applications",
+    "license": [
+        "BSD-3-Clause"
+    ],
     "type": "library",
+    "keywords": [
+        "dependency-injection"
+    ],
     "authors": [
         {
             "name": "Luís Cobucci",
             "email": "lcobucci@gmail.com"
         }
     ],
-    "keywords": [
-        "dependency-injection"
-    ],
     "homepage": "https://github.com/lcobucci/di-builder",
-    "license": [
-        "BSD-3-Clause"
-    ],
     "require": {
-        "php": "^7.4 || ^8.0",
-        "symfony/config": "^5.1",
-        "symfony/dependency-injection": "^5.1",
-        "symfony/expression-language": "^5.1"
+        "php": "^8.0",
+        "symfony/config": "^5.3",
+        "symfony/dependency-injection": "^5.3",
+        "symfony/expression-language": "^5.3"
     },
     "require-dev": {
-        "infection/infection": "^0.17",
-        "lcobucci/coding-standard": "^6.0",
-        "mikey179/vfsstream": "^1.6.8",
-        "phpstan/extension-installer": "^1.0",
+        "infection/infection": "^0.25",
+        "lcobucci/coding-standard": "^8.0",
+        "mikey179/vfsstream": "^1.6.10",
+        "phpstan/extension-installer": "^1.1",
         "phpstan/phpstan": "^0.12",
         "phpstan/phpstan-deprecation-rules": "^0.12",
         "phpstan/phpstan-phpunit": "^0.12",
         "phpstan/phpstan-strict-rules": "^0.12",
-        "phpunit/phpunit": "^9.3",
-        "squizlabs/php_codesniffer": "^3.5",
-        "symfony/proxy-manager-bridge": "^5.1",
-        "symfony/yaml": "^5.1"
+        "phpunit/phpunit": "^9.5",
+        "squizlabs/php_codesniffer": "^3.6",
+        "symfony/proxy-manager-bridge": "^5.3",
+        "symfony/yaml": "^5.3"
+    },
+    "replace": {
+        "symfony/polyfill-php71": "*",
+        "symfony/polyfill-php72": "*",
+        "symfony/polyfill-php73": "*",
+        "symfony/polyfill-php74": "*",
+        "symfony/polyfill-php80": "*"
     },
     "suggest": {
         "symfony/proxy-manager-bridge": "Allows the creation of lazy services"
@@ -49,13 +56,13 @@
         }
     },
     "config": {
-        "preferred-install": "dist",
-        "sort-packages": true,
         "allow-plugins": {
             "dealerdirect/phpcodesniffer-composer-installer": true,
             "infection/extension-installer": true,
             "phpstan/extension-installer": true,
             "ocramius/package-versions": true
-        }
+        },
+        "preferred-install": "dist",
+        "sort-packages": true
     }
 }

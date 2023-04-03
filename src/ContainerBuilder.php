@@ -5,11 +5,11 @@ namespace Lcobucci\DependencyInjection;
 
 use Lcobucci\DependencyInjection\Compiler\ParameterBag;
 use Lcobucci\DependencyInjection\Config\ContainerConfiguration;
-use Lcobucci\DependencyInjection\Generators\Xml as XmlGenerator;
 use Lcobucci\DependencyInjection\Testing\MakeServicesPublic;
 use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
+use Symfony\Component\DependencyInjection\ContainerBuilder as SymfonyBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 use function assert;
@@ -17,30 +17,76 @@ use function is_bool;
 
 final class ContainerBuilder implements Builder
 {
-    private ContainerConfiguration $config;
-    private Generator $generator;
-    private ParameterBag $parameterBag;
-
     public function __construct(
-        ContainerConfiguration $config,
-        Generator $generator,
-        ParameterBag $parameterBag
+        private ContainerConfiguration $config,
+        private Generator $generator,
+        private ParameterBag $parameterBag,
     ) {
-        $this->parameterBag = $parameterBag;
-        $this->generator    = $generator;
-        $this->config       = $config;
-
         $this->setDefaultConfiguration();
     }
 
-    public static function default(
+    /**
+     * @deprecated Use the named constructor according to the generator
+     *
+     * @see ContainerBuilder::xml()
+     * @see ContainerBuilder::yaml()
+     * @see ContainerBuilder::php()
+     * @see ContainerBuilder::delegating()
+     */
+    public static function default(string $configurationFile, string $namespace): self
+    {
+        return self::xml($configurationFile, $namespace);
+    }
+
+    /** @param class-string<SymfonyBuilder>|null $builderClass */
+    public static function xml(
         string $configurationFile,
-        string $namespace
+        string $namespace,
+        ?string $builderClass = null,
     ): self {
         return new self(
             new ContainerConfiguration($namespace),
-            new XmlGenerator($configurationFile),
-            new ParameterBag()
+            new Generators\Xml($configurationFile, $builderClass),
+            new ParameterBag(),
+        );
+    }
+
+    /** @param class-string<SymfonyBuilder>|null $builderClass */
+    public static function php(
+        string $configurationFile,
+        string $namespace,
+        ?string $builderClass = null,
+    ): self {
+        return new self(
+            new ContainerConfiguration($namespace),
+            new Generators\Php($configurationFile, $builderClass),
+            new ParameterBag(),
+        );
+    }
+
+    /** @param class-string<SymfonyBuilder>|null $builderClass */
+    public static function yaml(
+        string $configurationFile,
+        string $namespace,
+        ?string $builderClass = null,
+    ): self {
+        return new self(
+            new ContainerConfiguration($namespace),
+            new Generators\Yaml($configurationFile, $builderClass),
+            new ParameterBag(),
+        );
+    }
+
+    /** @param class-string<SymfonyBuilder>|null $builderClass */
+    public static function delegating(
+        string $configurationFile,
+        string $namespace,
+        ?string $builderClass = null,
+    ): self {
+        return new self(
+            new ContainerConfiguration($namespace),
+            new Generators\Delegating($configurationFile, $builderClass),
+            new ParameterBag(),
         );
     }
 
@@ -50,7 +96,7 @@ final class ContainerBuilder implements Builder
     private function setDefaultConfiguration(): void
     {
         $this->parameterBag->set('app.devmode', false);
-        $this->parameterBag->set('container.dumper.inline_factories', false);
+        $this->parameterBag->set('container.dumper.inline_factories', true);
         $this->parameterBag->set('container.dumper.inline_class_loader', true);
 
         $this->config->addPass($this->parameterBag);
@@ -73,7 +119,7 @@ final class ContainerBuilder implements Builder
     public function addPass(
         CompilerPassInterface $pass,
         string $type = PassConfig::TYPE_BEFORE_OPTIMIZATION,
-        int $priority = self::DEFAULT_PRIORITY
+        int $priority = self::DEFAULT_PRIORITY,
     ): Builder {
         $this->config->addPass($pass, $type, $priority);
 
@@ -85,7 +131,7 @@ final class ContainerBuilder implements Builder
         string $className,
         array $constructArguments = [],
         string $type = PassConfig::TYPE_BEFORE_OPTIMIZATION,
-        int $priority = self::DEFAULT_PRIORITY
+        int $priority = self::DEFAULT_PRIORITY,
     ): Builder {
         $this->config->addDelayedPass($className, $constructArguments, $type, $priority);
 
@@ -103,6 +149,7 @@ final class ContainerBuilder implements Builder
     public function useDevelopmentMode(): Builder
     {
         $this->parameterBag->set('app.devmode', true);
+        $this->parameterBag->set('container.dumper.inline_factories', false);
         $this->parameterBag->set('container.dumper.inline_class_loader', false);
 
         return $this;
@@ -115,8 +162,7 @@ final class ContainerBuilder implements Builder
         return $this;
     }
 
-    /** @inheritDoc */
-    public function setParameter(string $name, $value): Builder
+    public function setParameter(string $name, mixed $value): Builder
     {
         $this->parameterBag->set($name, $value);
 
@@ -144,7 +190,7 @@ final class ContainerBuilder implements Builder
 
         return $this->generator->generate(
             $this->config,
-            new ConfigCache($this->config->getDumpFile(), $devMode)
+            new ConfigCache($this->config->getDumpFile(), $devMode),
         );
     }
 
@@ -155,7 +201,7 @@ final class ContainerBuilder implements Builder
 
         return $this->generator->generate(
             $config,
-            new ConfigCache($config->getDumpFile(), true)
+            new ConfigCache($config->getDumpFile(), true),
         );
     }
 }

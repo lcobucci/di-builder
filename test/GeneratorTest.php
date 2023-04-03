@@ -38,10 +38,29 @@ final class GeneratorTest extends TestCase
     public function initializeContainerShouldAddTheConfigurationFileAsAResource(): void
     {
         $container = (new Yaml(__FILE__))->initializeContainer(
-            new ContainerConfiguration(self::DI_NAMESPACE)
+            new ContainerConfiguration(self::DI_NAMESPACE),
         );
 
         self::assertEquals([new FileResource(__FILE__)], $container->getResources());
+    }
+
+    /**
+     * @test
+     *
+     * @covers ::__construct
+     * @covers ::initializeContainer
+     */
+    public function initializeContainerCanOptionallyUseACustomClass(): void
+    {
+        $generator = $this->getMockForAbstractClass(
+            Generator::class,
+            [__FILE__, CustomContainerBuilderForTests::class],
+        );
+
+        self::assertInstanceOf(
+            CustomContainerBuilderForTests::class,
+            $generator->initializeContainer(new ContainerConfiguration('Me\\MyApp')),
+        );
     }
 
     /**
@@ -55,14 +74,14 @@ final class GeneratorTest extends TestCase
     public function generateShouldCompileAndLoadTheContainer(): void
     {
         vfsStream::setup(
-            'tests',
+            'tests-generation',
             null,
-            ['services.yml' => 'services: { testing: { class: stdClass, public: true } }']
+            ['services.yml' => 'services: { testing: { class: stdClass, public: true } }'],
         );
 
         $config = new ContainerConfiguration(
             self::DI_NAMESPACE,
-            [vfsStream::url('tests/services.yml')],
+            [vfsStream::url('tests-generation/services.yml')],
             [
                 [new ParameterBag(['app.devmode' => true]), PassConfig::TYPE_BEFORE_OPTIMIZATION],
                 [
@@ -70,7 +89,7 @@ final class GeneratorTest extends TestCase
                     PassConfig::TYPE_AFTER_REMOVING,
                     -255,
                 ],
-            ]
+            ],
         );
 
         $dump = new ConfigCache($this->dumpDirectory . '/container.php', false);

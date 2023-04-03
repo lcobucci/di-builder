@@ -14,6 +14,7 @@ use PHPUnit\Framework\TestCase;
 use SplFileInfo;
 use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
+use Symfony\Component\DependencyInjection\Container;
 
 use function count;
 use function file_get_contents;
@@ -42,37 +43,38 @@ final class CompilerTest extends TestCase
 
     private ContainerConfiguration $config;
     private ConfigCache $dump;
+    private ParameterBag $parameters;
 
     /** @before */
     public function configureDependencies(): void
     {
         vfsStream::setup(
-            'tests',
+            'tests-compilation',
             null,
-            ['services.yml' => 'services: { testing: { class: stdClass } }']
+            ['services.yml' => 'services: { testing: { class: stdClass } }'],
         );
 
-        $parameterBag = new ParameterBag();
-        $parameterBag->set('app.devmode', true);
-        $parameterBag->set('container.dumper.inline_factories', false);
-        $parameterBag->set('container.dumper.inline_class_loader', true);
+        $this->parameters = new ParameterBag();
+        $this->parameters->set('app.devmode', true);
+        $this->parameters->set('container.dumper.inline_factories', false);
+        $this->parameters->set('container.dumper.inline_class_loader', true);
 
         $this->dump = new ConfigCache($this->dumpDirectory . '/AppContainer.php', false);
 
         $this->config = new ContainerConfiguration(
-            'Me\\MyApp',
-            [vfsStream::url('tests/services.yml')],
+            'Me\\CompilationTest',
+            [vfsStream::url('tests-compilation/services.yml')],
             [
-                [$parameterBag, PassConfig::TYPE_BEFORE_OPTIMIZATION],
+                [$this->parameters, PassConfig::TYPE_BEFORE_OPTIMIZATION],
                 [[MakeServicesPublic::class, []], PassConfig::TYPE_BEFORE_OPTIMIZATION],
-            ]
+            ],
         );
 
         $this->config->setDumpDir($this->dumpDirectory);
     }
 
     /** @test */
-    public function compileShouldCreateMultipleFiles(): void
+    public function compileShouldCreateMultipleFilesForDevelopmentMode(): void
     {
         $compiler = new Compiler();
         $compiler->compile($this->config, $this->dump, new Yaml(__FILE__));
@@ -88,6 +90,25 @@ final class CompilerTest extends TestCase
     }
 
     /** @test */
+    public function compileShouldInlineFactoriesForProductionMode(): void
+    {
+        $this->parameters->set('app.devmode', false);
+        $this->parameters->set('container.dumper.inline_factories', true);
+
+        $compiler = new Compiler();
+        $compiler->compile($this->config, $this->dump, new Yaml(__FILE__));
+
+        $expectedFiles  = self::EXPECTED_FILES;
+        $generatedFiles = iterator_to_array($this->getGeneratedFiles());
+
+        self::assertCount(count($expectedFiles) - 1, $generatedFiles);
+
+        foreach ($generatedFiles as $name => $file) {
+            self::assertContains($name, $expectedFiles);
+        }
+    }
+
+    /** @test */
     public function compileShouldTrackChangesOnTheConfigurationFile(): void
     {
         $compiler = new Compiler();
@@ -95,7 +116,7 @@ final class CompilerTest extends TestCase
 
         self::assertStringContainsString(
             __FILE__,
-            (string) file_get_contents($this->dumpDirectory . '/AppContainer.php.meta')
+            (string) file_get_contents($this->dumpDirectory . '/AppContainer.php.meta'),
         );
     }
 
@@ -103,8 +124,8 @@ final class CompilerTest extends TestCase
     public function compileShouldAllowForLazyServices(): void
     {
         file_put_contents(
-            vfsStream::url('tests/services.yml'),
-            'services: { testing: { class: stdClass, lazy: true } }'
+            vfsStream::url('tests-compilation/services.yml'),
+            'services: { testing: { class: stdClass, lazy: true } }',
         );
 
         $compiler = new Compiler();
@@ -127,6 +148,23 @@ final class CompilerTest extends TestCase
         $generatedFiles = iterator_to_array($this->getGeneratedFiles());
 
         self::assertCount(1, $generatedFiles);
+    }
+
+    /** @test */
+    public function compileShouldUseCustomContainerBuilders(): void
+    {
+        $compiler = new Compiler();
+        $compiler->compile(
+            $this->config,
+            $this->dump,
+            new Yaml(__FILE__, CustomContainerBuilderForTests::class),
+        );
+
+        $container = include $this->dumpDirectory . '/AppContainer.php';
+
+        self::assertInstanceOf(Container::class, $container);
+        self::assertTrue($container->hasParameter('built-with-very-special-builder'));
+        self::assertTrue($container->getParameter('built-with-very-special-builder'));
     }
 
     /** @return PHPGenerator<string, SplFileInfo> */
