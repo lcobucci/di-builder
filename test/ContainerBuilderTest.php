@@ -176,7 +176,7 @@ final class ContainerBuilderTest extends TestCase
         $builder = new ContainerBuilder($this->config, $this->generator, $this->parameterBag);
 
         self::assertSame($builder, $builder->setBaseClass('Test'));
-        self::assertEquals('Test', $this->config->getBaseClass());
+        self::assertEquals('\\Test', $this->config->getBaseClass());
     }
 
     #[PHPUnit\Test]
