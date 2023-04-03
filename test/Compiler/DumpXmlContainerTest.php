@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Lcobucci\DependencyInjection\Compiler;
 
+use PHPUnit\Framework\Attributes as PHPUnit;
 use PHPUnit\Framework\Constraint\RegularExpression;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -10,24 +11,18 @@ use Symfony\Component\Config\ConfigCacheInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag as Parameters;
 
-/** @coversDefaultClass \Lcobucci\DependencyInjection\Compiler\DumpXmlContainer */
+#[PHPUnit\CoversClass(DumpXmlContainer::class)]
 final class DumpXmlContainerTest extends TestCase
 {
-    /** @var ConfigCacheInterface&MockObject */
-    private ConfigCacheInterface $configCache;
+    private ConfigCacheInterface&MockObject $configCache;
 
-    /** @before */
+    #[PHPUnit\Before]
     public function createConfig(): void
     {
         $this->configCache = $this->createMock(ConfigCacheInterface::class);
     }
 
-    /**
-     * @test
-     *
-     * @covers ::__construct
-     * @covers ::process
-     */
+    #[PHPUnit\Test]
     public function processShouldBeSkippedWhenDevModeIsNotEnabled(): void
     {
         $this->configCache->expects(self::never())
@@ -40,12 +35,7 @@ final class DumpXmlContainerTest extends TestCase
         $pass->process(new ContainerBuilder(new Parameters(['app.devmode' => false])));
     }
 
-    /**
-     * @test
-     *
-     * @covers ::__construct
-     * @covers ::process
-     */
+    #[PHPUnit\Test]
     public function processShouldBeSkippedWhenCacheIsFresh(): void
     {
         $this->configCache->method('isFresh')
@@ -58,12 +48,7 @@ final class DumpXmlContainerTest extends TestCase
         $pass->process(new ContainerBuilder(new Parameters(['app.devmode' => true])));
     }
 
-    /**
-     * @test
-     *
-     * @covers ::__construct
-     * @covers ::process
-     */
+    #[PHPUnit\Test]
     public function processShouldDumpTheContainerUsingTheXmlDumper(): void
     {
         $assertXmlHeader = new RegularExpression(

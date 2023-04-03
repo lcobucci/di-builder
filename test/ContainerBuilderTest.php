@@ -6,7 +6,9 @@ namespace Lcobucci\DependencyInjection;
 use Lcobucci\DependencyInjection\Compiler\ParameterBag;
 use Lcobucci\DependencyInjection\Config\ContainerConfiguration;
 use Lcobucci\DependencyInjection\Config\Package;
+use Lcobucci\DependencyInjection\Generators\Xml;
 use Lcobucci\DependencyInjection\Testing\MakeServicesPublic;
+use PHPUnit\Framework\Attributes as PHPUnit;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\ConfigCache;
@@ -17,14 +19,11 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use function get_class;
 use function iterator_to_array;
 
-/**
- * @coversDefaultClass \Lcobucci\DependencyInjection\ContainerBuilder
- *
- * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration
- * @uses \Lcobucci\DependencyInjection\Compiler\ParameterBag
- * @uses \Lcobucci\DependencyInjection\Generator
- * @uses \Lcobucci\DependencyInjection\Generators\Xml
- */
+#[PHPUnit\CoversClass(ContainerBuilder::class)]
+#[PHPUnit\UsesClass(ParameterBag::class)]
+#[PHPUnit\UsesClass(ContainerConfiguration::class)]
+#[PHPUnit\UsesClass(Generator::class)]
+#[PHPUnit\UsesClass(Xml::class)]
 final class ContainerBuilderTest extends TestCase
 {
     /** @var Generator&MockObject */
@@ -32,7 +31,7 @@ final class ContainerBuilderTest extends TestCase
     private ContainerConfiguration $config;
     private ParameterBag $parameterBag;
 
-    /** @before */
+    #[PHPUnit\Before]
     public function configureDependencies(): void
     {
         $this->generator    = $this->getMockForAbstractClass(Generator::class, [], '', false, true, true, ['generate']);
@@ -40,18 +39,8 @@ final class ContainerBuilderTest extends TestCase
         $this->parameterBag = new ParameterBag();
     }
 
-    /**
-     * @test
-     * @dataProvider supportedFormats
-     *
-     * @covers ::default
-     * @covers ::xml
-     * @covers ::delegating
-     * @covers ::php
-     * @covers ::yaml
-     * @covers ::__construct
-     * @covers ::setDefaultConfiguration
-     */
+    #[PHPUnit\Test]
+    #[PHPUnit\DataProvider('supportedFormats')]
     public function namedConstructorsShouldSimplifyTheObjectCreation(
         string $method,
         Generator $generator,
@@ -68,7 +57,7 @@ final class ContainerBuilderTest extends TestCase
     }
 
     /** @return iterable<string, array{string, Generator, 2?: class-string<\Symfony\Component\DependencyInjection\ContainerBuilder>}> */
-    public function supportedFormats(): iterable
+    public static function supportedFormats(): iterable
     {
         yield 'default' => ['default', new Generators\Xml(__FILE__)];
         yield 'xml' => ['xml', new Generators\Xml(__FILE__)];
@@ -101,33 +90,18 @@ final class ContainerBuilderTest extends TestCase
         ];
     }
 
-    /**
-     * @test
-     *
-     * @covers ::__construct
-     * @covers ::setDefaultConfiguration
-     *
-     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration
-     * @uses \Lcobucci\DependencyInjection\Compiler\ParameterBag
-     */
+    #[PHPUnit\Test]
     public function constructShouldReceiveTheDependenciesAsArguments(): void
     {
         new ContainerBuilder($this->config, $this->generator, $this->parameterBag);
 
-        self::assertNotEmpty(iterator_to_array($this->config->getPassList()));
+        self::assertNotSame([], iterator_to_array($this->config->getPassList()));
         self::assertFalse($this->parameterBag->get('app.devmode'));
         self::assertTrue($this->parameterBag->get('container.dumper.inline_class_loader'));
         self::assertTrue($this->parameterBag->get('container.dumper.inline_factories'));
     }
 
-    /**
-     * @test
-     *
-     * @covers ::setGenerator
-     *
-     * @uses \Lcobucci\DependencyInjection\ContainerBuilder::__construct
-     * @uses \Lcobucci\DependencyInjection\ContainerBuilder::setDefaultConfiguration
-     */
+    #[PHPUnit\Test]
     public function setGeneratorShouldChangeTheAttributeAndReturnSelf(): void
     {
         $builder   = new ContainerBuilder($this->config, $this->generator, $this->parameterBag);
@@ -139,14 +113,7 @@ final class ContainerBuilderTest extends TestCase
         self::assertEquals($expected, $builder);
     }
 
-    /**
-     * @test
-     *
-     * @covers ::addFile
-     *
-     * @uses \Lcobucci\DependencyInjection\ContainerBuilder::__construct
-     * @uses \Lcobucci\DependencyInjection\ContainerBuilder::setDefaultConfiguration
-     */
+    #[PHPUnit\Test]
     public function addFileShouldAppendANewFileOnTheListAndReturnSelf(): void
     {
         $builder = new ContainerBuilder($this->config, $this->generator, $this->parameterBag);
@@ -155,14 +122,7 @@ final class ContainerBuilderTest extends TestCase
         self::assertContains('test', $this->config->getFiles());
     }
 
-    /**
-     * @test
-     *
-     * @covers ::addPass
-     *
-     * @uses \Lcobucci\DependencyInjection\ContainerBuilder::__construct
-     * @uses \Lcobucci\DependencyInjection\ContainerBuilder::setDefaultConfiguration
-     */
+    #[PHPUnit\Test]
     public function addPassShouldAppendANewHandlerOnTheListAndReturnSelf(): void
     {
         $builder = new ContainerBuilder($this->config, $this->generator, $this->parameterBag);
@@ -172,14 +132,7 @@ final class ContainerBuilderTest extends TestCase
         self::assertContains([$pass, PassConfig::TYPE_BEFORE_OPTIMIZATION, 0], $this->config->getPassList());
     }
 
-    /**
-     * @test
-     *
-     * @covers ::addDelayedPass
-     *
-     * @uses \Lcobucci\DependencyInjection\ContainerBuilder::__construct
-     * @uses \Lcobucci\DependencyInjection\ContainerBuilder::setDefaultConfiguration
-     */
+    #[PHPUnit\Test]
     public function addDelayedPassShouldAppendANewHandlerOnTheListAndReturnSelf(): void
     {
         $builder = new ContainerBuilder($this->config, $this->generator, $this->parameterBag);
@@ -189,14 +142,7 @@ final class ContainerBuilderTest extends TestCase
         self::assertContains([[$pass, []], PassConfig::TYPE_BEFORE_OPTIMIZATION, 0], $this->config->getPassList());
     }
 
-    /**
-     * @test
-     *
-     * @covers ::addPackage
-     *
-     * @uses \Lcobucci\DependencyInjection\ContainerBuilder::__construct
-     * @uses \Lcobucci\DependencyInjection\ContainerBuilder::setDefaultConfiguration
-     */
+    #[PHPUnit\Test]
     public function addPackageShouldAppendANewHandlerOnTheListAndReturnSelf(): void
     {
         $builder = new ContainerBuilder($this->config, $this->generator, $this->parameterBag);
@@ -206,14 +152,7 @@ final class ContainerBuilderTest extends TestCase
         self::assertEquals([$module], $this->config->getPackages());
     }
 
-    /**
-     * @test
-     *
-     * @covers ::setDumpDir
-     *
-     * @uses \Lcobucci\DependencyInjection\ContainerBuilder::__construct
-     * @uses \Lcobucci\DependencyInjection\ContainerBuilder::setDefaultConfiguration
-     */
+    #[PHPUnit\Test]
     public function setDumpDirShouldChangeTheConfigureAndReturnSelf(): void
     {
         $builder = new ContainerBuilder($this->config, $this->generator, $this->parameterBag);
@@ -222,14 +161,7 @@ final class ContainerBuilderTest extends TestCase
         self::assertEquals('test', $this->config->getDumpDir());
     }
 
-    /**
-     * @test
-     *
-     * @covers ::addPath
-     *
-     * @uses \Lcobucci\DependencyInjection\ContainerBuilder::__construct
-     * @uses \Lcobucci\DependencyInjection\ContainerBuilder::setDefaultConfiguration
-     */
+    #[PHPUnit\Test]
     public function addPathShouldAppendANewPathOnTheListAndReturnSelf(): void
     {
         $builder = new ContainerBuilder($this->config, $this->generator, $this->parameterBag);
@@ -238,14 +170,7 @@ final class ContainerBuilderTest extends TestCase
         self::assertContains('test', $this->config->getPaths());
     }
 
-    /**
-     * @test
-     *
-     * @covers ::setBaseClass
-     *
-     * @uses \Lcobucci\DependencyInjection\ContainerBuilder::__construct
-     * @uses \Lcobucci\DependencyInjection\ContainerBuilder::setDefaultConfiguration
-     */
+    #[PHPUnit\Test]
     public function setBaseClassShouldConfigureTheBaseClassAndReturnSelf(): void
     {
         $builder = new ContainerBuilder($this->config, $this->generator, $this->parameterBag);
@@ -254,14 +179,7 @@ final class ContainerBuilderTest extends TestCase
         self::assertEquals('\\Test', $this->config->getBaseClass());
     }
 
-    /**
-     * @test
-     *
-     * @covers ::useDevelopmentMode
-     *
-     * @uses \Lcobucci\DependencyInjection\ContainerBuilder::__construct
-     * @uses \Lcobucci\DependencyInjection\ContainerBuilder::setDefaultConfiguration
-     */
+    #[PHPUnit\Test]
     public function useDevelopmentModeShouldChangeTheParameterAndReturnSelf(): void
     {
         $builder = new ContainerBuilder($this->config, $this->generator, $this->parameterBag);
@@ -272,14 +190,7 @@ final class ContainerBuilderTest extends TestCase
         self::assertFalse($this->parameterBag->get('container.dumper.inline_factories'));
     }
 
-    /**
-     * @test
-     *
-     * @covers ::setParameter
-     *
-     * @uses \Lcobucci\DependencyInjection\ContainerBuilder::__construct
-     * @uses \Lcobucci\DependencyInjection\ContainerBuilder::setDefaultConfiguration
-     */
+    #[PHPUnit\Test]
     public function setParameterShouldConfigureTheParameterAndReturnSelf(): void
     {
         $builder = new ContainerBuilder($this->config, $this->generator, $this->parameterBag);
@@ -288,14 +199,7 @@ final class ContainerBuilderTest extends TestCase
         self::assertEquals(1, $this->parameterBag->get('test'));
     }
 
-    /**
-     * @test
-     *
-     * @covers ::getContainer
-     *
-     * @uses \Lcobucci\DependencyInjection\ContainerBuilder::__construct
-     * @uses \Lcobucci\DependencyInjection\ContainerBuilder::setDefaultConfiguration
-     */
+    #[PHPUnit\Test]
     public function getContainerShouldGenerateAndReturnTheContainer(): void
     {
         $builder   = new ContainerBuilder($this->config, $this->generator, $this->parameterBag);
@@ -309,14 +213,7 @@ final class ContainerBuilderTest extends TestCase
         self::assertSame($container, $builder->getContainer());
     }
 
-    /**
-     * @test
-     *
-     * @covers ::getTestContainer
-     *
-     * @uses \Lcobucci\DependencyInjection\ContainerBuilder::__construct
-     * @uses \Lcobucci\DependencyInjection\ContainerBuilder::setDefaultConfiguration
-     */
+    #[PHPUnit\Test]
     public function getTestContainerShouldGenerateAndReturnTheContainer(): void
     {
         $builder   = new ContainerBuilder($this->config, $this->generator, $this->parameterBag);

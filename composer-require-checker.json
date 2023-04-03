@@ -1,0 +1,5 @@
+{
+  "symbol-whitelist": [
+    "Symfony\\Bridge\\ProxyManager\\LazyProxy\\PhpDumper\\ProxyDumper"
+  ]
+}

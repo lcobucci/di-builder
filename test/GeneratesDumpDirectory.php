@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Lcobucci\DependencyInjection;
 
+use PHPUnit\Framework\Attributes as PHPUnit;
+
 use function assert;
 use function exec;
 use function is_string;
@@ -14,7 +16,7 @@ trait GeneratesDumpDirectory
 {
     private string $dumpDirectory;
 
-    /** @before */
+    #[PHPUnit\Before]
     public function createDumpDir(): void
     {
         mkdir(__DIR__ . '/../tmp');
@@ -27,7 +29,7 @@ trait GeneratesDumpDirectory
         mkdir($this->dumpDirectory);
     }
 
-    /** @after */
+    #[PHPUnit\After]
     public function removeDumpDir(): void
     {
         exec('rm -rf ' . __DIR__ . '/../tmp');

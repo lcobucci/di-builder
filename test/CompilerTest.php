@@ -10,6 +10,7 @@ use Lcobucci\DependencyInjection\Config\ContainerConfiguration;
 use Lcobucci\DependencyInjection\Generators\Yaml;
 use Lcobucci\DependencyInjection\Testing\MakeServicesPublic;
 use org\bovigo\vfs\vfsStream;
+use PHPUnit\Framework\Attributes as PHPUnit;
 use PHPUnit\Framework\TestCase;
 use SplFileInfo;
 use Symfony\Component\Config\ConfigCache;
@@ -21,15 +22,12 @@ use function file_get_contents;
 use function file_put_contents;
 use function iterator_to_array;
 
-/**
- * @covers \Lcobucci\DependencyInjection\Compiler
- *
- * @uses \Lcobucci\DependencyInjection\Compiler\ParameterBag
- * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration
- * @uses \Lcobucci\DependencyInjection\Generator
- * @uses \Lcobucci\DependencyInjection\Generators\Yaml
- * @uses \Lcobucci\DependencyInjection\Testing\MakeServicesPublic
- */
+#[PHPUnit\CoversClass(Compiler::class)]
+#[PHPUnit\UsesClass(ParameterBag::class)]
+#[PHPUnit\UsesClass(ContainerConfiguration::class)]
+#[PHPUnit\UsesClass(Generator::class)]
+#[PHPUnit\UsesClass(Yaml::class)]
+#[PHPUnit\UsesClass(MakeServicesPublic::class)]
 final class CompilerTest extends TestCase
 {
     use GeneratesDumpDirectory;
@@ -45,7 +43,7 @@ final class CompilerTest extends TestCase
     private ConfigCache $dump;
     private ParameterBag $parameters;
 
-    /** @before */
+    #[PHPUnit\Before]
     public function configureDependencies(): void
     {
         vfsStream::setup(
@@ -73,7 +71,7 @@ final class CompilerTest extends TestCase
         $this->config->setDumpDir($this->dumpDirectory);
     }
 
-    /** @test */
+    #[PHPUnit\Test]
     public function compileShouldCreateMultipleFilesForDevelopmentMode(): void
     {
         $compiler = new Compiler();
@@ -89,7 +87,7 @@ final class CompilerTest extends TestCase
         }
     }
 
-    /** @test */
+    #[PHPUnit\Test]
     public function compileShouldInlineFactoriesForProductionMode(): void
     {
         $this->parameters->set('app.devmode', false);
@@ -108,7 +106,7 @@ final class CompilerTest extends TestCase
         }
     }
 
-    /** @test */
+    #[PHPUnit\Test]
     public function compileShouldTrackChangesOnTheConfigurationFile(): void
     {
         $compiler = new Compiler();
@@ -120,7 +118,7 @@ final class CompilerTest extends TestCase
         );
     }
 
-    /** @test */
+    #[PHPUnit\Test]
     public function compileShouldAllowForLazyServices(): void
     {
         file_put_contents(
@@ -137,7 +135,7 @@ final class CompilerTest extends TestCase
         self::assertCount(count($expectedFiles) + 1, $generatedFiles);
     }
 
-    /** @test */
+    #[PHPUnit\Test]
     public function compilationShouldBeSkippedWhenFileAlreadyExists(): void
     {
         file_put_contents($this->dumpDirectory . '/AppContainer.php', 'testing');
@@ -150,7 +148,7 @@ final class CompilerTest extends TestCase
         self::assertCount(1, $generatedFiles);
     }
 
-    /** @test */
+    #[PHPUnit\Test]
     public function compileShouldUseCustomContainerBuilders(): void
     {
         $compiler = new Compiler();

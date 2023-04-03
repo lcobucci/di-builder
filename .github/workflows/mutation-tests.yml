@@ -15,16 +15,16 @@ jobs:
         dependencies:
           - "locked"
         php-version:
-          - "8.0"
+          - "8.2"
         operating-system:
           - "ubuntu-latest"
 
     steps:
       - name: "Checkout"
-        uses: "actions/checkout@v2.4.0"
+        uses: "actions/checkout@v3"
 
       - name: "Install PHP"
-        uses: "shivammathur/setup-php@2.16.0"
+        uses: "shivammathur/setup-php@2.24.0"
         with:
           coverage: "xdebug"
           php-version: "${{ matrix.php-version }}"
@@ -36,7 +36,7 @@ jobs:
         run: echo "::set-output name=dir::$(composer config cache-files-dir)"
 
       - name: "Cache dependencies"
-        uses: "actions/cache@v2.1.7"
+        uses: "actions/cache@v3.3.1"
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: "php-${{ matrix.php-version }}-composer-${{ matrix.dependencies }}-${{ hashFiles('**/composer.lock') }}"
@@ -58,4 +58,4 @@ jobs:
         run: "make infection PHPUNIT_FLAGS=--coverage-clover=coverage.xml INFECTION_FLAGS=--logger-github"
 
       - name: "Upload Code Coverage"
-        uses: "codecov/codecov-action@v2.1.0"
+        uses: "codecov/codecov-action@v3.1.1"

@@ -8,33 +8,26 @@ use Lcobucci\DependencyInjection\Compiler\ParameterBag;
 use Lcobucci\DependencyInjection\Config\ContainerConfiguration;
 use Lcobucci\DependencyInjection\Generators\Yaml;
 use org\bovigo\vfs\vfsStream;
+use PHPUnit\Framework\Attributes as PHPUnit;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\Config\Resource\FileResource;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 
-/**
- * @coversDefaultClass \Lcobucci\DependencyInjection\Generator
- *
- * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration
- * @uses \Lcobucci\DependencyInjection\Compiler
- * @uses \Lcobucci\DependencyInjection\Compiler\ParameterBag
- * @uses \Lcobucci\DependencyInjection\Compiler\DumpXmlContainer
- * @uses \Lcobucci\DependencyInjection\Generators\Yaml
- */
+#[PHPUnit\CoversClass(Generator::class)]
+#[PHPUnit\UsesClass(ParameterBag::class)]
+#[PHPUnit\UsesClass(ContainerConfiguration::class)]
+#[PHPUnit\UsesClass(DumpXmlContainer::class)]
+#[PHPUnit\UsesClass(Compiler::class)]
+#[PHPUnit\UsesClass(Yaml::class)]
 final class GeneratorTest extends TestCase
 {
     use GeneratesDumpDirectory;
 
     private const DI_NAMESPACE = 'Lcobucci\\DiTests\\Generator';
 
-    /**
-     * @test
-     *
-     * @covers ::__construct
-     * @covers ::initializeContainer
-     */
+    #[PHPUnit\Test]
     public function initializeContainerShouldAddTheConfigurationFileAsAResource(): void
     {
         $container = (new Yaml(__FILE__))->initializeContainer(
@@ -44,12 +37,7 @@ final class GeneratorTest extends TestCase
         self::assertEquals([new FileResource(__FILE__)], $container->getResources());
     }
 
-    /**
-     * @test
-     *
-     * @covers ::__construct
-     * @covers ::initializeContainer
-     */
+    #[PHPUnit\Test]
     public function initializeContainerCanOptionallyUseACustomClass(): void
     {
         $generator = $this->getMockForAbstractClass(
@@ -63,14 +51,7 @@ final class GeneratorTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     *
-     * @covers ::__construct
-     * @covers ::generate
-     * @covers ::initializeContainer
-     * @covers ::loadContainer
-     */
+    #[PHPUnit\Test]
     public function generateShouldCompileAndLoadTheContainer(): void
     {
         vfsStream::setup(
