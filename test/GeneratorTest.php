@@ -6,16 +6,13 @@ namespace Lcobucci\DependencyInjection;
 use Lcobucci\DependencyInjection\Compiler\DumpXmlContainer;
 use Lcobucci\DependencyInjection\Compiler\ParameterBag;
 use Lcobucci\DependencyInjection\Config\ContainerConfiguration;
+use Lcobucci\DependencyInjection\Generators\Yaml;
 use org\bovigo\vfs\vfsStream;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 use Symfony\Component\Config\ConfigCache;
-use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Resource\FileResource;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
-use Symfony\Component\DependencyInjection\ContainerBuilder as SymfonyBuilder;
-use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 /**
  * @coversDefaultClass \Lcobucci\DependencyInjection\Generator
@@ -24,17 +21,13 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
  * @uses \Lcobucci\DependencyInjection\Compiler
  * @uses \Lcobucci\DependencyInjection\Compiler\ParameterBag
  * @uses \Lcobucci\DependencyInjection\Compiler\DumpXmlContainer
+ * @uses \Lcobucci\DependencyInjection\Generators\Yaml
  */
 final class GeneratorTest extends TestCase
 {
-    /** @var Generator&MockObject */
-    private Generator $generator;
+    use GeneratesDumpDirectory;
 
-    /** @before */
-    public function configureDependencies(): void
-    {
-        $this->generator = $this->getMockForAbstractClass(Generator::class, [__FILE__]);
-    }
+    private const DI_NAMESPACE = 'Lcobucci\\DiTests\\Generator';
 
     /**
      * @test
@@ -44,7 +37,9 @@ final class GeneratorTest extends TestCase
      */
     public function initializeContainerShouldAddTheConfigurationFileAsAResource(): void
     {
-        $container = $this->generator->initializeContainer(new ContainerConfiguration('Me\\MyApp'));
+        $container = (new Yaml(__FILE__))->initializeContainer(
+            new ContainerConfiguration(self::DI_NAMESPACE),
+        );
 
         self::assertEquals([new FileResource(__FILE__)], $container->getResources());
     }
@@ -85,34 +80,23 @@ final class GeneratorTest extends TestCase
         );
 
         $config = new ContainerConfiguration(
-            'Me\\GenerationTest',
+            self::DI_NAMESPACE,
             [vfsStream::url('tests-generation/services.yml')],
             [
                 [new ParameterBag(['app.devmode' => true]), PassConfig::TYPE_BEFORE_OPTIMIZATION],
                 [
-                    new DumpXmlContainer(
-                        new ConfigCache(vfsStream::url('tests-generation/dump.xml'), true),
-                    ),
+                    new DumpXmlContainer(new ConfigCache($this->dumpDirectory . '/dump.xml', true)),
                     PassConfig::TYPE_AFTER_REMOVING,
                     -255,
                 ],
             ],
         );
 
-        $dump = new ConfigCache(vfsStream::url('tests-generation/container.php'), false);
+        $dump = new ConfigCache($this->dumpDirectory . '/container.php', false);
 
-        $this->generator->method('getLoader')->willReturnCallback(
-            static function (SymfonyBuilder $container, array $paths): YamlFileLoader {
-                return new YamlFileLoader(
-                    $container,
-                    new FileLocator($paths),
-                );
-            },
-        );
-
-        $container = $this->generator->generate($config, $dump);
+        $container = (new Yaml(__FILE__))->generate($config, $dump);
 
         self::assertInstanceOf(stdClass::class, $container->get('testing'));
-        self::assertFileExists(vfsStream::url('tests-generation/dump.xml'));
+        self::assertFileExists($this->dumpDirectory . '/dump.xml');
     }
 }
