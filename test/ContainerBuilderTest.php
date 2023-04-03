@@ -114,7 +114,7 @@ final class ContainerBuilderTest extends TestCase
     {
         new ContainerBuilder($this->config, $this->generator, $this->parameterBag);
 
-        self::assertNotEmpty($this->config->getPassList());
+        self::assertNotEmpty(iterator_to_array($this->config->getPassList()));
         self::assertFalse($this->parameterBag->get('app.devmode'));
         self::assertTrue($this->parameterBag->get('container.dumper.inline_class_loader'));
         self::assertTrue($this->parameterBag->get('container.dumper.inline_factories'));
@@ -134,6 +134,7 @@ final class ContainerBuilderTest extends TestCase
         $generator = $this->getMockForAbstractClass(Generator::class, [], '', false);
         $expected  = new ContainerBuilder($this->config, $generator, $this->parameterBag);
 
+        // @phpstan-ignore-next-line method is deprecated and will be removed in the next major version
         self::assertSame($builder, $builder->setGenerator($generator));
         self::assertEquals($expected, $builder);
     }

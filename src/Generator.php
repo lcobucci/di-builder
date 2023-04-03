@@ -10,6 +10,9 @@ use Symfony\Component\Config\Resource\FileResource;
 use Symfony\Component\DependencyInjection\ContainerBuilder as SymfonyBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+use function assert;
+use function is_a;
+
 abstract class Generator
 {
     private Compiler $compiler;
@@ -41,6 +44,7 @@ abstract class Generator
     {
         require_once $dump->getPath();
         $className = $config->getClassName();
+        assert(is_a($className, ContainerInterface::class, true));
 
         return new $className();
     }
