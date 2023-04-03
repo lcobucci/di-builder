@@ -176,7 +176,7 @@ final class ContainerConfiguration
 
     public function setBaseClass(string $baseClass): void
     {
-        $this->baseClass = $baseClass;
+        $this->baseClass = '\\' . ltrim($baseClass, '\\');
     }
 
     public function withSubNamespace(string $namespace): self
