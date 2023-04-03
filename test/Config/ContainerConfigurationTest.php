@@ -341,7 +341,23 @@ final class ContainerConfigurationTest extends TestCase
         $config = new ContainerConfiguration('Me\\MyApp');
         $config->setBaseClass('Test');
 
-        self::assertSame('Test', $config->getBaseClass());
+        self::assertSame('\\Test', $config->getBaseClass());
+    }
+
+    /**
+     * @test
+     *
+     * @covers ::setBaseClass
+     * @covers ::getBaseClass
+     *
+     * @uses \Lcobucci\DependencyInjection\Config\ContainerConfiguration::__construct
+     */
+    public function setBaseClassShouldTrimTheLeadingSlash(): void
+    {
+        $config = new ContainerConfiguration('Me\\MyApp');
+        $config->setBaseClass('\\Test');
+
+        self::assertSame('\\Test', $config->getBaseClass());
     }
 
     /**
@@ -426,7 +442,7 @@ final class ContainerConfigurationTest extends TestCase
         $options = [
             'class'        => ContainerConfiguration::CLASS_NAME,
             'namespace'    => 'Me\\MyApp',
-            'base_class'   => 'Test',
+            'base_class'   => '\\Test',
             'hot_path_tag' => 'container.hot_path',
         ];
 
