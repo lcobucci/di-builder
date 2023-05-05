@@ -196,7 +196,7 @@ final class ContainerConfiguration
     {
         $options = [
             'class' => self::CLASS_NAME,
-            'namespace' => $this->namespace,
+            'namespace' => ltrim($this->namespace, '\\'),
         ];
 
         if ($this->baseClass !== null) {
