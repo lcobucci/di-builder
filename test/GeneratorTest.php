@@ -40,10 +40,7 @@ final class GeneratorTest extends TestCase
     #[PHPUnit\Test]
     public function initializeContainerCanOptionallyUseACustomClass(): void
     {
-        $generator = $this->getMockForAbstractClass(
-            Generator::class,
-            [__FILE__, CustomContainerBuilderForTests::class],
-        );
+        $generator = new Yaml(__FILE__, CustomContainerBuilderForTests::class);
 
         self::assertInstanceOf(
             CustomContainerBuilderForTests::class,

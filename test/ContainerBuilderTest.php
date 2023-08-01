@@ -26,15 +26,14 @@ use function iterator_to_array;
 #[PHPUnit\UsesClass(Xml::class)]
 final class ContainerBuilderTest extends TestCase
 {
-    /** @var Generator&MockObject */
-    private Generator $generator;
+    private Generator&MockObject $generator;
     private ContainerConfiguration $config;
     private ParameterBag $parameterBag;
 
     #[PHPUnit\Before]
     public function configureDependencies(): void
     {
-        $this->generator    = $this->getMockForAbstractClass(Generator::class, [], '', false, true, true, ['generate']);
+        $this->generator    = $this->createMock(Generator::class);
         $this->config       = new ContainerConfiguration('Me\\MyApp');
         $this->parameterBag = new ParameterBag();
     }
@@ -105,7 +104,7 @@ final class ContainerBuilderTest extends TestCase
     public function setGeneratorShouldChangeTheAttributeAndReturnSelf(): void
     {
         $builder   = new ContainerBuilder($this->config, $this->generator, $this->parameterBag);
-        $generator = $this->getMockForAbstractClass(Generator::class, [], '', false);
+        $generator = $this->createMock(Generator::class);
         $expected  = new ContainerBuilder($this->config, $generator, $this->parameterBag);
 
         // @phpstan-ignore-next-line method is deprecated and will be removed in the next major version
