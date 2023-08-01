@@ -319,6 +319,36 @@ final class ContainerConfigurationTest extends TestCase
     }
 
     #[PHPUnit\Test]
+    public function getDumpOptionsNamespaceShouldNeverStartWithBackSlash(): void
+    {
+        $config = new ContainerConfiguration('\\MyApp');
+        $config->setBaseClass('Test');
+
+        $options = [
+            'class'        => ContainerConfiguration::CLASS_NAME,
+            'namespace'    => 'MyApp',
+            'base_class'   => '\\Test',
+            'hot_path_tag' => 'container.hot_path',
+        ];
+
+        self::assertSame($options, $config->getDumpOptions());
+    }
+
+    #[PHPUnit\Test]
+    public function getDumpOptionsNamespaceShouldAcceptSubNamespaceWithoutMainNamespace(): void
+    {
+        $config = (new ContainerConfiguration(''))->withSubNamespace('Test');
+
+        $options = [
+            'class'        => ContainerConfiguration::CLASS_NAME,
+            'namespace' => 'Test',
+            'hot_path_tag' => 'container.hot_path',
+        ];
+
+        self::assertSame($options, $config->getDumpOptions());
+    }
+
+    #[PHPUnit\Test]
     public function withAddedNamespaceShouldModifyTheNamespaceOfANewInstanceOnly(): void
     {
         $config = new ContainerConfiguration('Me\\MyApp');

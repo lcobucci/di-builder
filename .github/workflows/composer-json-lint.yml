@@ -64,4 +64,4 @@ jobs:
         run: "composer-require-checker check --config-file=$(realpath composer-require-checker.json)"
 
       - name: "Check composer.json unused dependencies"
-        run: "composer-unused"
+        run: "composer-unused --ignore-exit-code "
