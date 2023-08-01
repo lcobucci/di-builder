@@ -5,7 +5,6 @@ namespace Lcobucci\DependencyInjection;
 
 use Lcobucci\DependencyInjection\Config\ContainerConfiguration;
 use RuntimeException;
-use Symfony\Bridge\ProxyManager\LazyProxy\PhpDumper\ProxyDumper;
 use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
@@ -15,7 +14,6 @@ use Symfony\Component\Filesystem\Filesystem;
 
 use function array_pop;
 use function assert;
-use function class_exists;
 use function dirname;
 use function is_array;
 use function is_string;
@@ -83,7 +81,7 @@ final class Compiler
         $options['debug']    = $container->getParameter('app.devmode');
         $options['as_files'] = true;
 
-        $content = $this->getDumper($container)->dump($options);
+        $content = (new PhpDumper($container))->dump($options);
         assert(is_array($content));
 
         return $content;
@@ -110,16 +108,5 @@ final class Compiler
         }
 
         $dump->write($rootCode, $container->getResources());
-    }
-
-    private function getDumper(SymfonyBuilder $container): PhpDumper
-    {
-        $dumper = new PhpDumper($container);
-
-        if (class_exists(ProxyDumper::class)) {
-            $dumper->setProxyDumper(new ProxyDumper());
-        }
-
-        return $dumper;
     }
 }
