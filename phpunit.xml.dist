@@ -11,15 +11,15 @@
     beStrictAboutCoverageMetadata="true"
     displayDetailsOnTestsThatTriggerDeprecations="true"
 >
-    <coverage>
-        <include>
-            <directory suffix=".php">src</directory>
-        </include>
-    </coverage>
-
     <testsuites>
         <testsuite name="DI Builder Test Suite">
             <directory>test</directory>
         </testsuite>
     </testsuites>
+
+    <source>
+        <include>
+            <directory suffix=".php">src</directory>
+        </include>
+    </source>
 </phpunit>
