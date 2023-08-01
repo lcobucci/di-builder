@@ -33,7 +33,6 @@
         "phpstan/phpstan-strict-rules": "^1.5.1",
         "phpunit/phpunit": "^10.0.19",
         "squizlabs/php_codesniffer": "^3.7.2",
-        "symfony/proxy-manager-bridge": "^6.3.0",
         "symfony/yaml": "^6.3.3"
     },
     "replace": {
@@ -44,9 +43,6 @@
         "symfony/polyfill-php80": "*",
         "symfony/polyfill-php81": "*",
         "symfony/polyfill-php82": "*"
-    },
-    "suggest": {
-        "symfony/proxy-manager-bridge": "Allows the creation of lazy services"
     },
     "autoload": {
         "psr-4": {

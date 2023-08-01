@@ -9,6 +9,7 @@
     cacheDirectory=".phpunit.cache"
     requireCoverageMetadata="true"
     beStrictAboutCoverageMetadata="true"
+    displayDetailsOnTestsThatTriggerDeprecations="true"
 >
     <coverage>
         <include>
