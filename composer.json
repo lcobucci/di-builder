@@ -58,8 +58,8 @@
         "allow-plugins": {
             "dealerdirect/phpcodesniffer-composer-installer": true,
             "infection/extension-installer": true,
-            "phpstan/extension-installer": true,
-            "ocramius/package-versions": true
+            "ocramius/package-versions": true,
+            "phpstan/extension-installer": true
         },
         "preferred-install": "dist",
         "sort-packages": true
