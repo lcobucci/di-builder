@@ -16,16 +16,13 @@ use function is_a;
 abstract class Generator
 {
     private Compiler $compiler;
-    /** @var class-string<SymfonyBuilder> */
-    private string $builderClass;
 
-    /** @param class-string<SymfonyBuilder>|null $builderClass */
+    /** @param class-string<SymfonyBuilder> $builderClass */
     public function __construct(
-        private string $configurationFile,
-        ?string $builderClass = null,
+        private readonly string $configurationFile,
+        private readonly string $builderClass = SymfonyBuilder::class,
     ) {
-        $this->compiler     = new Compiler();
-        $this->builderClass = $builderClass ?? SymfonyBuilder::class;
+        $this->compiler = new Compiler();
     }
 
     /**

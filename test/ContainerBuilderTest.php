@@ -14,6 +14,7 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
+use Symfony\Component\DependencyInjection\ContainerBuilder as SymfonyBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 use function get_class;
@@ -43,7 +44,7 @@ final class ContainerBuilderTest extends TestCase
     public function namedConstructorsShouldSimplifyTheObjectCreation(
         string $method,
         Generator $generator,
-        ?string $builderClass = null,
+        string $builderClass = SymfonyBuilder::class,
     ): void {
         $expected = new ContainerBuilder(
             new ContainerConfiguration('Lcobucci\\DependencyInjection'),

@@ -38,11 +38,11 @@ final class ContainerBuilder implements Builder
         return self::xml($configurationFile, $namespace);
     }
 
-    /** @param class-string<SymfonyBuilder>|null $builderClass */
+    /** @param class-string<SymfonyBuilder> $builderClass */
     public static function xml(
         string $configurationFile,
         string $namespace,
-        ?string $builderClass = null,
+        string $builderClass = SymfonyBuilder::class,
     ): self {
         return new self(
             new ContainerConfiguration($namespace),
@@ -51,11 +51,11 @@ final class ContainerBuilder implements Builder
         );
     }
 
-    /** @param class-string<SymfonyBuilder>|null $builderClass */
+    /** @param class-string<SymfonyBuilder> $builderClass */
     public static function php(
         string $configurationFile,
         string $namespace,
-        ?string $builderClass = null,
+        string $builderClass = SymfonyBuilder::class,
     ): self {
         return new self(
             new ContainerConfiguration($namespace),
@@ -64,11 +64,11 @@ final class ContainerBuilder implements Builder
         );
     }
 
-    /** @param class-string<SymfonyBuilder>|null $builderClass */
+    /** @param class-string<SymfonyBuilder> $builderClass */
     public static function yaml(
         string $configurationFile,
         string $namespace,
-        ?string $builderClass = null,
+        string $builderClass = SymfonyBuilder::class,
     ): self {
         return new self(
             new ContainerConfiguration($namespace),
@@ -77,11 +77,11 @@ final class ContainerBuilder implements Builder
         );
     }
 
-    /** @param class-string<SymfonyBuilder>|null $builderClass */
+    /** @param class-string<SymfonyBuilder> $builderClass */
     public static function delegating(
         string $configurationFile,
         string $namespace,
-        ?string $builderClass = null,
+        string $builderClass = SymfonyBuilder::class,
     ): self {
         return new self(
             new ContainerConfiguration($namespace),
