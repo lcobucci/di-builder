@@ -34,10 +34,11 @@ $testContainer = $builder->getTestContainer();
 * `ContainerBuilder#addPass()`: Adds an instance of a [Compiler Pass](compiler-passes.md) to be processed
 * `ContainerBuilder#addDelayedPass()`: Adds a reference (class name and constructor arguments) of a [Compiler Pass](compiler-passes.md) to be processed
 * `ContainerBuilder#addPackage()`: Adds a reference (class name and constructor arguments) of a [Package](packages.md) to be processed
-* `ContainerBuilder#useDevelopmentMode()`: Optimises the generate container for development purposes (configures the compiler to track file changes and update the cache)
+* `ContainerBuilder#enableDebugging()`: Configures the compiler to track file changes and update the cache, optimised for local development purposes
 * `ContainerBuilder#setDumpDir()`: Configures the directory to be used to dump the cache files
 * `ContainerBuilder#setParameter()`: Configures a dynamic parameter
 * `ContainerBuilder#setBaseClass()`: Modifies which class should be used as base class for the container
+* `ContainerBuilder#setProfileName()`: Enables the loading of application profile-specific services via the `when@{profile-name}` syntax
 
 ## Configuration file example
 
@@ -59,11 +60,12 @@ require __DIR__ . '/../vendor/autoload.php';
 $builder     = ContainerBuilder::xml(__FILE__, __NAMESPACE__);
 $projectRoot = dirname(__DIR__);
 
-if (getenv('APPLICATION_MODE', true) === 'development') {
-    $builder->useDevelopmentMode();
+if (getenv('APP_PROFILE') !== 'prod') {
+    $builder->enableDebugging();
 }
 
-return $builder->setDumpDir($projectRoot . '/var/tmp')
+return $builder->setProfileName(getenv('APP_PROFILE'))
+               ->setDumpDir($projectRoot . '/var/tmp')
                ->setParameter('app.basedir', $projectRoot)
                ->addFile(__DIR__ . '/container.xml')
                ->getContainer();

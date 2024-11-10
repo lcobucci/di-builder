@@ -16,16 +16,13 @@ use function is_a;
 abstract class Generator
 {
     private Compiler $compiler;
-    /** @var class-string<SymfonyBuilder> */
-    private string $builderClass;
 
-    /** @param class-string<SymfonyBuilder>|null $builderClass */
+    /** @param class-string<SymfonyBuilder> $builderClass */
     public function __construct(
-        private string $configurationFile,
-        ?string $builderClass = null,
+        private readonly string $configurationFile,
+        private readonly string $builderClass = SymfonyBuilder::class,
     ) {
-        $this->compiler     = new Compiler();
-        $this->builderClass = $builderClass ?? SymfonyBuilder::class;
+        $this->compiler = new Compiler();
     }
 
     /**
@@ -54,7 +51,7 @@ abstract class Generator
         $container = new $this->builderClass();
         $container->addResource(new FileResource($this->configurationFile));
 
-        $loader = $this->getLoader($container, $config->getPaths());
+        $loader = $this->getLoader($container, $config->getPaths(), $config->profileName());
 
         foreach ($config->getFiles() as $file) {
             $loader->load($file);
@@ -64,5 +61,9 @@ abstract class Generator
     }
 
     /** @param string[] $paths */
-    abstract public function getLoader(SymfonyBuilder $container, array $paths): LoaderInterface;
+    abstract public function getLoader(
+        SymfonyBuilder $container,
+        array $paths,
+        ?string $profileName = null,
+    ): LoaderInterface;
 }

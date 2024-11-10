@@ -14,6 +14,7 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
+use Symfony\Component\DependencyInjection\ContainerBuilder as SymfonyBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 use function get_class;
@@ -43,7 +44,7 @@ final class ContainerBuilderTest extends TestCase
     public function namedConstructorsShouldSimplifyTheObjectCreation(
         string $method,
         Generator $generator,
-        ?string $builderClass = null,
+        string $builderClass = SymfonyBuilder::class,
     ): void {
         $expected = new ContainerBuilder(
             new ContainerConfiguration('Lcobucci\\DependencyInjection'),
@@ -177,11 +178,11 @@ final class ContainerBuilderTest extends TestCase
     }
 
     #[PHPUnit\Test]
-    public function useDevelopmentModeShouldChangeTheParameterAndReturnSelf(): void
+    public function enableDebuggingShouldChangeTheParameterAndReturnSelf(): void
     {
         $builder = new ContainerBuilder($this->config, $this->generator, $this->parameterBag);
 
-        self::assertSame($builder, $builder->useDevelopmentMode());
+        self::assertSame($builder, $builder->enableDebugging());
         self::assertTrue($this->parameterBag->get('app.devmode'));
     }
 
@@ -230,5 +231,14 @@ final class ContainerBuilderTest extends TestCase
         $compilerPasses = iterator_to_array($this->config->getPassList());
         self::assertCount(1, $compilerPasses);
         self::assertSame($this->parameterBag, $compilerPasses[0][0]);
+    }
+
+    #[PHPUnit\Test]
+    public function profileNameShouldBeConfigurable(): void
+    {
+        $builder = new ContainerBuilder($this->config, $this->generator, $this->parameterBag);
+        $builder->setProfileName('testing');
+
+        self::assertSame('testing', $this->config->profileName());
     }
 }

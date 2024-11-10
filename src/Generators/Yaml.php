@@ -15,11 +15,12 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 final class Yaml extends Generator
 {
     /** @inheritDoc */
-    public function getLoader(SymfonyBuilder $container, array $paths): LoaderInterface
+    public function getLoader(SymfonyBuilder $container, array $paths, ?string $profileName = null): LoaderInterface
     {
         return new YamlFileLoader(
             $container,
             new FileLocator($paths),
+            $profileName,
         );
     }
 }

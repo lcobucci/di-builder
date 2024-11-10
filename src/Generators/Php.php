@@ -15,11 +15,12 @@ use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 final class Php extends Generator
 {
     /** @inheritDoc */
-    public function getLoader(SymfonyBuilder $container, array $paths): LoaderInterface
+    public function getLoader(SymfonyBuilder $container, array $paths, ?string $profileName = null): LoaderInterface
     {
         return new PhpFileLoader(
             $container,
             new FileLocator($paths),
+            $profileName,
         );
     }
 }
