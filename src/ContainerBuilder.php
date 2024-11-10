@@ -25,19 +25,6 @@ final class ContainerBuilder implements Builder
         $this->setDefaultConfiguration();
     }
 
-    /**
-     * @deprecated Use the named constructor according to the generator
-     *
-     * @see ContainerBuilder::xml()
-     * @see ContainerBuilder::yaml()
-     * @see ContainerBuilder::php()
-     * @see ContainerBuilder::delegating()
-     */
-    public static function default(string $configurationFile, string $namespace): self
-    {
-        return self::xml($configurationFile, $namespace);
-    }
-
     /** @param class-string<SymfonyBuilder> $builderClass */
     public static function xml(
         string $configurationFile,
@@ -100,13 +87,6 @@ final class ContainerBuilder implements Builder
         $this->config->addPass($this->parameterBag);
     }
 
-    public function setGenerator(Generator $generator): Builder
-    {
-        $this->generator = $generator;
-
-        return $this;
-    }
-
     public function addFile(string $file): Builder
     {
         $this->config->addFile($file);
@@ -149,11 +129,6 @@ final class ContainerBuilder implements Builder
         $this->config->setProfileName($profileName);
 
         return $this;
-    }
-
-    public function useDevelopmentMode(): Builder
-    {
-        return $this->enableDebugging();
     }
 
     public function enableDebugging(): Builder

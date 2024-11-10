@@ -59,7 +59,6 @@ final class ContainerBuilderTest extends TestCase
     /** @return iterable<string, array{string, Generator, 2?: class-string<\Symfony\Component\DependencyInjection\ContainerBuilder>}> */
     public static function supportedFormats(): iterable
     {
-        yield 'default' => ['default', new Generators\Xml(__FILE__)];
         yield 'xml' => ['xml', new Generators\Xml(__FILE__)];
         yield 'yaml' => ['yaml', new Generators\Yaml(__FILE__)];
         yield 'php' => ['php', new Generators\Php(__FILE__)];
@@ -97,18 +96,6 @@ final class ContainerBuilderTest extends TestCase
 
         self::assertNotSame([], iterator_to_array($this->config->getPassList()));
         self::assertFalse($this->parameterBag->get('app.devmode'));
-    }
-
-    #[PHPUnit\Test]
-    public function setGeneratorShouldChangeTheAttributeAndReturnSelf(): void
-    {
-        $builder   = new ContainerBuilder($this->config, $this->generator, $this->parameterBag);
-        $generator = $this->createMock(Generator::class);
-        $expected  = new ContainerBuilder($this->config, $generator, $this->parameterBag);
-
-        // @phpstan-ignore-next-line method is deprecated and will be removed in the next major version
-        self::assertSame($builder, $builder->setGenerator($generator));
-        self::assertEquals($expected, $builder);
     }
 
     #[PHPUnit\Test]
