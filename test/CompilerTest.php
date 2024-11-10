@@ -54,8 +54,6 @@ final class CompilerTest extends TestCase
 
         $this->parameters = new ParameterBag();
         $this->parameters->set('app.devmode', true);
-        $this->parameters->set('container.dumper.inline_factories', false);
-        $this->parameters->set('container.dumper.inline_class_loader', true);
 
         $this->dump = new ConfigCache($this->dumpDirectory . '/AppContainer.php', false);
 
@@ -91,7 +89,6 @@ final class CompilerTest extends TestCase
     public function compileShouldInlineFactoriesForProductionMode(): void
     {
         $this->parameters->set('app.devmode', false);
-        $this->parameters->set('container.dumper.inline_factories', true);
 
         $compiler = new Compiler();
         $compiler->compile($this->config, $this->dump, new Yaml(__FILE__));
