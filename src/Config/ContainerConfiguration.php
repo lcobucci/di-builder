@@ -31,6 +31,8 @@ final class ContainerConfiguration
 
     private string $dumpDir;
 
+    private ?string $profileName = null;
+
     /**
      * phpcs:disable Generic.Files.LineLength
      *
@@ -49,6 +51,16 @@ final class ContainerConfiguration
         private array $packages = [],
     ) {
         $this->dumpDir = sys_get_temp_dir();
+    }
+
+    public function setProfileName(string $profileName): void
+    {
+        $this->profileName = $profileName;
+    }
+
+    public function profileName(): ?string
+    {
+        return $this->profileName;
     }
 
     /** @return Package[] */
@@ -183,6 +195,7 @@ final class ContainerConfiguration
     {
         return $this->dumpDir . DIRECTORY_SEPARATOR
              . strtolower(str_replace('\\', '_', $this->namespace)) . DIRECTORY_SEPARATOR
+             . ($this->profileName !== null ? $this->profileName . DIRECTORY_SEPARATOR : '')
              . self::CLASS_NAME . '.php';
     }
 

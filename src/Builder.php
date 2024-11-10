@@ -54,6 +54,11 @@ interface Builder
     public function addPackage(string $className, array $constructArguments = []): Builder;
 
     /**
+     * Configures the application profile name to support profile-specific services
+     */
+    public function setProfileName(string $profileName): Builder;
+
+    /**
      * Mark the container to be used as development mode
      *
      * @deprecated this method will be removed in favour of a more explicit name.

@@ -290,6 +290,19 @@ final class ContainerConfigurationTest extends TestCase
     }
 
     #[PHPUnit\Test]
+    public function getDumpFileShouldIncludeProfileNameWhenItIsSet(): void
+    {
+        $config = new ContainerConfiguration('Me\\MyApp');
+        $config->setProfileName('prod');
+
+        self::assertEquals(
+            sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'me_myapp' . DIRECTORY_SEPARATOR
+            . 'prod' . DIRECTORY_SEPARATOR . 'AppContainer.php',
+            $config->getDumpFile(),
+        );
+    }
+
+    #[PHPUnit\Test]
     public function getDumpOptionsShouldReturnTheDumpingInformation(): void
     {
         $config  = new ContainerConfiguration('Me\\MyApp');
@@ -356,5 +369,17 @@ final class ContainerConfigurationTest extends TestCase
 
         self::assertSame('Me\\MyApp\\AppContainer', $config->getClassName());
         self::assertSame('Me\\MyApp\\Testing\\AppContainer', $other->getClassName());
+    }
+
+    #[PHPUnit\Test]
+    public function profileNameShouldBeConfigurable(): void
+    {
+        $config = new ContainerConfiguration('Me\\MyApp');
+
+        self::assertNull($config->profileName());
+
+        $config->setProfileName('test');
+
+        self::assertSame('test', $config->profileName());
     }
 }

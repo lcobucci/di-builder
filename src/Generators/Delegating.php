@@ -19,16 +19,16 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 final class Delegating extends Generator
 {
     /** @inheritDoc */
-    public function getLoader(SymfonyBuilder $container, array $paths): LoaderInterface
+    public function getLoader(SymfonyBuilder $container, array $paths, ?string $profileName = null): LoaderInterface
     {
         $locator = new FileLocator($paths);
 
         return new DelegatingLoader(
             new LoaderResolver(
                 [
-                    new XmlFileLoader($container, $locator),
-                    new YamlFileLoader($container, $locator),
-                    new PhpFileLoader($container, $locator),
+                    new XmlFileLoader($container, $locator, $profileName),
+                    new YamlFileLoader($container, $locator, $profileName),
+                    new PhpFileLoader($container, $locator, $profileName),
                 ],
             ),
         );

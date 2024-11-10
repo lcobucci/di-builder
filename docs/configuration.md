@@ -38,6 +38,7 @@ $testContainer = $builder->getTestContainer();
 * `ContainerBuilder#setDumpDir()`: Configures the directory to be used to dump the cache files
 * `ContainerBuilder#setParameter()`: Configures a dynamic parameter
 * `ContainerBuilder#setBaseClass()`: Modifies which class should be used as base class for the container
+* `ContainerBuilder#setProfileName()`: Enables the loading of application profile-specific services via the `when@{profile-name}` syntax
 
 ## Configuration file example
 
@@ -63,7 +64,8 @@ if (getenv('APP_PROFILE') !== 'prod') {
     $builder->enableDebugging();
 }
 
-return $builder->setDumpDir($projectRoot . '/var/tmp')
+return $builder->setProfileName(getenv('APP_PROFILE'))
+               ->setDumpDir($projectRoot . '/var/tmp')
                ->setParameter('app.basedir', $projectRoot)
                ->addFile(__DIR__ . '/container.xml')
                ->getContainer();

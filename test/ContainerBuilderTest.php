@@ -232,4 +232,13 @@ final class ContainerBuilderTest extends TestCase
         self::assertCount(1, $compilerPasses);
         self::assertSame($this->parameterBag, $compilerPasses[0][0]);
     }
+
+    #[PHPUnit\Test]
+    public function profileNameShouldBeConfigurable(): void
+    {
+        $builder = new ContainerBuilder($this->config, $this->generator, $this->parameterBag);
+        $builder->setProfileName('testing');
+
+        self::assertSame('testing', $this->config->profileName());
+    }
 }

@@ -144,6 +144,13 @@ final class ContainerBuilder implements Builder
         return $this;
     }
 
+    public function setProfileName(string $profileName): Builder
+    {
+        $this->config->setProfileName($profileName);
+
+        return $this;
+    }
+
     public function useDevelopmentMode(): Builder
     {
         return $this->enableDebugging();

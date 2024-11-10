@@ -51,7 +51,7 @@ abstract class Generator
         $container = new $this->builderClass();
         $container->addResource(new FileResource($this->configurationFile));
 
-        $loader = $this->getLoader($container, $config->getPaths());
+        $loader = $this->getLoader($container, $config->getPaths(), $config->profileName());
 
         foreach ($config->getFiles() as $file) {
             $loader->load($file);
@@ -61,5 +61,9 @@ abstract class Generator
     }
 
     /** @param string[] $paths */
-    abstract public function getLoader(SymfonyBuilder $container, array $paths): LoaderInterface;
+    abstract public function getLoader(
+        SymfonyBuilder $container,
+        array $paths,
+        ?string $profileName = null,
+    ): LoaderInterface;
 }
