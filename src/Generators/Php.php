@@ -11,6 +11,8 @@ use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 
 /**
  * The dependency injection generator for PHP files
+ *
+ * @internal
  */
 final readonly class Php extends Generator
 {

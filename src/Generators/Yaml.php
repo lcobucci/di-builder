@@ -11,6 +11,8 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 /**
  * The dependency injection generator for YAML files
+ *
+ * @internal
  */
 final readonly class Yaml extends Generator
 {

@@ -6,6 +6,7 @@ namespace Lcobucci\DependencyInjection\Testing;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
+/** @internal */
 final class MakeServicesPublic implements CompilerPassInterface
 {
     /**

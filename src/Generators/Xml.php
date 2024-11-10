@@ -11,6 +11,8 @@ use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 
 /**
  * The dependency injection generator for XML files
+ *
+ * @internal
  */
 final readonly class Xml extends Generator
 {

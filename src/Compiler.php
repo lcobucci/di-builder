@@ -18,6 +18,7 @@ use function dirname;
 use function is_array;
 use function is_string;
 
+/** @internal */
 final readonly class Compiler
 {
     private const DEFAULT_PASS_CONFIG = [null, PassConfig::TYPE_BEFORE_OPTIMIZATION, 0];

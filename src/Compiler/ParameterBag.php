@@ -10,6 +10,8 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  * Injects parameters into the container
  *
  * You should use this to define dynamic parameters using PHP
+ *
+ * @internal
  */
 final class ParameterBag implements CompilerPassInterface
 {

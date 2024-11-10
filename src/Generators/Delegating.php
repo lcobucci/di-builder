@@ -15,6 +15,8 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 /**
  * The dependency injection generator that allows XML, YAML and PHP files
+ *
+ * @internal
  */
 final readonly class Delegating extends Generator
 {

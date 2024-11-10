@@ -13,6 +13,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use function assert;
 use function is_a;
 
+/** @internal */
 abstract readonly class Generator
 {
     private Compiler $compiler;
