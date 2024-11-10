@@ -13,14 +13,15 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use function assert;
 use function is_a;
 
-abstract class Generator
+/** @internal */
+abstract readonly class Generator
 {
     private Compiler $compiler;
 
     /** @param class-string<SymfonyBuilder> $builderClass */
     public function __construct(
-        private readonly string $configurationFile,
-        private readonly string $builderClass = SymfonyBuilder::class,
+        private string $configurationFile,
+        private string $builderClass = SymfonyBuilder::class,
     ) {
         $this->compiler = new Compiler();
     }

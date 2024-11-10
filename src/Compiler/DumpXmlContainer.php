@@ -8,7 +8,7 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Dumper\XmlDumper;
 
-final class DumpXmlContainer implements CompilerPassInterface
+final readonly class DumpXmlContainer implements CompilerPassInterface
 {
     public function __construct(private ConfigCacheInterface $configCache)
     {

@@ -16,13 +16,6 @@ interface Builder
     public const DEFAULT_PRIORITY = 0;
 
     /**
-     * Changes the generator to handle the files
-     *
-     * @deprecated This is deprecated in favour of using the correct naming constructor.
-     */
-    public function setGenerator(Generator $generator): Builder;
-
-    /**
      * Add a file to be loaded
      */
     public function addFile(string $file): Builder;
@@ -57,15 +50,6 @@ interface Builder
      * Configures the application profile name to support profile-specific services
      */
     public function setProfileName(string $profileName): Builder;
-
-    /**
-     * Mark the container to be used as development mode
-     *
-     * @deprecated this method will be removed in favour of a more explicit name.
-     *
-     * @see enableDebugging
-     */
-    public function useDevelopmentMode(): Builder;
 
     /**
      * Configure the container to track file updates

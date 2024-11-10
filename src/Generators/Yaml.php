@@ -11,8 +11,10 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 /**
  * The dependency injection generator for YAML files
+ *
+ * @internal
  */
-final class Yaml extends Generator
+final readonly class Yaml extends Generator
 {
     /** @inheritDoc */
     public function getLoader(SymfonyBuilder $container, array $paths, ?string $profileName = null): LoaderInterface

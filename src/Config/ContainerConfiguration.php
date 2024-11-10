@@ -20,6 +20,7 @@ use function sys_get_temp_dir;
 
 use const DIRECTORY_SEPARATOR;
 
+/** @internal */
 final class ContainerConfiguration
 {
     public const CLASS_NAME = 'AppContainer';

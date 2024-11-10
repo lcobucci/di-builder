@@ -18,7 +18,8 @@ use function dirname;
 use function is_array;
 use function is_string;
 
-final class Compiler
+/** @internal */
+final readonly class Compiler
 {
     private const DEFAULT_PASS_CONFIG = [null, PassConfig::TYPE_BEFORE_OPTIMIZATION, 0];
 
@@ -82,7 +83,7 @@ final class Compiler
         $options['as_files'] = true;
 
         $options['inline_factories']    = $options['debug'] === false;
-        $options['inline_class_loader'] = $options['debug'] === false;
+        $options['inline_class_loader'] = $options['inline_factories'];
 
         $content = (new PhpDumper($container))->dump($options);
         assert(is_array($content));

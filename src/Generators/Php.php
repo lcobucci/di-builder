@@ -11,8 +11,10 @@ use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 
 /**
  * The dependency injection generator for PHP files
+ *
+ * @internal
  */
-final class Php extends Generator
+final readonly class Php extends Generator
 {
     /** @inheritDoc */
     public function getLoader(SymfonyBuilder $container, array $paths, ?string $profileName = null): LoaderInterface
