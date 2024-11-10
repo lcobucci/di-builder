@@ -81,6 +81,9 @@ final class Compiler
         $options['debug']    = $container->getParameter('app.devmode');
         $options['as_files'] = true;
 
+        $options['inline_factories']    = $options['debug'] === false;
+        $options['inline_class_loader'] = $options['debug'] === false;
+
         $content = (new PhpDumper($container))->dump($options);
         assert(is_array($content));
 
