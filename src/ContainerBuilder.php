@@ -146,6 +146,11 @@ final class ContainerBuilder implements Builder
 
     public function useDevelopmentMode(): Builder
     {
+        return $this->enableDebugging();
+    }
+
+    public function enableDebugging(): Builder
+    {
         $this->parameterBag->set('app.devmode', true);
 
         return $this;

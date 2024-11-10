@@ -55,8 +55,17 @@ interface Builder
 
     /**
      * Mark the container to be used as development mode
+     *
+     * @deprecated this method will be removed in favour of a more explicit name.
+     *
+     * @see enableDebugging
      */
     public function useDevelopmentMode(): Builder;
+
+    /**
+     * Configure the container to track file updates
+     */
+    public function enableDebugging(): Builder;
 
     /**
      * Configures the dump directory

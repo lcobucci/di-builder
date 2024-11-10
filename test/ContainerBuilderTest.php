@@ -177,11 +177,11 @@ final class ContainerBuilderTest extends TestCase
     }
 
     #[PHPUnit\Test]
-    public function useDevelopmentModeShouldChangeTheParameterAndReturnSelf(): void
+    public function enableDebuggingShouldChangeTheParameterAndReturnSelf(): void
     {
         $builder = new ContainerBuilder($this->config, $this->generator, $this->parameterBag);
 
-        self::assertSame($builder, $builder->useDevelopmentMode());
+        self::assertSame($builder, $builder->enableDebugging());
         self::assertTrue($this->parameterBag->get('app.devmode'));
     }
 
