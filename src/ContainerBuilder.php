@@ -15,7 +15,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use function assert;
 use function is_bool;
 
-final class ContainerBuilder implements Builder
+final readonly class ContainerBuilder implements Builder
 {
     public function __construct(
         private ContainerConfiguration $config,

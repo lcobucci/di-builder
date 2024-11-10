@@ -12,7 +12,7 @@ use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 /**
  * The dependency injection generator for XML files
  */
-final class Xml extends Generator
+final readonly class Xml extends Generator
 {
     /** @inheritDoc */
     public function getLoader(SymfonyBuilder $container, array $paths, ?string $profileName = null): LoaderInterface
