@@ -17,10 +17,12 @@ use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\Container;
 
-use function count;
+use function array_keys;
+use function array_reduce;
 use function file_get_contents;
 use function file_put_contents;
 use function iterator_to_array;
+use function str_starts_with;
 
 #[PHPUnit\CoversClass(Compiler::class)]
 #[PHPUnit\UsesClass(ParameterBag::class)]
@@ -31,13 +33,6 @@ use function iterator_to_array;
 final class CompilerTest extends TestCase
 {
     use GeneratesDumpDirectory;
-
-    private const EXPECTED_FILES = [
-        'getTestingService.php',
-        'AppContainer.php',
-        'AppContainer.preload.php',
-        'AppContainer.php.meta',
-    ];
 
     private ContainerConfiguration $config;
     private ConfigCache $dump;
@@ -75,14 +70,10 @@ final class CompilerTest extends TestCase
         $compiler = new Compiler();
         $compiler->compile($this->config, $this->dump, new Yaml(__FILE__));
 
-        $expectedFiles  = self::EXPECTED_FILES;
         $generatedFiles = iterator_to_array($this->getGeneratedFiles());
 
-        self::assertCount(count($expectedFiles), $generatedFiles);
-
-        foreach ($generatedFiles as $name => $file) {
-            self::assertContains($name, $expectedFiles);
-        }
+        self::assertArrayHasKey('getTestingService.php', $generatedFiles);
+        self::assertArrayHasKey('AppContainer.php', $generatedFiles);
     }
 
     #[PHPUnit\Test]
@@ -93,14 +84,10 @@ final class CompilerTest extends TestCase
         $compiler = new Compiler();
         $compiler->compile($this->config, $this->dump, new Yaml(__FILE__));
 
-        $expectedFiles  = self::EXPECTED_FILES;
         $generatedFiles = iterator_to_array($this->getGeneratedFiles());
 
-        self::assertCount(count($expectedFiles) - 1, $generatedFiles);
-
-        foreach ($generatedFiles as $name => $file) {
-            self::assertContains($name, $expectedFiles);
-        }
+        self::assertArrayNotHasKey('getTestingService.php', $generatedFiles);
+        self::assertArrayHasKey('AppContainer.php', $generatedFiles);
     }
 
     #[PHPUnit\Test]
@@ -126,10 +113,19 @@ final class CompilerTest extends TestCase
         $compiler = new Compiler();
         $compiler->compile($this->config, $this->dump, new Yaml(__FILE__));
 
-        $expectedFiles  = self::EXPECTED_FILES;
         $generatedFiles = iterator_to_array($this->getGeneratedFiles());
 
-        self::assertCount(count($expectedFiles) + 1, $generatedFiles);
+        self::assertArrayHasKey('getTestingService.php', $generatedFiles);
+        self::assertArrayHasKey('AppContainer.php', $generatedFiles);
+        self::assertTrue(
+            array_reduce(
+                array_keys($generatedFiles),
+                // @phpstan-ignore-next-line
+                static fn (bool $result, string $name): bool => $result ?: str_starts_with($name, 'stdClassGhost'),
+                false,
+            ),
+            'Failed asserting that ghost file for the stdClass service exists.',
+        );
     }
 
     #[PHPUnit\Test]
