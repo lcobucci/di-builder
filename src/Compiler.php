@@ -12,6 +12,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder as SymfonyBuilder;
 use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
 use Symfony\Component\Filesystem\Filesystem;
 
+use function array_is_list;
 use function array_pop;
 use function assert;
 use function dirname;
@@ -86,8 +87,9 @@ final readonly class Compiler
         $options['inline_class_loader'] = $options['inline_factories'];
 
         $content = (new PhpDumper($container))->dump($options);
-        assert(is_array($content));
+        assert(is_array($content) && ! array_is_list($content));
 
+        // @phpstan-ignore return.type
         return $content;
     }
 
