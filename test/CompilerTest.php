@@ -103,7 +103,8 @@ final class CompilerTest extends TestCase
     }
 
     #[PHPUnit\Test]
-    public function compileShouldAllowForLazyServices(): void
+    #[PHPUnit\RequiresPhp('< 8.4.0')]
+    public function compileShouldAllowForLazyServicesViaGhostService(): void
     {
         file_put_contents(
             vfsStream::url('tests-compilation/services.yml'),
@@ -118,6 +119,33 @@ final class CompilerTest extends TestCase
         self::assertArrayHasKey('getTestingService.php', $generatedFiles);
         self::assertArrayHasKey('AppContainer.php', $generatedFiles);
         self::assertTrue(
+            array_reduce(
+                array_keys($generatedFiles),
+                // @phpstan-ignore-next-line
+                static fn (bool $result, string $name): bool => $result ?: str_starts_with($name, 'stdClassGhost'),
+                false,
+            ),
+            'Failed asserting that ghost file for the stdClass service exists.',
+        );
+    }
+
+    #[PHPUnit\Test]
+    #[PHPUnit\RequiresPhp('>= 8.4.0')]
+    public function compileShouldAllowForLazyServices(): void
+    {
+        file_put_contents(
+            vfsStream::url('tests-compilation/services.yml'),
+            'services: { testing: { class: stdClass, lazy: true } }',
+        );
+
+        $compiler = new Compiler();
+        $compiler->compile($this->config, $this->dump, new Yaml(__FILE__));
+
+        $generatedFiles = iterator_to_array($this->getGeneratedFiles());
+
+        self::assertArrayHasKey('getTestingService.php', $generatedFiles);
+        self::assertArrayHasKey('AppContainer.php', $generatedFiles);
+        self::assertFalse(
             array_reduce(
                 array_keys($generatedFiles),
                 // @phpstan-ignore-next-line
