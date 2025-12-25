@@ -23,7 +23,7 @@
         "symfony/filesystem": "^7.3"
     },
     "require-dev": {
-        "infection/infection": "^0.31",
+        "infection/infection": "^0.32",
         "lcobucci/coding-standard": "^11.2",
         "mikey179/vfsstream": "^1.6.12",
         "phpstan/extension-installer": "^1.4",
