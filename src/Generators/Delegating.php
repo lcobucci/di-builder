@@ -28,6 +28,7 @@ final readonly class Delegating extends Generator
         return new DelegatingLoader(
             new LoaderResolver(
                 [
+                    // @phpstan-ignore new.deprecatedClass
                     new XmlFileLoader($container, $locator, $profileName),
                     new YamlFileLoader($container, $locator, $profileName),
                     new PhpFileLoader($container, $locator, $profileName),

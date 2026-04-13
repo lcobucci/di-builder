@@ -19,6 +19,7 @@ final class XmlTest extends TestCase
         $container = $this->createMock(ContainerBuilder::class);
         $generator = new Xml(__FILE__);
 
+        // @phpstan-ignore classConstant.deprecatedClass
         self::assertInstanceOf(XmlFileLoader::class, $generator->getLoader($container, []));
     }
 }
