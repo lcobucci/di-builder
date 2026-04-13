@@ -31,7 +31,7 @@
         "phpstan/phpstan-deprecation-rules": "^2.0",
         "phpstan/phpstan-phpunit": "^2.0",
         "phpstan/phpstan-strict-rules": "^2.0",
-        "phpunit/phpunit": "^12.0",
+        "phpunit/phpunit": "^13.1",
         "squizlabs/php_codesniffer": "^4.0",
         "symfony/yaml": "^8.0"
     },
