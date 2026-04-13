@@ -16,7 +16,7 @@ final class YamlTest extends TestCase
     #[PHPUnit\Test]
     public function getLoaderShouldReturnAYamlLoader(): void
     {
-        $container = $this->createMock(ContainerBuilder::class);
+        $container = self::createStub(ContainerBuilder::class);
         $generator = new Yaml(__FILE__);
 
         self::assertInstanceOf(YamlFileLoader::class, $generator->getLoader($container, []));

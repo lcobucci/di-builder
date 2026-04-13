@@ -10,6 +10,7 @@
     requireCoverageMetadata="true"
     beStrictAboutCoverageMetadata="true"
     displayDetailsOnTestsThatTriggerDeprecations="true"
+    displayDetailsOnAllIssues="true"
 >
     <testsuites>
         <testsuite name="DI Builder Test Suite">

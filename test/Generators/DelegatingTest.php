@@ -17,7 +17,7 @@ final class DelegatingTest extends TestCase
     #[PHPUnit\Test]
     public function getLoaderShouldReturnADelegatingLoaderWithTheOtherLoaders(): void
     {
-        $container = $this->createMock(ContainerBuilder::class);
+        $container = self::createStub(ContainerBuilder::class);
         $generator = new Delegating(__FILE__);
 
         $loader = $generator->getLoader($container, []);
@@ -27,6 +27,6 @@ final class DelegatingTest extends TestCase
         $resolver = $loader->getResolver();
 
         self::assertInstanceOf(LoaderResolver::class, $resolver);
-        self::assertCount(3, $resolver->getLoaders());
+        self::assertCount(2, $resolver->getLoaders());
     }
 }

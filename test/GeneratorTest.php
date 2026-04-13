@@ -25,7 +25,7 @@ final class GeneratorTest extends TestCase
 {
     use GeneratesDumpDirectory;
 
-    private const DI_NAMESPACE = 'Lcobucci\\DiTests\\Generator';
+    private const string DI_NAMESPACE = 'Lcobucci\\DiTests\\Generator';
 
     #[PHPUnit\Test]
     public function initializeContainerShouldAddTheConfigurationFileAsAResource(): void

@@ -9,7 +9,7 @@ use Lcobucci\DependencyInjection\CompilerPassListProvider;
 use Lcobucci\DependencyInjection\FileListProvider;
 use Lcobucci\DependencyInjection\Testing\MakeServicesPublic;
 use PHPUnit\Framework\Attributes as PHPUnit;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
@@ -22,12 +22,12 @@ use const DIRECTORY_SEPARATOR;
 #[PHPUnit\CoversClass(ContainerConfiguration::class)]
 final class ContainerConfigurationTest extends TestCase
 {
-    private CompilerPassInterface&MockObject $pass;
+    private CompilerPassInterface&Stub $pass;
 
     #[PHPUnit\Before]
     public function configureDependencies(): void
     {
-        $this->pass = $this->createMock(CompilerPassInterface::class);
+        $this->pass = self::createStub(CompilerPassInterface::class);
     }
 
     #[PHPUnit\Test]
@@ -184,7 +184,7 @@ final class ContainerConfigurationTest extends TestCase
     #[PHPUnit\Test]
     public function addPackageShouldAppendThePackageConfigurationToTheList(): void
     {
-        $package = $this->createMock(Package::class)::class;
+        $package = self::createStub(Package::class)::class;
         $config  = new ContainerConfiguration('Me\\MyApp');
         $config->addPackage($package, ['a' => 'b']);
 
@@ -202,7 +202,7 @@ final class ContainerConfigurationTest extends TestCase
     #[PHPUnit\Test]
     public function getPackagesShouldReturnAListOfInstantiatedPackages(): void
     {
-        $package = $this->createMock(Package::class);
+        $package = self::createStub(Package::class);
         $config  = new ContainerConfiguration('Me\\MyApp', [], [], [], [[$package::class, []]]);
 
         self::assertEquals([$package], $config->getPackages());
@@ -211,7 +211,7 @@ final class ContainerConfigurationTest extends TestCase
     #[PHPUnit\Test]
     public function getPackagesShouldInstantiateThePackagesOnlyOnce(): void
     {
-        $packageName = $this->createMock(Package::class)::class;
+        $packageName = self::createStub(Package::class)::class;
         $config      = new ContainerConfiguration('Me\\MyApp', [], [], [], [[$packageName, []]]);
 
         $createdPackages = $config->getPackages();

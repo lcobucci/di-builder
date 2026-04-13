@@ -16,7 +16,7 @@ final class PhpTest extends TestCase
     #[PHPUnit\Test]
     public function getLoaderShouldReturnAPhpLoader(): void
     {
-        $container = $this->createMock(ContainerBuilder::class);
+        $container = self::createStub(ContainerBuilder::class);
         $generator = new Php(__FILE__);
 
         self::assertInstanceOf(PhpFileLoader::class, $generator->getLoader($container, []));

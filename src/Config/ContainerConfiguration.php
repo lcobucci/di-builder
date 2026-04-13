@@ -23,7 +23,7 @@ use const DIRECTORY_SEPARATOR;
 /** @internal */
 final class ContainerConfiguration
 {
-    public const CLASS_NAME = 'AppContainer';
+    public const string CLASS_NAME = 'AppContainer';
 
     private ?string $baseClass = null;
 
