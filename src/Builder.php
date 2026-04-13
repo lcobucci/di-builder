@@ -13,7 +13,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 interface Builder
 {
-    public const DEFAULT_PRIORITY = 0;
+    public const int DEFAULT_PRIORITY = 0;
 
     /**
      * Add a file to be loaded

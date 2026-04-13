@@ -19,7 +19,7 @@ final class CompilationWithBaseClassTest extends TestCase
 {
     use GeneratesDumpDirectory;
 
-    private const DI_NAMESPACE = 'Lcobucci\\DiTests\\BaseClass';
+    private const string DI_NAMESPACE = 'Lcobucci\\DiTests\\BaseClass';
 
     #[PHPUnit\Test]
     public function containerCanHaveACustomBaseClass(): void
