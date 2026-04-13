@@ -9,7 +9,6 @@ use Lcobucci\DependencyInjection\Config\Package;
 use Lcobucci\DependencyInjection\Generators\Xml;
 use Lcobucci\DependencyInjection\Testing\MakeServicesPublic;
 use PHPUnit\Framework\Attributes as PHPUnit;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -17,7 +16,6 @@ use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder as SymfonyBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-use function get_class;
 use function iterator_to_array;
 
 #[PHPUnit\CoversClass(ContainerBuilder::class)]
@@ -27,14 +25,12 @@ use function iterator_to_array;
 #[PHPUnit\UsesClass(Xml::class)]
 final class ContainerBuilderTest extends TestCase
 {
-    private Generator&MockObject $generator;
     private ContainerConfiguration $config;
     private ParameterBag $parameterBag;
 
     #[PHPUnit\Before]
     public function configureDependencies(): void
     {
-        $this->generator    = $this->createMock(Generator::class);
         $this->config       = new ContainerConfiguration('Me\\MyApp');
         $this->parameterBag = new ParameterBag();
     }
@@ -92,7 +88,7 @@ final class ContainerBuilderTest extends TestCase
     #[PHPUnit\Test]
     public function constructShouldReceiveTheDependenciesAsArguments(): void
     {
-        new ContainerBuilder($this->config, $this->generator, $this->parameterBag);
+        new ContainerBuilder($this->config, self::createStub(Generator::class), $this->parameterBag);
 
         self::assertNotSame([], iterator_to_array($this->config->getPassList()));
         self::assertFalse($this->parameterBag->get('app.devmode'));
@@ -101,7 +97,7 @@ final class ContainerBuilderTest extends TestCase
     #[PHPUnit\Test]
     public function addFileShouldAppendANewFileOnTheListAndReturnSelf(): void
     {
-        $builder = new ContainerBuilder($this->config, $this->generator, $this->parameterBag);
+        $builder = new ContainerBuilder($this->config, self::createStub(Generator::class), $this->parameterBag);
 
         self::assertSame($builder, $builder->addFile('test'));
         self::assertContains('test', $this->config->getFiles());
@@ -110,8 +106,8 @@ final class ContainerBuilderTest extends TestCase
     #[PHPUnit\Test]
     public function addPassShouldAppendANewHandlerOnTheListAndReturnSelf(): void
     {
-        $builder = new ContainerBuilder($this->config, $this->generator, $this->parameterBag);
-        $pass    = $this->createMock(CompilerPassInterface::class);
+        $builder = new ContainerBuilder($this->config, self::createStub(Generator::class), $this->parameterBag);
+        $pass    = self::createStub(CompilerPassInterface::class);
 
         self::assertSame($builder, $builder->addPass($pass));
         self::assertContains([$pass, PassConfig::TYPE_BEFORE_OPTIMIZATION, 0], $this->config->getPassList());
@@ -120,8 +116,8 @@ final class ContainerBuilderTest extends TestCase
     #[PHPUnit\Test]
     public function addDelayedPassShouldAppendANewHandlerOnTheListAndReturnSelf(): void
     {
-        $builder = new ContainerBuilder($this->config, $this->generator, $this->parameterBag);
-        $pass    = get_class($this->createMock(CompilerPassInterface::class));
+        $builder = new ContainerBuilder($this->config, self::createStub(Generator::class), $this->parameterBag);
+        $pass    = self::createStub(CompilerPassInterface::class)::class;
 
         self::assertSame($builder, $builder->addDelayedPass($pass));
         self::assertContains([[$pass, []], PassConfig::TYPE_BEFORE_OPTIMIZATION, 0], $this->config->getPassList());
@@ -130,8 +126,8 @@ final class ContainerBuilderTest extends TestCase
     #[PHPUnit\Test]
     public function addPackageShouldAppendANewHandlerOnTheListAndReturnSelf(): void
     {
-        $builder = new ContainerBuilder($this->config, $this->generator, $this->parameterBag);
-        $module  = $this->createMock(Package::class);
+        $builder = new ContainerBuilder($this->config, self::createStub(Generator::class), $this->parameterBag);
+        $module  = self::createStub(Package::class);
 
         self::assertSame($builder, $builder->addPackage($module::class));
         self::assertEquals([$module], $this->config->getPackages());
@@ -140,7 +136,7 @@ final class ContainerBuilderTest extends TestCase
     #[PHPUnit\Test]
     public function setDumpDirShouldChangeTheConfigureAndReturnSelf(): void
     {
-        $builder = new ContainerBuilder($this->config, $this->generator, $this->parameterBag);
+        $builder = new ContainerBuilder($this->config, self::createStub(Generator::class), $this->parameterBag);
 
         self::assertSame($builder, $builder->setDumpDir('test'));
         self::assertEquals('test', $this->config->getDumpDir());
@@ -149,7 +145,7 @@ final class ContainerBuilderTest extends TestCase
     #[PHPUnit\Test]
     public function addPathShouldAppendANewPathOnTheListAndReturnSelf(): void
     {
-        $builder = new ContainerBuilder($this->config, $this->generator, $this->parameterBag);
+        $builder = new ContainerBuilder($this->config, self::createStub(Generator::class), $this->parameterBag);
 
         self::assertSame($builder, $builder->addPath('test'));
         self::assertContains('test', $this->config->getPaths());
@@ -158,7 +154,7 @@ final class ContainerBuilderTest extends TestCase
     #[PHPUnit\Test]
     public function setBaseClassShouldConfigureTheBaseClassAndReturnSelf(): void
     {
-        $builder = new ContainerBuilder($this->config, $this->generator, $this->parameterBag);
+        $builder = new ContainerBuilder($this->config, self::createStub(Generator::class), $this->parameterBag);
 
         self::assertSame($builder, $builder->setBaseClass('Test'));
         self::assertEquals('\\Test', $this->config->getBaseClass());
@@ -167,7 +163,7 @@ final class ContainerBuilderTest extends TestCase
     #[PHPUnit\Test]
     public function enableDebuggingShouldChangeTheParameterAndReturnSelf(): void
     {
-        $builder = new ContainerBuilder($this->config, $this->generator, $this->parameterBag);
+        $builder = new ContainerBuilder($this->config, self::createStub(Generator::class), $this->parameterBag);
 
         self::assertSame($builder, $builder->enableDebugging());
         self::assertTrue($this->parameterBag->get('app.devmode'));
@@ -176,7 +172,7 @@ final class ContainerBuilderTest extends TestCase
     #[PHPUnit\Test]
     public function setParameterShouldConfigureTheParameterAndReturnSelf(): void
     {
-        $builder = new ContainerBuilder($this->config, $this->generator, $this->parameterBag);
+        $builder = new ContainerBuilder($this->config, self::createStub(Generator::class), $this->parameterBag);
 
         self::assertSame($builder, $builder->setParameter('test', 1));
         self::assertEquals(1, $this->parameterBag->get('test'));
@@ -185,13 +181,15 @@ final class ContainerBuilderTest extends TestCase
     #[PHPUnit\Test]
     public function getContainerShouldGenerateAndReturnTheContainer(): void
     {
-        $builder   = new ContainerBuilder($this->config, $this->generator, $this->parameterBag);
-        $container = $this->createMock(ContainerInterface::class);
+        $generator = $this->createMock(Generator::class);
 
-        $this->generator->expects(self::once())
-                        ->method('generate')
-                        ->with($this->config, new ConfigCache($this->config->getDumpFile(), false))
-                        ->willReturn($container);
+        $builder   = new ContainerBuilder($this->config, $generator, $this->parameterBag);
+        $container = self::createStub(ContainerInterface::class);
+
+        $generator->expects(self::once())
+                  ->method('generate')
+                  ->with($this->config, new ConfigCache($this->config->getDumpFile(), false))
+                  ->willReturn($container);
 
         self::assertSame($container, $builder->getContainer());
     }
@@ -199,8 +197,10 @@ final class ContainerBuilderTest extends TestCase
     #[PHPUnit\Test]
     public function getTestContainerShouldGenerateAndReturnTheContainer(): void
     {
-        $builder   = new ContainerBuilder($this->config, $this->generator, $this->parameterBag);
-        $container = $this->createMock(ContainerInterface::class);
+        $generator = $this->createMock(Generator::class);
+
+        $builder   = new ContainerBuilder($this->config, $generator, $this->parameterBag);
+        $container = self::createStub(ContainerInterface::class);
 
         $config = new ContainerConfiguration('Me\\MyApp\\Tests');
         $config->addPass($this->parameterBag);
@@ -208,10 +208,10 @@ final class ContainerBuilderTest extends TestCase
 
         $cacheConfig = new ConfigCache($config->getDumpFile(), true);
 
-        $this->generator->expects(self::once())
-                        ->method('generate')
-                        ->with($config, $cacheConfig)
-                        ->willReturn($container);
+        $generator->expects(self::once())
+                  ->method('generate')
+                  ->with($config, $cacheConfig)
+                  ->willReturn($container);
 
         self::assertSame($container, $builder->getTestContainer());
 
@@ -223,7 +223,7 @@ final class ContainerBuilderTest extends TestCase
     #[PHPUnit\Test]
     public function profileNameShouldBeConfigurable(): void
     {
-        $builder = new ContainerBuilder($this->config, $this->generator, $this->parameterBag);
+        $builder = new ContainerBuilder($this->config, self::createStub(Generator::class), $this->parameterBag);
         $builder->setProfileName('testing');
 
         self::assertSame('testing', $this->config->profileName());

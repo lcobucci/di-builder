@@ -16,7 +16,7 @@ final class XmlTest extends TestCase
     #[PHPUnit\Test]
     public function getLoaderShouldReturnAXmlLoader(): void
     {
-        $container = $this->createMock(ContainerBuilder::class);
+        $container = self::createStub(ContainerBuilder::class);
         $generator = new Xml(__FILE__);
 
         // @phpstan-ignore classConstant.deprecatedClass
