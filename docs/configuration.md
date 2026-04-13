@@ -3,8 +3,8 @@
 Setting up the container can be a complicated task.
 In order to make the it easier, we provide a builder. 
 
-The builder is initialised via a named constructors, which represent the format of files to be parsed (php, xml, yaml).
-You may use `ContainerBuilder::delegating()` to allow all formats to be used.
+The builder is initialised via a named constructors, which represent the format of files to be parsed (`php` or `yaml`).
+You may use `ContainerBuilder::delegating()` to allow all supported formats to be used.
 
 Once everything is configured, the builder gives you a fully functional container:
 
@@ -18,7 +18,7 @@ use Lcobucci\DependencyInjection\ContainerBuilder;
 
 // The path to the current file is passed so we can track changes
 // to it and refresh the cache (for development mode)
-$builder = ContainerBuilder::xml(__FILE__, __NAMESPACE__);
+$builder = ContainerBuilder::yaml(__FILE__, __NAMESPACE__);
 
 $container = $builder->getContainer();
 
@@ -57,7 +57,7 @@ use function getenv;
 
 require __DIR__ . '/../vendor/autoload.php';
 
-$builder     = ContainerBuilder::xml(__FILE__, __NAMESPACE__);
+$builder     = ContainerBuilder::yaml(__FILE__, __NAMESPACE__);
 $projectRoot = dirname(__DIR__);
 
 if (getenv('APP_PROFILE') !== 'prod') {
@@ -67,6 +67,6 @@ if (getenv('APP_PROFILE') !== 'prod') {
 return $builder->setProfileName(getenv('APP_PROFILE'))
                ->setDumpDir($projectRoot . '/var/tmp')
                ->setParameter('app.basedir', $projectRoot)
-               ->addFile(__DIR__ . '/container.xml')
+               ->addFile(__DIR__ . '/container.yaml')
                ->getContainer();
 ```

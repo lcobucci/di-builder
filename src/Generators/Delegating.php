@@ -10,7 +10,6 @@ use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\Config\Loader\LoaderResolver;
 use Symfony\Component\DependencyInjection\ContainerBuilder as SymfonyBuilder;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
-use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 /**
@@ -28,8 +27,6 @@ final readonly class Delegating extends Generator
         return new DelegatingLoader(
             new LoaderResolver(
                 [
-                    // @phpstan-ignore new.deprecatedClass
-                    new XmlFileLoader($container, $locator, $profileName),
                     new YamlFileLoader($container, $locator, $profileName),
                     new PhpFileLoader($container, $locator, $profileName),
                 ],

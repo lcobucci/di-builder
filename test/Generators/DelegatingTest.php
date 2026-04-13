@@ -27,6 +27,6 @@ final class DelegatingTest extends TestCase
         $resolver = $loader->getResolver();
 
         self::assertInstanceOf(LoaderResolver::class, $resolver);
-        self::assertCount(3, $resolver->getLoaders());
+        self::assertCount(2, $resolver->getLoaders());
     }
 }

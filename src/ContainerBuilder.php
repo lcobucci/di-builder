@@ -26,19 +26,6 @@ final readonly class ContainerBuilder implements Builder
     }
 
     /** @param class-string<SymfonyBuilder> $builderClass */
-    public static function xml(
-        string $configurationFile,
-        string $namespace,
-        string $builderClass = SymfonyBuilder::class,
-    ): self {
-        return new self(
-            new ContainerConfiguration($namespace),
-            new Generators\Xml($configurationFile, $builderClass),
-            new ParameterBag(),
-        );
-    }
-
-    /** @param class-string<SymfonyBuilder> $builderClass */
     public static function php(
         string $configurationFile,
         string $namespace,

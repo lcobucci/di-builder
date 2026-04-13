@@ -6,7 +6,7 @@ namespace Lcobucci\DependencyInjection;
 use Lcobucci\DependencyInjection\Compiler\ParameterBag;
 use Lcobucci\DependencyInjection\Config\ContainerConfiguration;
 use Lcobucci\DependencyInjection\Config\Package;
-use Lcobucci\DependencyInjection\Generators\Xml;
+use Lcobucci\DependencyInjection\Generators\Yaml;
 use Lcobucci\DependencyInjection\Testing\MakeServicesPublic;
 use PHPUnit\Framework\Attributes as PHPUnit;
 use PHPUnit\Framework\TestCase;
@@ -22,7 +22,7 @@ use function iterator_to_array;
 #[PHPUnit\UsesClass(ParameterBag::class)]
 #[PHPUnit\UsesClass(ContainerConfiguration::class)]
 #[PHPUnit\UsesClass(Generator::class)]
-#[PHPUnit\UsesClass(Xml::class)]
+#[PHPUnit\UsesClass(Yaml::class)]
 final class ContainerBuilderTest extends TestCase
 {
     private ContainerConfiguration $config;
@@ -55,16 +55,9 @@ final class ContainerBuilderTest extends TestCase
     /** @return iterable<string, array{string, Generator, 2?: class-string<\Symfony\Component\DependencyInjection\ContainerBuilder>}> */
     public static function supportedFormats(): iterable
     {
-        yield 'xml' => ['xml', new Generators\Xml(__FILE__)];
         yield 'yaml' => ['yaml', new Generators\Yaml(__FILE__)];
         yield 'php' => ['php', new Generators\Php(__FILE__)];
         yield 'delegating' => ['delegating', new Generators\Delegating(__FILE__)];
-
-        yield 'xml with custom builder' => [
-            'xml',
-            new Generators\Xml(__FILE__, CustomContainerBuilderForTests::class),
-            CustomContainerBuilderForTests::class,
-        ];
 
         yield 'yaml with custom builder' => [
             'yaml',

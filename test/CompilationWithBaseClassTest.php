@@ -5,7 +5,7 @@ namespace Lcobucci\DependencyInjection;
 
 use Lcobucci\DependencyInjection\Compiler\ParameterBag;
 use Lcobucci\DependencyInjection\Config\ContainerConfiguration;
-use Lcobucci\DependencyInjection\Generators\Xml;
+use Lcobucci\DependencyInjection\Generators\Yaml;
 use PHPUnit\Framework\Attributes as PHPUnit;
 use PHPUnit\Framework\TestCase;
 
@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
 #[PHPUnit\CoversClass(ParameterBag::class)]
 #[PHPUnit\CoversClass(ContainerConfiguration::class)]
 #[PHPUnit\CoversClass(Generator::class)]
-#[PHPUnit\CoversClass(Xml::class)]
+#[PHPUnit\CoversClass(Yaml::class)]
 final class CompilationWithBaseClassTest extends TestCase
 {
     use GeneratesDumpDirectory;
@@ -24,7 +24,7 @@ final class CompilationWithBaseClassTest extends TestCase
     #[PHPUnit\Test]
     public function containerCanHaveACustomBaseClass(): void
     {
-        $container = ContainerBuilder::xml(__FILE__, self::DI_NAMESPACE)
+        $container = ContainerBuilder::yaml(__FILE__, self::DI_NAMESPACE)
             ->setBaseClass(ContainerForTests::class)
             ->setDumpDir($this->dumpDirectory)
             ->getContainer();

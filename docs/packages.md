@@ -31,7 +31,7 @@ final class MyAwesomeLib implements CompilerPassListProvider, FileListProvider
     /** @inheritDoc */
     public function getFiles() : Generator
     {
-        yield dirname(__DIR__) . '/../config/my-awesome-lib.xml';
+        yield dirname(__DIR__) . '/../config/my-awesome-lib.yaml';
     }
 }
 ```
