@@ -20,6 +20,7 @@ jobs:
         php-version:
           - "8.4"
           - "8.5"
+          - "8.6"
         operating-system: ["ubuntu-latest"]
 
     steps:
@@ -113,7 +114,7 @@ jobs:
     strategy:
       matrix:
         dependencies: ["locked"]
-        php-version: ["8.6"]
+        php-version: ["8.7"]
         operating-system: ["ubuntu-latest"]
 
     steps:
