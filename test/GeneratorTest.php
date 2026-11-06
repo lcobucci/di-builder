@@ -7,7 +7,6 @@ use Lcobucci\DependencyInjection\Compiler\DumpXmlContainer;
 use Lcobucci\DependencyInjection\Compiler\ParameterBag;
 use Lcobucci\DependencyInjection\Config\ContainerConfiguration;
 use Lcobucci\DependencyInjection\Generators\Yaml;
-use org\bovigo\vfs\vfsStream;
 use PHPUnit\Framework\Attributes as PHPUnit;
 use PHPUnit\Framework\TestCase;
 use stdClass;
@@ -51,15 +50,9 @@ final class GeneratorTest extends TestCase
     #[PHPUnit\Test]
     public function generateShouldCompileAndLoadTheContainer(): void
     {
-        vfsStream::setup(
-            'tests-generation',
-            null,
-            ['services.yml' => 'services: { testing: { class: stdClass, public: true } }'],
-        );
-
         $config = new ContainerConfiguration(
             self::DI_NAMESPACE,
-            [vfsStream::url('tests-generation/services.yml')],
+            [__DIR__ . '/fixtures/public-service.yaml'],
             [
                 [new ParameterBag(['app.devmode' => true]), PassConfig::TYPE_BEFORE_OPTIMIZATION],
                 [
