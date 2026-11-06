@@ -52,7 +52,7 @@ final class ContainerBuilderTest extends TestCase
         self::assertEquals($expected, ContainerBuilder::$method(__FILE__, __NAMESPACE__, $builderClass));
     }
 
-    /** @return iterable<string, array{string, Generator, 2?: class-string<\Symfony\Component\DependencyInjection\ContainerBuilder>}> */
+    /** @return iterable<string, array{string, Generator, 2?: class-string<SymfonyBuilder>}> */
     public static function supportedFormats(): iterable
     {
         yield 'yaml' => ['yaml', new Generators\Yaml(__FILE__)];
