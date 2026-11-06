@@ -1,0 +1,4 @@
+services:
+  testing:
+    class: stdClass
+    lazy: true

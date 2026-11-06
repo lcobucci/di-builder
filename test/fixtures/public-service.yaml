@@ -1,0 +1,4 @@
+services:
+  testing:
+    class: stdClass
+    public: true

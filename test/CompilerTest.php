@@ -9,7 +9,6 @@ use Lcobucci\DependencyInjection\Compiler\ParameterBag;
 use Lcobucci\DependencyInjection\Config\ContainerConfiguration;
 use Lcobucci\DependencyInjection\Generators\Yaml;
 use Lcobucci\DependencyInjection\Testing\MakeServicesPublic;
-use org\bovigo\vfs\vfsStream;
 use PHPUnit\Framework\Attributes as PHPUnit;
 use PHPUnit\Framework\TestCase;
 use SplFileInfo;
@@ -34,41 +33,13 @@ final class CompilerTest extends TestCase
 {
     use GeneratesDumpDirectory;
 
-    private ContainerConfiguration $config;
-    private ConfigCache $dump;
-    private ParameterBag $parameters;
-
-    #[PHPUnit\Before]
-    public function configureDependencies(): void
-    {
-        vfsStream::setup(
-            'tests-compilation',
-            null,
-            ['services.yml' => 'services: { testing: { class: stdClass } }'],
-        );
-
-        $this->parameters = new ParameterBag();
-        $this->parameters->set('app.devmode', true);
-
-        $this->dump = new ConfigCache($this->dumpDirectory . '/AppContainer.php', false);
-
-        $this->config = new ContainerConfiguration(
-            'Me\\CompilationTest',
-            [vfsStream::url('tests-compilation/services.yml')],
-            [
-                [$this->parameters, PassConfig::TYPE_BEFORE_OPTIMIZATION],
-                [[MakeServicesPublic::class, []], PassConfig::TYPE_BEFORE_OPTIMIZATION],
-            ],
-        );
-
-        $this->config->setDumpDir($this->dumpDirectory);
-    }
-
     #[PHPUnit\Test]
     public function compileShouldCreateMultipleFilesForDevelopmentMode(): void
     {
+        [$config, , $dump] = $this->buildConfig();
+
         $compiler = new Compiler();
-        $compiler->compile($this->config, $this->dump, new Yaml(__FILE__));
+        $compiler->compile($config, $dump, new Yaml(__FILE__));
 
         $generatedFiles = iterator_to_array($this->getGeneratedFiles());
 
@@ -79,10 +50,12 @@ final class CompilerTest extends TestCase
     #[PHPUnit\Test]
     public function compileShouldInlineFactoriesForProductionMode(): void
     {
-        $this->parameters->set('app.devmode', false);
+        [$config, $parameters, $dump] = $this->buildConfig();
+
+        $parameters->set('app.devmode', false);
 
         $compiler = new Compiler();
-        $compiler->compile($this->config, $this->dump, new Yaml(__FILE__));
+        $compiler->compile($config, $dump, new Yaml(__FILE__));
 
         $generatedFiles = iterator_to_array($this->getGeneratedFiles());
 
@@ -93,8 +66,10 @@ final class CompilerTest extends TestCase
     #[PHPUnit\Test]
     public function compileShouldTrackChangesOnTheConfigurationFile(): void
     {
+        [$config, , $dump] = $this->buildConfig();
+
         $compiler = new Compiler();
-        $compiler->compile($this->config, $this->dump, new Yaml(__FILE__));
+        $compiler->compile($config, $dump, new Yaml(__FILE__));
 
         self::assertStringContainsString(
             __FILE__,
@@ -105,13 +80,10 @@ final class CompilerTest extends TestCase
     #[PHPUnit\Test]
     public function compileShouldAllowForLazyServices(): void
     {
-        file_put_contents(
-            vfsStream::url('tests-compilation/services.yml'),
-            'services: { testing: { class: stdClass, lazy: true } }',
-        );
+        [$config, , $dump] = $this->buildConfig(__DIR__ . '/fixtures/lazy-service.yml');
 
         $compiler = new Compiler();
-        $compiler->compile($this->config, $this->dump, new Yaml(__FILE__));
+        $compiler->compile($config, $dump, new Yaml(__FILE__));
 
         $generatedFiles = iterator_to_array($this->getGeneratedFiles());
 
@@ -131,10 +103,11 @@ final class CompilerTest extends TestCase
     #[PHPUnit\Test]
     public function compilationShouldBeSkippedWhenFileAlreadyExists(): void
     {
+        [$config, , $dump] = $this->buildConfig(devMode: false);
         file_put_contents($this->dumpDirectory . '/AppContainer.php', 'testing');
 
         $compiler = new Compiler();
-        $compiler->compile($this->config, $this->dump, new Yaml(__FILE__));
+        $compiler->compile($config, $dump, new Yaml(__FILE__));
 
         $generatedFiles = iterator_to_array($this->getGeneratedFiles());
 
@@ -144,10 +117,11 @@ final class CompilerTest extends TestCase
     #[PHPUnit\Test]
     public function compileShouldUseCustomContainerBuilders(): void
     {
-        $compiler = new Compiler();
+        [$config, , $dump] = $this->buildConfig();
+        $compiler          = new Compiler();
         $compiler->compile(
-            $this->config,
-            $this->dump,
+            $config,
+            $dump,
             new Yaml(__FILE__, CustomContainerBuilderForTests::class),
         );
 
@@ -156,6 +130,34 @@ final class CompilerTest extends TestCase
         self::assertInstanceOf(Container::class, $container);
         self::assertTrue($container->hasParameter('built-with-very-special-builder'));
         self::assertTrue($container->getParameter('built-with-very-special-builder'));
+    }
+
+    /**
+     * @param non-empty-string $file
+     *
+     * @return array{ContainerConfiguration, ParameterBag, ConfigCache}
+     */
+    private function buildConfig(
+        string $file = __DIR__ . '/fixtures/single-service.yaml',
+        bool $devMode = true,
+    ): array {
+        $parameters = new ParameterBag();
+        $parameters->set('app.devmode', $devMode);
+
+        $dump = new ConfigCache($this->dumpDirectory . '/AppContainer.php', $devMode);
+
+        $config = new ContainerConfiguration(
+            'Me\\CompilationTest',
+            [$file],
+            [
+                [$parameters, PassConfig::TYPE_BEFORE_OPTIMIZATION],
+                [[MakeServicesPublic::class, []], PassConfig::TYPE_BEFORE_OPTIMIZATION],
+            ],
+        );
+
+        $config->setDumpDir($this->dumpDirectory);
+
+        return [$config, $parameters, $dump];
     }
 
     /** @return PHPGenerator<string, SplFileInfo> */
