@@ -344,16 +344,16 @@
         },
         {
             "name": "symfony/config",
-            "version": "v8.1.11",
+            "version": "v8.1.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/config.git",
-                "reference": "8a6f757bf803464bc8451e1fafc3699588e29c48"
+                "reference": "7b7f07b1ec6da7d7cada3ed73fa302a8e791ecf0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/config/zipball/8a6f757bf803464bc8451e1fafc3699588e29c48",
-                "reference": "8a6f757bf803464bc8451e1fafc3699588e29c48",
+                "url": "https://api.github.com/repos/symfony/config/zipball/7b7f07b1ec6da7d7cada3ed73fa302a8e791ecf0",
+                "reference": "7b7f07b1ec6da7d7cada3ed73fa302a8e791ecf0",
                 "shasum": ""
             },
             "require": {
@@ -398,7 +398,7 @@
             "description": "Helps you find, load, combine, autofill and validate configuration values of any kind",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/config/tree/v8.1.11"
+                "source": "https://github.com/symfony/config/tree/v8.1.12"
             },
             "funding": [
                 {
@@ -418,21 +418,21 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-11-04T08:39:20+00:00",
-            "published-time": "2026-11-04T11:31:48+00:00"
+            "time": "2026-11-09T20:09:12+00:00",
+            "published-time": "2026-11-25T09:29:40+00:00"
         },
         {
             "name": "symfony/dependency-injection",
-            "version": "v8.1.11",
+            "version": "v8.1.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/dependency-injection.git",
-                "reference": "d678f8d0527ed592593901da3ba2e2c17f7d51c1"
+                "reference": "ded8faaf50851eb88d90efb6d31f8c1210554f9e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/dependency-injection/zipball/d678f8d0527ed592593901da3ba2e2c17f7d51c1",
-                "reference": "d678f8d0527ed592593901da3ba2e2c17f7d51c1",
+                "url": "https://api.github.com/repos/symfony/dependency-injection/zipball/ded8faaf50851eb88d90efb6d31f8c1210554f9e",
+                "reference": "ded8faaf50851eb88d90efb6d31f8c1210554f9e",
                 "shasum": ""
             },
             "require": {
@@ -443,7 +443,8 @@
                 "symfony/var-exporter": "^8.1"
             },
             "conflict": {
-                "ext-psr": "<1.1|>=2"
+                "ext-psr": "<1.1|>=2",
+                "symfony/http-kernel": "<8.1.12"
             },
             "provide": {
                 "psr/container-implementation": "1.1|2.0",
@@ -480,7 +481,7 @@
             "description": "Allows you to standardize and centralize the way objects are constructed in your application",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/dependency-injection/tree/v8.1.11"
+                "source": "https://github.com/symfony/dependency-injection/tree/v8.1.12"
             },
             "funding": [
                 {
@@ -500,8 +501,8 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-11-01T19:30:44+00:00",
-            "published-time": "2026-11-04T11:32:05+00:00"
+            "time": "2026-11-24T15:59:55+00:00",
+            "published-time": "2026-11-25T09:29:21+00:00"
         },
         {
             "name": "symfony/deprecation-contracts",
@@ -577,16 +578,16 @@
         },
         {
             "name": "symfony/expression-language",
-            "version": "v8.1.9",
+            "version": "v8.1.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/expression-language.git",
-                "reference": "9c2729bca940d84938dc0b435d037e4844f237c9"
+                "reference": "991a07de8dee3739cdf89c130ba376f1ce566df1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/expression-language/zipball/9c2729bca940d84938dc0b435d037e4844f237c9",
-                "reference": "9c2729bca940d84938dc0b435d037e4844f237c9",
+                "url": "https://api.github.com/repos/symfony/expression-language/zipball/991a07de8dee3739cdf89c130ba376f1ce566df1",
+                "reference": "991a07de8dee3739cdf89c130ba376f1ce566df1",
                 "shasum": ""
             },
             "require": {
@@ -620,7 +621,7 @@
             "description": "Provides an engine that can compile and evaluate expressions",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/expression-language/tree/v8.1.9"
+                "source": "https://github.com/symfony/expression-language/tree/v8.1.12"
             },
             "funding": [
                 {
@@ -640,21 +641,21 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-10-09T13:58:01+00:00",
-            "published-time": "2026-10-14T06:48:30+00:00"
+            "time": "2026-11-24T18:01:43+00:00",
+            "published-time": "2026-11-25T09:28:29+00:00"
         },
         {
             "name": "symfony/filesystem",
-            "version": "v8.1.11",
+            "version": "v8.1.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/filesystem.git",
-                "reference": "58f57b6a33e3495f7f41e01258f1ae5ef76cccd2"
+                "reference": "a8f7a3cf9d3140902eaee85baf1f8e98666d336a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/filesystem/zipball/58f57b6a33e3495f7f41e01258f1ae5ef76cccd2",
-                "reference": "58f57b6a33e3495f7f41e01258f1ae5ef76cccd2",
+                "url": "https://api.github.com/repos/symfony/filesystem/zipball/a8f7a3cf9d3140902eaee85baf1f8e98666d336a",
+                "reference": "a8f7a3cf9d3140902eaee85baf1f8e98666d336a",
                 "shasum": ""
             },
             "require": {
@@ -692,7 +693,7 @@
             "description": "Provides basic utilities for the filesystem",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/filesystem/tree/v8.1.11"
+                "source": "https://github.com/symfony/filesystem/tree/v8.1.12"
             },
             "funding": [
                 {
@@ -712,8 +713,8 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-11-04T08:39:20+00:00",
-            "published-time": "2026-11-04T11:32:01+00:00"
+            "time": "2026-11-24T15:59:55+00:00",
+            "published-time": "2026-11-25T09:29:32+00:00"
         },
         {
             "name": "symfony/polyfill-ctype",
@@ -5518,16 +5519,16 @@
         },
         {
             "name": "symfony/yaml",
-            "version": "v8.1.11",
+            "version": "v8.1.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
-                "reference": "e8266f55160f674f290a5f567cb55e11e21f921b"
+                "reference": "deb300ddc3ef3eab0476569fd88d14e3b194881a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/yaml/zipball/e8266f55160f674f290a5f567cb55e11e21f921b",
-                "reference": "e8266f55160f674f290a5f567cb55e11e21f921b",
+                "url": "https://api.github.com/repos/symfony/yaml/zipball/deb300ddc3ef3eab0476569fd88d14e3b194881a",
+                "reference": "deb300ddc3ef3eab0476569fd88d14e3b194881a",
                 "shasum": ""
             },
             "require": {
@@ -5570,7 +5571,7 @@
             "description": "Loads and dumps YAML files",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/yaml/tree/v8.1.11"
+                "source": "https://github.com/symfony/yaml/tree/v8.1.12"
             },
             "funding": [
                 {
@@ -5590,8 +5591,8 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-11-04T08:39:20+00:00",
-            "published-time": "2026-11-04T11:31:03+00:00"
+            "time": "2026-11-16T12:51:10+00:00",
+            "published-time": "2026-11-25T09:28:53+00:00"
         },
         {
             "name": "thecodingmachine/safe",
